@@ -12,8 +12,10 @@ import {
   requestLocationTriesState,
   selectedStoreIndexState,
   selectedStoreState,
+  storesState,
 } from "state";
 import { Store } from "types/delivery";
+import { TStore } from "types/store";
 import { displayDistance } from "utils/location";
 
 export const StorePicker: FC = () => {
@@ -41,7 +43,7 @@ export const StorePicker: FC = () => {
             onClose={() => setVisible(false)}
             actions={[
               nearbyStores.contents.map(
-                (store: Store & { distance?: number }, i) => ({
+                (store: TStore & { distance?: number }, i) => ({
                   text: store.distance
                     ? `${store.name} - ${displayDistance(store.distance)}`
                     : store.name,

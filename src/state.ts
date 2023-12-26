@@ -8,222 +8,80 @@ import drinksIcon from "static/category-drinks.svg";
 import breadIcon from "static/category-bread.svg";
 import juiceIcon from "static/category-juice.svg";
 import logo from "static/logo.png";
-import { Category, CategoryId } from "types/category";
-import { Product, Variant } from "types/product";
+import { Category, Product } from "types/store-menu";
 import { Cart } from "types/cart";
 import { Notification } from "types/notification";
 import { calculateDistance } from "utils/location";
 import { Store } from "types/delivery";
+import { TStore } from "types/store";
 import { calcFinalPrice, getDummyImage } from "utils/product";
 import { wait } from "utils/async";
+import storeApi from "api/store";
+import menuApi from "api/menu";
+import blogApi from "api/blog";
+import { CategoryId } from "types/category";
 
 export const userState = selector({
   key: "user",
   get: () => getUserInfo({}).then((res) => res.userInfo),
 });
 
+export const listStoreState = selector({
+  key: "listStore",
+  get: async () => {
+    const listStore = await storeApi.getListStore({
+      page: 1,
+      size: 10,
+      brandCode: "BEANAPP",
+    });
+    return listStore.data.items;
+  },
+});
+
+export const listBlogState = selector({
+  key: "listBlog",
+  get: async () => {
+    const listBlog = await blogApi.getListBlog({
+      page: 1,
+      size: 10,
+      brandCode: "BEANAPP",
+    });
+    return listBlog.data.items;
+  },
+});
+
+export const storeMenuState = selector({
+  key: "storeMenu",
+  get: async ({ get }) => {
+    const currentStore = get(selectedStoreState);
+    if (currentStore === null || currentStore === undefined) {
+      const store = get(listStoreState);
+      const menu = await menuApi.getMenu(store[0].id);
+      return menu.data;
+    } else {
+      const menu = await menuApi.getMenu(currentStore.id);
+      return menu.data;
+    }
+  },
+});
+
 export const categoriesState = selector<Category[]>({
   key: "categories",
-  get: () => [
-    { id: "coffee", name: "Cà phê", icon: coffeeIcon },
-    { id: "matcha", name: "Trà xanh", icon: matchaIcon },
-    { id: "food", name: "Đồ ăn vặt", icon: foodIcon },
-    { id: "milktea", name: "Trà sữa", icon: milkteaIcon },
-    { id: "drinks", name: "Giải khát", icon: drinksIcon },
-    { id: "bread", name: "Bánh mỳ", icon: breadIcon },
-    { id: "juice", name: "Nước ép", icon: juiceIcon },
-  ],
+  get: async ({ get }) => {
+    const menu = get(storeMenuState);
+    return menu.categories.filter((cate) => cate.type === "Normal");
+  },
 });
 
 const description = `There is a set of mock banners available <u>here</u> in three colours and in a range of standard banner sizes`;
 
 export const productsState = selector<Product[]>({
   key: "products",
-  get: async () => {
-    await wait(2000);
-    const variants: Variant[] = [
-      {
-        key: "size",
-        label: "Kích cỡ",
-        type: "single",
-        default: "m",
-        options: [
-          {
-            key: "s",
-            label: "Nhỏ",
-            priceChange: {
-              type: "percent",
-              percent: -0.2,
-            },
-          },
-          {
-            key: "m",
-            label: "Vừa",
-          },
-          {
-            key: "l",
-            label: "To",
-            priceChange: {
-              type: "percent",
-              percent: 0.2,
-            },
-          },
-        ],
-      },
-      {
-        key: "toping",
-        label: "Topping",
-        type: "multiple",
-        default: ["t1", "t4"],
-        options: [
-          {
-            key: "t1",
-            label: "Trân châu",
-            priceChange: {
-              type: "fixed",
-              amount: 5000,
-            },
-          },
-          {
-            key: "t2",
-            label: "Bánh flan",
-            priceChange: {
-              type: "fixed",
-              amount: 10000,
-            },
-          },
-          {
-            key: "t3",
-            label: "Trang trí",
-            priceChange: {
-              type: "percent",
-              percent: 0.15,
-            },
-          },
-          {
-            key: "t4",
-            label: "Không lấy đá",
-            priceChange: {
-              type: "fixed",
-              amount: -5000,
-            },
-          },
-        ],
-      },
-    ];
-    return [
-      {
-        id: 1,
-        name: "Caramel Latte",
-        price: 35000,
-        image: getDummyImage("product-square-1.jpg"),
-        description,
-        categoryId: ["coffee", "drinks"],
-        variants,
-      },
-      {
-        id: 2,
-        name: "Mocha Frappuccino",
-        price: 45000,
-        image: getDummyImage("product-square-2.jpg"),
-        description,
-        categoryId: ["coffee"],
-        variants,
-      },
-      {
-        id: 3,
-        name: "Grilled Pork Banh Mi",
-        price: 30000,
-        image: getDummyImage("product-square-3.jpg"),
-        description,
-        categoryId: ["food", "bread"],
-        variants,
-      },
-      {
-        id: 4,
-        name: "Pizza",
-        price: 28000,
-        image: getDummyImage("product-square-4.jpg"),
-        description,
-        categoryId: ["food"],
-        variants,
-      },
-      {
-        id: 5,
-        name: "Vanilla Latte",
-        price: 35000,
-        image: getDummyImage("product-square-5.jpg"),
-        description,
-        categoryId: ["coffee", "matcha"],
-        variants,
-      },
-      {
-        id: 6,
-        name: "Caramel Macchiato",
-        price: 38000,
-        image: getDummyImage("product-square-6.jpg"),
-        description,
-        categoryId: ["coffee", "milktea"],
-        variants,
-      },
-      {
-        id: 7,
-        name: "Espresso",
-        price: 32000,
-        image: getDummyImage("product-square-7.jpg"),
-        description,
-        categoryId: ["coffee"],
-        variants,
-      },
-      {
-        id: 8,
-        name: "Green Tea Latte",
-        price: 25000,
-        image: getDummyImage("product-square-8.jpg"),
-        description,
-        categoryId: ["matcha"],
-        variants,
-      },
-      {
-        id: 9,
-        name: "Bộ 3 Blue Corner Coffee siêu HOT",
-        image: getDummyImage("product-rect-1.jpg"),
-        price: 25000,
-        sale: {
-          type: "percent",
-          percent: 0.2,
-        },
-        description,
-        categoryId: ["coffee", "milktea", "drinks"],
-        variants,
-      },
-      {
-        id: 10,
-        name: "Combo Hi Tea Aroma",
-        image: getDummyImage("product-rect-2.jpg"),
-        price: 57000,
-        sale: {
-          type: "fixed",
-          amount: 7000,
-        },
-        description,
-        categoryId: ["coffee", "drinks"],
-        variants,
-      },
-      {
-        id: 11,
-        name: "Milk Tea Combo",
-        price: 55000,
-        image: getDummyImage("product-rect-3.jpg"),
-        description,
-        categoryId: ["milktea"],
-        variants,
-        sale: {
-          type: "percent",
-          percent: 0.5,
-        },
-      },
-    ];
+  get: async ({ get }) => {
+    const menu = get(storeMenuState);
+    return menu.products.filter(
+      (product) => product.type === "SINGLE" || product.type === "PARENT"
+    );
   },
 });
 
@@ -231,7 +89,9 @@ export const recommendProductsState = selector<Product[]>({
   key: "recommendProducts",
   get: ({ get }) => {
     const products = get(productsState);
-    return products.filter((p) => p.sale);
+    return products.filter(
+      (product) => product.type === "SINGLE" || product.type === "PARENT"
+    );
   },
 });
 
@@ -246,8 +106,10 @@ export const productsByCategoryState = selectorFamily<Product[], CategoryId>({
     (categoryId) =>
     ({ get }) => {
       const allProducts = get(productsState);
-      return allProducts.filter((product) =>
-        product.categoryId.includes(categoryId)
+      return allProducts.filter(
+        (product) =>
+          product.categoryId.includes(categoryId) &&
+          (product.type === "SINGLE" || product.type === "PARENT")
       );
     },
 });
@@ -270,8 +132,7 @@ export const totalPriceState = selector({
   get: ({ get }) => {
     const cart = get(cartState);
     return cart.reduce(
-      (total, item) =>
-        total + item.quantity * calcFinalPrice(item.product, item.options),
+      (total, item) => total + item.quantity * calcFinalPrice(item.product),
       0
     );
   },
@@ -368,11 +229,11 @@ export const nearbyStoresState = selector({
     const location = get(locationState);
 
     // Get the list of stores from the storesState atom
-    const stores = get(storesState);
+    const stores = get(listStoreState);
 
     // Calculate the distance of each store from the current location
     if (location) {
-      const storesWithDistance = stores.map((store) => ({
+      const storesWithDistance = stores.map((store: TStore) => ({
         ...store,
         distance: calculateDistance(
           location.latitude,
@@ -403,6 +264,7 @@ export const selectedStoreState = selector({
   get: ({ get }) => {
     const index = get(selectedStoreIndexState);
     const stores = get(nearbyStoresState);
+
     return stores[index];
   },
 });

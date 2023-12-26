@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { useSetRecoilState } from "recoil";
 import { cartState } from "state";
 import { SelectedOptions } from "types/cart";
-import { Product } from "types/product";
+import { Product } from "types/store-menu";
 import { isIdentical } from "utils/product";
 import { Box, Button, Text } from "zmp-ui";
 import { MultipleOptionPicker } from "./multiple-option-picker";
@@ -21,18 +21,18 @@ export interface ProductPickerProps {
   children: (methods: { open: () => void; close: () => void }) => ReactNode;
 }
 
-function getDefaultOptions(product?: Product) {
-  if (product && product.variants) {
-    return product.variants.reduce(
-      (options, variant) =>
-        Object.assign(options, {
-          [variant.key]: variant.default,
-        }),
-      {}
-    );
-  }
-  return {};
-}
+// function getDefaultOptions(product?: Product) {
+//   if (product && product.variants) {
+//     return product.variants.reduce(
+//       (options, variant) =>
+//         Object.assign(options, {
+//           [variant.key]: variant.default,
+//         }),
+//       {}
+//     );
+//   }
+//   return {};
+// }
 
 export const ProductPicker: FC<ProductPickerProps> = ({
   children,
@@ -40,73 +40,73 @@ export const ProductPicker: FC<ProductPickerProps> = ({
   selected,
 }) => {
   const [visible, setVisible] = useState(false);
-  const [options, setOptions] = useState<SelectedOptions>(
-    selected ? selected.options : getDefaultOptions(product)
-  );
+  // const [options, setOptions] = useState<SelectedOptions>(
+  //   selected ? selected.options : getDefaultOptions(product)
+  // );
   const [quantity, setQuantity] = useState(1);
   const setCart = useSetRecoilState(cartState);
 
   useEffect(() => {
     if (selected) {
-      setOptions(selected.options);
+      // setOptions(selected.options);
       setQuantity(selected.quantity);
     }
   }, [selected]);
 
-  const addToCart = () => {
-    if (product) {
-      setCart((cart) => {
-        let res = [...cart];
-        if (selected) {
-          // updating an existing cart item, including quantity and size, or remove it if new quantity is 0
-          const editing = cart.find(
-            (item) =>
-              item.product.id === product.id &&
-              isIdentical(item.options, selected.options)
-          )!;
-          if (quantity === 0) {
-            res.splice(cart.indexOf(editing), 1);
-          } else {
-            const existed = cart.find(
-              (item, i) =>
-                i !== cart.indexOf(editing) &&
-                item.product.id === product.id &&
-                isIdentical(item.options, options)
-            )!;
-            res.splice(cart.indexOf(editing), 1, {
-              ...editing,
-              options,
-              quantity: existed ? existed.quantity + quantity : quantity,
-            });
-            if (existed) {
-              res.splice(cart.indexOf(existed), 1);
-            }
-          }
-        } else {
-          // adding new item to cart, or merging if it already existed before
-          const existed = cart.find(
-            (item) =>
-              item.product.id === product.id &&
-              isIdentical(item.options, options)
-          );
-          if (existed) {
-            res.splice(cart.indexOf(existed), 1, {
-              ...existed,
-              quantity: existed.quantity + quantity,
-            });
-          } else {
-            res = res.concat({
-              product,
-              options,
-              quantity,
-            });
-          }
-        }
-        return res;
-      });
-    }
-    setVisible(false);
-  };
+  // const addToCart = () => {
+  //   if (product) {
+  //     setCart((cart) => {
+  //       let res = [...cart];
+  //       if (selected) {
+  //         // updating an existing cart item, including quantity and size, or remove it if new quantity is 0
+  //         const editing = cart.find(
+  //           (item) =>
+  //             item.product.id === product.id &&
+  //             isIdentical(item.options, selected.options)
+  //         )!;
+  //         if (quantity === 0) {
+  //           res.splice(cart.indexOf(editing), 1);
+  //         } else {
+  //           const existed = cart.find(
+  //             (item, i) =>
+  //               i !== cart.indexOf(editing) &&
+  //               item.product.id === product.id &&
+  //               isIdentical(item.options, options)
+  //           )!;
+  //           res.splice(cart.indexOf(editing), 1, {
+  //             ...editing,
+  //             options,
+  //             quantity: existed ? existed.quantity + quantity : quantity,
+  //           });
+  //           if (existed) {
+  //             res.splice(cart.indexOf(existed), 1);
+  //           }
+  //         }
+  //       } else {
+  //         // adding new item to cart, or merging if it already existed before
+  //         const existed = cart.find(
+  //           (item) =>
+  //             item.product.id === product.id &&
+  //             isIdentical(item.options, options)
+  //         );
+  //         if (existed) {
+  //           res.splice(cart.indexOf(existed), 1, {
+  //             ...existed,
+  //             quantity: existed.quantity + quantity,
+  //           });
+  //         } else {
+  //           res = res.concat({
+  //             product,
+  //             options,
+  //             quantity,
+  //           });
+  //         }
+  //       }
+  //       return res;
+  //     });
+  //   }
+  //   setVisible(false);
+  // };
   return (
     <>
       {children({
@@ -120,7 +120,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
               <Box className="space-y-2">
                 <Text.Title>{product.name}</Text.Title>
                 <Text>
-                  <FinalPrice options={options}>{product}</FinalPrice>
+                  {/* <FinalPrice options={options}>{product}</FinalPrice> */}
                 </Text>
                 <Text>
                   <div
@@ -130,7 +130,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
                   ></div>
                 </Text>
               </Box>
-              <Box className="space-y-5">
+              {/* <Box className="space-y-5">
                 {product.variants &&
                   product.variants.map((variant) =>
                     variant.type === "single" ? (
@@ -185,7 +185,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
                     Thêm vào giỏ hàng
                   </Button>
                 )}
-              </Box>
+              </Box> */}
             </Box>
           )}
         </Sheet>,

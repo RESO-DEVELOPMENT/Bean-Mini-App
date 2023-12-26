@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 
 export const Categories: FC = () => {
   const categories = useRecoilValue(categoriesState);
+
   const navigate = useNavigate();
   const setSelectedCategoryId = useSetRecoilState(selectedCategoryIdState);
 
@@ -21,10 +22,10 @@ export const Categories: FC = () => {
         <div
           key={i}
           onClick={() => gotoCategory(category.id)}
-          className="flex flex-col space-y-2 items-center"
+          className="flex flex-col space-y-1 items-center"
         >
-          <img className="w-12 h-12" src={category.icon} />
-          <Text size="xxSmall" className="text-gray">
+          <img className="w-12 h-12" src={category.picUrl} />
+          <Text size="xxSmall" className="text-gray  text-center">
             {category.name}
           </Text>
         </div>

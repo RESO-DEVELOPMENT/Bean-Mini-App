@@ -1,4 +1,4 @@
-import { Product } from "./product";
+import { Product } from "./store-menu";
 
 export type SelectedOptions = Record<string, string | string[]>;
 

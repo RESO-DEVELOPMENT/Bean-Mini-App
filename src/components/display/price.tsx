@@ -7,13 +7,13 @@ export const DisplayPrice: FC<{ children: number }> = ({ children }) => {
     return (
       <>
         {symbol}
-        {children.toLocaleString()}
+        {children}
       </>
     );
   } else {
     return (
       <>
-        {children.toLocaleString()}
+        {children}
         {symbol}
       </>
     );
