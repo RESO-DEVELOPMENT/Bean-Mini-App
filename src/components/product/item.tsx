@@ -7,7 +7,7 @@ import { ProductPicker } from "./picker";
 
 export const ProductItem: FC<{ product: Product }> = ({ product }) => {
   return (
-    <ProductPicker product={product}>
+    <ProductPicker product={product} isUpdate={false}>
       {({ open }) => (
         <div className="space-y-2" onClick={open}>
           <Box className="w-full aspect-square relative">

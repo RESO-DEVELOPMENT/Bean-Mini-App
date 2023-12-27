@@ -1,23 +1,25 @@
 import React, { FC } from "react";
-import { Variant } from "types/product";
+import { Product } from "types/store-menu";
 import { Box, Radio, Text } from "zmp-ui";
 
 export const SingleOptionPicker: FC<{
-  variant: Variant;
+  variant: Product[];
   value: string;
+  varianName: string;
   onChange: (value: string) => void;
-}> = ({ variant, value, onChange }) => {
+}> = ({ variant, value, varianName, onChange }) => {
   return (
     <Box my={8} className="space-y-2">
-      <Text.Title size="small">{variant.label}</Text.Title>
+      <Text.Title size="small">{varianName}</Text.Title>
       <Radio.Group
         className="flex-1 grid grid-cols-3 justify-between"
-        name={variant.key}
-        options={variant.options.map((option) => ({
-          value: option.key,
-          label: option.label,
+        name={varianName}
+        options={variant.map((option) => ({
+          value: option.menuProductId,
+          label: option.size,
         }))}
         value={value}
+        defaultValue={variant[0].menuProductId}
         onChange={(selectedOption: string) => {
           onChange(selectedOption);
         }}

@@ -1,25 +1,38 @@
 import { atom, selector, selectorFamily } from "recoil";
 import { getLocation, getPhoneNumber, getUserInfo } from "zmp-sdk";
-import coffeeIcon from "static/category-coffee.svg";
-import matchaIcon from "static/category-matcha.svg";
-import foodIcon from "static/category-food.svg";
-import milkteaIcon from "static/category-milktea.svg";
-import drinksIcon from "static/category-drinks.svg";
-import breadIcon from "static/category-bread.svg";
-import juiceIcon from "static/category-juice.svg";
 import logo from "static/logo.png";
-import { Category, Product } from "types/store-menu";
+import {
+  Category,
+  CategoryType,
+  Product,
+  ProductTypeEnum,
+} from "types/store-menu";
 import { Cart } from "types/cart";
 import { Notification } from "types/notification";
 import { calculateDistance } from "utils/location";
-import { Store } from "types/delivery";
 import { TStore } from "types/store";
-import { calcFinalPrice, getDummyImage } from "utils/product";
 import { wait } from "utils/async";
 import storeApi from "api/store";
 import menuApi from "api/menu";
 import blogApi from "api/blog";
 import { CategoryId } from "types/category";
+
+import { getAccessToken } from "zmp-sdk/apis";
+import { OrderType, PaymentType } from "types/order";
+
+export const accessTokenState = selector({
+  key: "token",
+  get: () =>
+    getAccessToken({
+      success: (accessToken) => {
+        return accessToken;
+      },
+      fail: (error) => {
+        // xử lý khi gọi api thất bại
+        console.log(error);
+      },
+    }),
+});
 
 export const userState = selector({
   key: "user",
@@ -69,18 +82,28 @@ export const categoriesState = selector<Category[]>({
   key: "categories",
   get: async ({ get }) => {
     const menu = get(storeMenuState);
-    return menu.categories.filter((cate) => cate.type === "Normal");
+    return menu.categories.filter((cate) => cate.type === CategoryType.NORMAL);
   },
 });
-
-const description = `There is a set of mock banners available <u>here</u> in three colours and in a range of standard banner sizes`;
 
 export const productsState = selector<Product[]>({
   key: "products",
   get: async ({ get }) => {
     const menu = get(storeMenuState);
     return menu.products.filter(
-      (product) => product.type === "SINGLE" || product.type === "PARENT"
+      (product) =>
+        product.type === ProductTypeEnum.SINGLE ||
+        product.type === ProductTypeEnum.PARENT
+    );
+  },
+});
+
+export const childrenProductState = selector<Product[]>({
+  key: "childProducts",
+  get: async ({ get }) => {
+    const menu = get(storeMenuState);
+    return menu.products.filter(
+      (product) => product.type === ProductTypeEnum.CHILD
     );
   },
 });
@@ -116,14 +139,25 @@ export const productsByCategoryState = selectorFamily<Product[], CategoryId>({
 
 export const cartState = atom<Cart>({
   key: "cart",
-  default: [],
+  default: {
+    storeId: "",
+    orderType: OrderType.EATIN,
+    paymentType: PaymentType.CASH,
+    productList: [],
+    totalAmount: 0,
+    shippingFee: 0,
+    bonusPoint: 0,
+    discountAmount: 0,
+    finalAmount: 0,
+    promotionList: [],
+  },
 });
 
 export const totalQuantityState = selector({
   key: "totalQuantity",
   get: ({ get }) => {
     const cart = get(cartState);
-    return cart.reduce((total, item) => total + item.quantity, 0);
+    return cart.productList.reduce((total, item) => total + item.quantity, 0);
   },
 });
 
@@ -131,8 +165,8 @@ export const totalPriceState = selector({
   key: "totalPrice",
   get: ({ get }) => {
     const cart = get(cartState);
-    return cart.reduce(
-      (total, item) => total + item.quantity * calcFinalPrice(item.product),
+    return cart.productList.reduce(
+      (total, item) => total + item.totalAmount,
       0
     );
   },
@@ -177,51 +211,6 @@ export const resultState = selector<Product[]>({
   },
 });
 
-export const storesState = atom<Store[]>({
-  key: "stores",
-  default: [
-    {
-      id: 1,
-      name: "VNG Campus Store",
-      address:
-        "Khu chế xuất Tân Thuận, Z06, Số 13, Tân Thuận Đông, Quận 7, Thành phố Hồ Chí Minh, Việt Nam",
-      lat: 10.741639,
-      long: 106.714632,
-    },
-    {
-      id: 2,
-      name: "The Independence Palace",
-      address:
-        "135 Nam Kỳ Khởi Nghĩa, Bến Thành, Quận 1, Thành phố Hồ Chí Minh, Việt Nam",
-      lat: 10.779159,
-      long: 106.695271,
-    },
-    {
-      id: 3,
-      name: "Saigon Notre-Dame Cathedral Basilica",
-      address:
-        "1 Công xã Paris, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Việt Nam",
-      lat: 10.779738,
-      long: 106.699092,
-    },
-    {
-      id: 4,
-      name: "Bình Quới Tourist Village",
-      address:
-        "1147 Bình Quới, phường 28, Bình Thạnh, Thành phố Hồ Chí Minh, Việt Nam",
-      lat: 10.831098,
-      long: 106.733128,
-    },
-    {
-      id: 5,
-      name: "Củ Chi Tunnels",
-      address: "Phú Hiệp, Củ Chi, Thành phố Hồ Chí Minh, Việt Nam",
-      lat: 11.051655,
-      long: 106.494249,
-    },
-  ],
-});
-
 export const nearbyStoresState = selector({
   key: "nearbyStores",
   get: ({ get }) => {
@@ -263,8 +252,8 @@ export const selectedStoreState = selector({
   key: "selectedStore",
   get: ({ get }) => {
     const index = get(selectedStoreIndexState);
-    const stores = get(nearbyStoresState);
-
+    const stores = get(listStoreState);
+    const setCart = get(cartState);
     return stores[index];
   },
 });
@@ -292,6 +281,9 @@ export const locationState = selector<
     const requested = get(requestLocationTriesState);
     if (requested) {
       const { latitude, longitude, token } = await getLocation({
+        success: async (data) => {
+          let { token } = data;
+        },
         fail: console.warn,
       });
       if (latitude && longitude) {

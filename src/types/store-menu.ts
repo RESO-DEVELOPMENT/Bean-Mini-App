@@ -10,8 +10,6 @@ export interface TMenu {
   products: Product[];
   collections: Collection[];
   categories: Category[];
-  groupProducts: GroupProduct[];
-  productsInGroup: ProductsInGroup[];
 }
 
 export interface Product {
@@ -39,7 +37,7 @@ export interface Collection {
   id: string;
   name: string;
   code: string;
-  picUrl: string;
+  picUrl?: string;
   description: string;
 }
 
@@ -49,29 +47,29 @@ export interface Category {
   name: string;
   type: string;
   displayOrder: number;
-  description: string;
-  picUrl: string;
+  description?: string;
+  picUrl?: string;
 }
 
-export interface GroupProduct {
-  id: string;
-  comboProductId: string;
-  name: string;
-  combinationMode: string;
-  priority: number;
-  quantity: number;
-  status: string;
-  productsInGroupIds: string[];
+export enum ProductTypeEnum {
+  SINGLE = "SINGLE",
+  PARENT = "PARENT",
+  CHILD = "CHILD",
+  EXTRA = "EXTRA",
+  COMBO = "COMBO",
+}
+export enum ProductSizeEnum {
+  Small = "S",
+  Medium = "M",
+  Large = "L",
+  XL = "XL",
 }
 
-export interface ProductsInGroup {
-  id: string;
-  groupProductId: string;
-  productId: string;
-  priority: number;
-  additionalPrice: number;
-  min: number;
-  max: number;
-  quantity: number;
-  status: string;
+export enum CategoryType {
+  NORMAL = "Normal",
+  EXTRA = "Extra",
+}
+export enum CategoryStatus {
+  ACTIVE = "Active",
+  DEACTIVE = "Deactive",
 }

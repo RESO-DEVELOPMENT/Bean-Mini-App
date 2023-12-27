@@ -2,10 +2,10 @@ import { FinalPrice } from "components/display/final-price";
 import { Sheet } from "components/fullscreen-sheet";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { useSetRecoilState } from "recoil";
-import { cartState } from "state";
-import { SelectedOptions } from "types/cart";
-import { Product } from "types/store-menu";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { cartState, childrenProductState } from "state";
+import { ProductList } from "types/cart";
+import { Product, ProductTypeEnum } from "types/store-menu";
 import { isIdentical } from "utils/product";
 import { Box, Button, Text } from "zmp-ui";
 import { MultipleOptionPicker } from "./multiple-option-picker";
@@ -14,15 +14,15 @@ import { SingleOptionPicker } from "./single-option-picker";
 
 export interface ProductPickerProps {
   product?: Product;
-  selected?: {
-    options: SelectedOptions;
-    quantity: number;
-  };
+  isUpdate: false;
   children: (methods: { open: () => void; close: () => void }) => ReactNode;
 }
 
 // function getDefaultOptions(product?: Product) {
-//   if (product && product.variants) {
+//   if (product && product.type === ProductTypeEnum.PARENT) {
+//     const product;
+
+//     childProducts.filter(a);
 //     return product.variants.reduce(
 //       (options, variant) =>
 //         Object.assign(options, {
@@ -36,77 +36,96 @@ export interface ProductPickerProps {
 
 export const ProductPicker: FC<ProductPickerProps> = ({
   children,
+  isUpdate,
   product,
-  selected,
 }) => {
+  const childProducts = useRecoilValue(childrenProductState);
+
+  let currentChild = childProducts.filter(
+    (p) =>
+      product &&
+      product.type === ProductTypeEnum.PARENT &&
+      p.parentProductId === product.id
+  );
   const [visible, setVisible] = useState(false);
   // const [options, setOptions] = useState<SelectedOptions>(
   //   selected ? selected.options : getDefaultOptions(product)
   // );
+  const [menuProductId, setMenuProductId] = useState(
+    childProducts ? childProducts[0].menuProductId : product?.menuProductId
+  );
   const [quantity, setQuantity] = useState(1);
   const setCart = useSetRecoilState(cartState);
-
   useEffect(() => {
-    if (selected) {
-      // setOptions(selected.options);
-      setQuantity(selected.quantity);
-    }
-  }, [selected]);
+    console.log(menuProductId);
+    console.log(quantity);
+  }, [menuProductId, quantity]);
 
-  // const addToCart = () => {
-  //   if (product) {
-  //     setCart((cart) => {
-  //       let res = [...cart];
-  //       if (selected) {
-  //         // updating an existing cart item, including quantity and size, or remove it if new quantity is 0
-  //         const editing = cart.find(
-  //           (item) =>
-  //             item.product.id === product.id &&
-  //             isIdentical(item.options, selected.options)
-  //         )!;
-  //         if (quantity === 0) {
-  //           res.splice(cart.indexOf(editing), 1);
-  //         } else {
-  //           const existed = cart.find(
-  //             (item, i) =>
-  //               i !== cart.indexOf(editing) &&
-  //               item.product.id === product.id &&
-  //               isIdentical(item.options, options)
-  //           )!;
-  //           res.splice(cart.indexOf(editing), 1, {
-  //             ...editing,
-  //             options,
-  //             quantity: existed ? existed.quantity + quantity : quantity,
-  //           });
-  //           if (existed) {
-  //             res.splice(cart.indexOf(existed), 1);
-  //           }
-  //         }
-  //       } else {
-  //         // adding new item to cart, or merging if it already existed before
-  //         const existed = cart.find(
-  //           (item) =>
-  //             item.product.id === product.id &&
-  //             isIdentical(item.options, options)
-  //         );
-  //         if (existed) {
-  //           res.splice(cart.indexOf(existed), 1, {
-  //             ...existed,
-  //             quantity: existed.quantity + quantity,
-  //           });
-  //         } else {
-  //           res = res.concat({
-  //             product,
-  //             options,
-  //             quantity,
-  //           });
-  //         }
-  //       }
-  //       return res;
-  //     });
-  //   }
-  //   setVisible(false);
-  // };
+  const addToCart = () => {
+    if (product) {
+      setCart((cart) => {
+        let res = { ...cart };
+        if (isUpdate) {
+          // updating an existing cart item, including quantity and size, or remove it if new quantity is 0
+          // const editing = cart.productList.find(
+          //   (item) => item.productInMenuId === product.menuProductId
+          // )!;
+          // if (quantity === 0) {
+          //   res.splice(cart.productList.indexOf(editing), 1);
+          // } else {
+          //   const existed = cart.productList.find(
+          //     (item, i) =>
+          //       i !== cart.productList.indexOf(editing) &&
+          //       item.productInMenuId === product.menuProductId
+          //   )!;
+          //   res.splice(cart.productList.indexOf(editing), 1, {
+          //     ...editing,
+          //     quantity: existed ? existed.quantity + quantity : quantity,
+          //   });
+          //   if (existed) {
+          //     res.splice(cart.productList.indexOf(existed), 1);
+          //   }
+          // }
+        } else {
+          // adding new item to cart, or merging if it already existed before
+          // const existed = cart.productList.find(
+          //   (item) => item.productInMenuId === product.menuProductId
+          // );
+          // if (existed) {
+          //   res.splice(cart.productList.indexOf(existed), 1, {
+          //     ...existed,
+          //     quantity: existed.quantity + quantity,
+          //   });
+          // } else {
+          //   res = res.productList.concat{
+          //   }
+          // }
+          const productToAdd =
+            product.type == ProductTypeEnum.SINGLE
+              ? product
+              : currentChild.find((a) => a.menuProductId === menuProductId);
+          const cartItem: ProductList = {
+            productInMenuId: productToAdd!.menuProductId,
+            parentProductId: productToAdd!.parentProductId,
+            name: productToAdd!.name,
+            type: productToAdd!.type,
+            quantity: quantity,
+            sellingPrice: productToAdd!.sellingPrice,
+            code: productToAdd!.code,
+            categoryCode: productToAdd!.code,
+            totalAmount: productToAdd!.sellingPrice * quantity,
+            discount: 0,
+            finalAmount: productToAdd!.sellingPrice * quantity,
+            picUrl: productToAdd!.picUrl,
+          };
+          console.log(cartItem);
+          res.productList.concat(cartItem);
+        }
+        return res;
+      });
+    }
+    setVisible(false);
+  };
   return (
     <>
       {children({
@@ -130,38 +149,50 @@ export const ProductPicker: FC<ProductPickerProps> = ({
                   ></div>
                 </Text>
               </Box>
-              {/* <Box className="space-y-5">
-                {product.variants &&
-                  product.variants.map((variant) =>
-                    variant.type === "single" ? (
-                      <SingleOptionPicker
-                        key={variant.key}
-                        variant={variant}
-                        value={options[variant.key] as string}
-                        onChange={(selectedOption) =>
-                          setOptions((prevOptions) => ({
-                            ...prevOptions,
-                            [variant.key]: selectedOption,
-                          }))
-                        }
-                      />
-                    ) : (
-                      <MultipleOptionPicker
-                        key={variant.key}
-                        product={product}
-                        variant={variant}
-                        value={options[variant.key] as string[]}
-                        onChange={(selectedOption) =>
-                          setOptions((prevOptions) => ({
-                            ...prevOptions,
-                            [variant.key]: selectedOption,
-                          }))
-                        }
-                      />
-                    )
-                  )}
+              <Box className="space-y-5">
+                {
+                  currentChild && (
+                    <SingleOptionPicker
+                      key={product.menuProductId}
+                      variant={currentChild}
+                      varianName={"Kích cỡ"}
+                      value={menuProductId ?? ""}
+                      onChange={(selectedOption) =>
+                        setMenuProductId(selectedOption)
+                      }
+                    />
+                  )
+                  // childProducts.map((variant) =>
+                  //   variant.type === ProductTypeEnum.CHILD ? (
+                  //     <SingleOptionPicker
+                  //       key={variant.m}
+                  //       variant={variant}
+                  //       value={options[variant.key] as string}
+                  //       onChange={(selectedOption) =>
+                  //         setOptions((prevOptions) => ({
+                  //           ...prevOptions,
+                  //           [variant.key]: selectedOption,
+                  //         }))
+                  //       }
+                  //     />
+                  //   ) : (
+                  //     <MultipleOptionPicker
+                  //       key={variant.key}
+                  //       product={product}
+                  //       variant={variant}
+                  //       value={options[variant.key] as string[]}
+                  //       onChange={(selectedOption) =>
+                  //         setOptions((prevOptions) => ({
+                  //           ...prevOptions,
+                  //           [variant.key]: selectedOption,
+                  //         }))
+                  //       }
+                  //     />
+                  //   )
+                  // )
+                }
                 <QuantityPicker value={quantity} onChange={setQuantity} />
-                {selected ? (
+                {!isUpdate ? (
                   <Button
                     variant={quantity > 0 ? "primary" : "secondary"}
                     type={quantity > 0 ? "highlight" : "neutral"}
@@ -169,7 +200,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
                     onClick={addToCart}
                   >
                     {quantity > 0
-                      ? selected
+                      ? isUpdate
                         ? "Cập nhật giỏ hàng"
                         : "Thêm vào giỏ hàng"
                       : "Xoá"}
@@ -185,7 +216,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
                     Thêm vào giỏ hàng
                   </Button>
                 )}
-              </Box> */}
+              </Box>
             </Box>
           )}
         </Sheet>,

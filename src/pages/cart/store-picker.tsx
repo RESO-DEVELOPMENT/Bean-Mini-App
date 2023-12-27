@@ -8,11 +8,11 @@ import {
   useSetRecoilState,
 } from "recoil";
 import {
+  listStoreState,
   nearbyStoresState,
   requestLocationTriesState,
   selectedStoreIndexState,
   selectedStoreState,
-  storesState,
 } from "state";
 import { Store } from "types/delivery";
 import { TStore } from "types/store";
@@ -20,7 +20,7 @@ import { displayDistance } from "utils/location";
 
 export const StorePicker: FC = () => {
   const [visible, setVisible] = useState(false);
-  const nearbyStores = useRecoilValueLoadable(nearbyStoresState);
+  const nearbyStores = useRecoilValueLoadable(listStoreState);
   const setSelectedStoreIndex = useSetRecoilState(selectedStoreIndexState);
   const selectedStore = useRecoilValue(selectedStoreState);
 
