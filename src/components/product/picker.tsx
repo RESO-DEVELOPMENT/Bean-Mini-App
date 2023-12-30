@@ -2,7 +2,7 @@ import { FinalPrice } from "components/display/final-price";
 import { Sheet } from "components/fullscreen-sheet";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { cartState, childrenProductState } from "state";
 import { ProductList } from "types/cart";
 import { Product, ProductTypeEnum } from "types/store-menu";
@@ -51,11 +51,15 @@ export const ProductPicker: FC<ProductPickerProps> = ({
   // const [options, setOptions] = useState<SelectedOptions>(
   //   selected ? selected.options : getDefaultOptions(product)
   // );
+
   const [menuProductId, setMenuProductId] = useState(
     childProducts ? childProducts[0].menuProductId : product?.menuProductId
   );
+
   const [quantity, setQuantity] = useState(1);
-  const setCart = useSetRecoilState(cartState);
+
+  const [cart, setCart] = useRecoilState(cartState);
+
   useEffect(() => {
     console.log(menuProductId);
     console.log(quantity);
@@ -63,8 +67,8 @@ export const ProductPicker: FC<ProductPickerProps> = ({
 
   const addToCart = () => {
     if (product) {
-      setCart((cart) => {
-        let res = { ...cart };
+      setCart((prevCart) => {
+        let res = { ...prevCart };
         if (isUpdate) {
           // updating an existing cart item, including quantity and size, or remove it if new quantity is 0
           // const editing = cart.productList.find(
@@ -119,7 +123,13 @@ export const ProductPicker: FC<ProductPickerProps> = ({
             picUrl: productToAdd!.picUrl,
           };
           console.log(cartItem);
-          res.productList.concat(cartItem);
+
+          res = {
+            ...prevCart,
+            productList: prevCart.productList.concat(cartItem),
+          };
+
+          console.log("res", res);
         }
         return res;
       });
