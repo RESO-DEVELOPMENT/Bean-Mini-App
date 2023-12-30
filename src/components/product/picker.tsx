@@ -15,6 +15,7 @@ import { SingleOptionPicker } from "./single-option-picker";
 export interface ProductPickerProps {
   product?: Product;
   isUpdate: false;
+  onQuantityChange: (newQuantity: number) => void;
   children: (methods: { open: () => void; close: () => void }) => ReactNode;
 }
 
@@ -38,6 +39,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
   children,
   isUpdate,
   product,
+  onQuantityChange,
 }) => {
   const childProducts = useRecoilValue(childrenProductState);
 
@@ -134,6 +136,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
         return res;
       });
     }
+    onQuantityChange(quantity);
     setVisible(false);
   };
   return (
