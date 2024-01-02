@@ -19,7 +19,6 @@ export const SingleOptionPicker: FC<{
           label: option.size,
         }))}
         value={value}
-        defaultValue={variant[0].menuProductId}
         onChange={(selectedOption: string) => {
           onChange(selectedOption);
         }}

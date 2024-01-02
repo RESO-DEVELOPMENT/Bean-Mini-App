@@ -52,13 +52,13 @@ export const ProductPicker: FC<ProductPickerProps> = ({
   //   selected ? selected.options : getDefaultOptions(product)
   // );
   const [menuProductId, setMenuProductId] = useState(
-    childProducts ? childProducts[0].menuProductId : product?.menuProductId
+    childProducts ? null : product?.menuProductId
   );
   const [quantity, setQuantity] = useState(1);
   const setCart = useSetRecoilState(cartState);
   useEffect(() => {
-    console.log(menuProductId);
-    console.log(quantity);
+    // console.log("menuProductId", menuProductId);
+    // console.log("quantity", quantity);
   }, [menuProductId, quantity]);
 
   const addToCart = () => {
@@ -194,6 +194,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
                 <QuantityPicker value={quantity} onChange={setQuantity} />
                 {!isUpdate ? (
                   <Button
+                    disabled={!menuProductId}
                     variant={quantity > 0 ? "primary" : "secondary"}
                     type={quantity > 0 ? "highlight" : "neutral"}
                     fullWidth
