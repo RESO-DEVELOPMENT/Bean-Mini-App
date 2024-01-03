@@ -17,6 +17,7 @@ export interface Cart {
   deliveryAddress?: string;
   message?: string;
   customerNumber?: number;
+  totalQuantity: number;
 }
 
 export interface ProductList {

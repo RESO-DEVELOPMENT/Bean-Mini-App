@@ -1,14 +1,15 @@
 import { ActionSheet } from "components/fullscreen-sheet";
 import { ListItem } from "components/list-item";
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import {
+  useRecoilState,
   useRecoilValue,
   useRecoilValueLoadable,
   useSetRecoilState,
 } from "recoil";
 import {
-  listStoreState,
+  cartState,
   nearbyStoresState,
   requestLocationTriesState,
   selectedStoreIndexState,
@@ -19,19 +20,37 @@ import { TStore } from "types/store";
 import { displayDistance } from "utils/location";
 
 export const StorePicker: FC = () => {
+  const retry = useSetRecoilState(requestLocationTriesState);
   const [visible, setVisible] = useState(false);
-  const nearbyStores = useRecoilValueLoadable(listStoreState);
+  const nearbyStores = useRecoilValueLoadable(nearbyStoresState);
   const setSelectedStoreIndex = useSetRecoilState(selectedStoreIndexState);
   const selectedStore = useRecoilValue(selectedStoreState);
-
+  const [cart, setCart] = useRecoilState(cartState);
   if (!selectedStore) {
     return <RequestStorePickerLocation />;
   }
+  useEffect(
+    () => {
+      setCart((prevCart) => {
+        let res = { ...prevCart };
+        res = {
+          ...prevCart,
+          storeId: selectedStore.id,
+        };
 
+        console.log("res", res);
+        return res;
+      });
+    },
+    //eslint-disable-next-line
+    [selectedStore]
+  );
   return (
     <>
       <ListItem
-        onClick={() => setVisible(true)}
+        onClick={() => {
+          setVisible(true);
+        }}
         title={selectedStore.name}
         subtitle={selectedStore.address}
       />
@@ -50,6 +69,7 @@ export const StorePicker: FC = () => {
                   highLight: store.id === selectedStore?.id,
                   onClick: () => {
                     setSelectedStoreIndex(i);
+                    setVisible(false);
                   },
                 })
               ),

@@ -13,7 +13,11 @@ export const ProductListContent: FC = () => {
     <Section title="Danh sách sản phẩm">
       <Box className="grid grid-cols-2 gap-4">
         {products.map((product) => (
-          <ProductItem key={product.id} product={product} />
+          <ProductItem
+            key={product.id}
+            product={product}
+            onQuantityChange={0}
+          />
         ))}
       </Box>
     </Section>

@@ -11,4 +11,5 @@ export interface TStore {
   wifiPassword: string;
   lat: string;
   long: string;
+  distance: number;
 }

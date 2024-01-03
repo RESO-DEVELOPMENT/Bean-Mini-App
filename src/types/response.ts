@@ -12,3 +12,19 @@ export type TRequestPaging = {
   total?: number;
   totalPage?: number;
 };
+
+export interface BaseZaloApiResponse<T> {
+  data: T;
+  error: number;
+  message: string;
+}
+
+export interface PhoneNumberResponse {
+  number: string;
+}
+export interface LocationResponse {
+  provider: string;
+  latitude: string;
+  longitude: string;
+  timestamp: string;
+}

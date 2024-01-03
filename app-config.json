@@ -10,7 +10,7 @@
     "hideAndroidBottomNavigationBar": false,
     "hideIOSSafeAreaBottom": true,
     "actionBarHidden": true,
-    "textAlign": "left"
+    "textAlign": "center"
   },
   "debug": false,
   "listCSS": [],

@@ -1,18 +1,5 @@
 import React, { FC, Suspense } from "react";
-import { Box, Header, Icon, Text } from "zmp-ui";
-import {
-  useRecoilValueLoadable,
-  useRecoilValue,
-  useSetRecoilState,
-} from "recoil";
-import {
-  nearbyStoresState,
-  selectedStoreIndexState,
-  selectedStoreState,
-} from "state";
-import logo from "static/logo.png";
-import appConfig from "../../../app-config.json";
-import { getConfig } from "utils/config";
+import { Box, Header, Icon } from "zmp-ui";
 import {
   RequestStorePickerLocation,
   StorePicker,
@@ -25,7 +12,7 @@ export const Welcome: FC = () => {
       showBackIcon={false}
       title={
         (
-          <Box flex alignItems="baseline" className="space-x-2">
+          <Box flex alignItems="baseline" className="space-x-1">
             <Icon icon="zi-location" className="my-auto" />
             <Suspense fallback={<RequestStorePickerLocation />}>
               <StorePicker />

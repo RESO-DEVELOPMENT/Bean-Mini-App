@@ -1,4 +1,4 @@
-import { FinalPrice } from "components/display/final-price";
+import orderApi from "api/order";
 import { Sheet } from "components/fullscreen-sheet";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
@@ -6,9 +6,8 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import { cartState, childrenProductState } from "state";
 import { ProductList } from "types/cart";
 import { Product, ProductTypeEnum } from "types/store-menu";
-import { isIdentical } from "utils/product";
+import { countCartAmount } from "utils/product";
 import { Box, Button, Text } from "zmp-ui";
-import { MultipleOptionPicker } from "./multiple-option-picker";
 import { QuantityPicker } from "./quantity-picker";
 import { SingleOptionPicker } from "./single-option-picker";
 
@@ -67,7 +66,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
     // console.log("quantity", quantity);
   }, [menuProductId, quantity]);
 
-  const addToCart = () => {
+  const addToCart = async () => {
     if (product) {
       setCart((prevCart) => {
         let res = { ...prevCart };
@@ -124,15 +123,16 @@ export const ProductPicker: FC<ProductPickerProps> = ({
             finalAmount: productToAdd!.sellingPrice * quantity,
             picUrl: productToAdd!.picUrl,
           };
-          console.log(cartItem);
 
           res = {
             ...prevCart,
             productList: prevCart.productList.concat(cartItem),
           };
-
-          console.log("res", res);
         }
+        orderApi.prepareOrder(countCartAmount(res)).then((value) => {
+          console.log("prepareCart", value.data);
+          return value.data;
+        });
         return res;
       });
     }

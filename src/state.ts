@@ -1,4 +1,10 @@
-import { atom, selector, selectorFamily } from "recoil";
+import {
+  atom,
+  selector,
+  selectorFamily,
+  useRecoilState,
+  useRecoilValue,
+} from "recoil";
 import { getLocation, getPhoneNumber, getUserInfo } from "zmp-sdk";
 import logo from "static/logo.png";
 import {
@@ -19,9 +25,11 @@ import { CategoryId } from "types/category";
 
 import { getAccessToken } from "zmp-sdk/apis";
 import { OrderType, PaymentType } from "types/order";
+import orderApi from "api/order";
+import zaloApi from "api/zalo-api";
 
 export const accessTokenState = selector({
-  key: "token",
+  key: "accessToken",
   get: () =>
     getAccessToken({
       success: (accessToken) => {
@@ -30,6 +38,26 @@ export const accessTokenState = selector({
       fail: (error) => {
         // xử lý khi gọi api thất bại
         console.log(error);
+      },
+    }),
+});
+
+export const phoneTokenState = selector({
+  key: "phoneToken",
+  get: () =>
+    getPhoneNumber({
+      success: async (data) => {
+        console.log(data);
+        if (data.token !== undefined) {
+          return data.token;
+        } else {
+          return null;
+        }
+      },
+      fail: (error) => {
+        // Xử lý khi gọi api thất bại
+        console.log(error);
+        return null;
       },
     }),
 });
@@ -60,6 +88,16 @@ export const listBlogState = selector({
       brandCode: "BEANAPP",
     });
     return listBlog.data.items;
+  },
+});
+
+export const prepareCartState = selector({
+  key: "preopareCart",
+  get: async ({ get }) => {
+    const cart = get(cartState);
+    var res = await orderApi.prepareOrder(cart);
+    console.log("prepare cart", res);
+    return res.data;
   },
 });
 
@@ -139,6 +177,7 @@ export const productsByCategoryState = selectorFamily<Product[], CategoryId>({
 
 export const cartState = atom<Cart>({
   key: "cart",
+
   default: {
     storeId: "",
     orderType: OrderType.EATIN,
@@ -150,6 +189,7 @@ export const cartState = atom<Cart>({
     discountAmount: 0,
     finalAmount: 0,
     promotionList: [],
+    totalQuantity: 0,
   },
 });
 
@@ -216,11 +256,9 @@ export const nearbyStoresState = selector({
   get: ({ get }) => {
     // Get the current location from the locationState atom
     const location = get(locationState);
-
     // Get the list of stores from the storesState atom
     const stores = get(listStoreState);
 
-    // Calculate the distance of each store from the current location
     if (location) {
       const storesWithDistance = stores.map((store: TStore) => ({
         ...store,
@@ -231,7 +269,6 @@ export const nearbyStoresState = selector({
           store.long
         ),
       }));
-
       // Sort the stores by distance from the current location
       const nearbyStores = storesWithDistance.sort(
         (a, b) => a.distance - b.distance
@@ -239,7 +276,7 @@ export const nearbyStoresState = selector({
 
       return nearbyStores;
     }
-    return [];
+    return stores;
   },
 });
 
@@ -253,7 +290,6 @@ export const selectedStoreState = selector({
   get: ({ get }) => {
     const index = get(selectedStoreIndexState);
     const stores = get(listStoreState);
-    const setCart = get(cartState);
     return stores[index];
   },
 });
@@ -280,9 +316,21 @@ export const locationState = selector<
   get: async ({ get }) => {
     const requested = get(requestLocationTriesState);
     if (requested) {
+      const accessToken = await getAccessToken();
       const { latitude, longitude, token } = await getLocation({
         success: async (data) => {
           let { token } = data;
+          console.log("token", token);
+          if (token !== undefined) {
+            console.log("accessToken", accessToken);
+            await zaloApi.getUserLocation(token, accessToken).then((value) => {
+              console.log("location", value.data.data);
+              return {
+                latitude: value.data.data.latitude,
+                longitude: value.data.data.longitude,
+              };
+            });
+          }
         },
         fail: console.warn,
       });
@@ -313,10 +361,18 @@ export const phoneState = selector<string | boolean>({
   key: "phone",
   get: async ({ get }) => {
     const requested = get(requestPhoneTriesState);
+    const accessToken = await getAccessToken();
+
+    let phone = "0337076898";
     if (requested) {
-      const { number, token } = await getPhoneNumber({ fail: console.warn });
-      if (number) {
-        return number;
+      const { token } = await getPhoneNumber({ fail: console.warn });
+      if (token !== undefined) {
+        console.log("token", token);
+        console.log("accessToken", accessToken);
+        await zaloApi.getUserPhone(token, accessToken).then((value) => {
+          console.log("phone", value.data.data.number);
+          phone = value.data.data.number;
+        });
       }
       console.warn(
         "Sử dụng token này để truy xuất số điện thoại của người dùng",
@@ -327,7 +383,8 @@ export const phoneState = selector<string | boolean>({
         "https://mini.zalo.me/blog/thong-bao-thay-doi-luong-truy-xuat-thong-tin-nguoi-dung-tren-zalo-mini-app"
       );
       console.warn("Giả lập số điện thoại mặc định: 0337076898");
-      return "0337076898";
+
+      return phone;
     }
     return false;
   },

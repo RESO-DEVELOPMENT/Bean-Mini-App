@@ -1,8 +1,13 @@
 import { createOrder } from "zmp-sdk";
 import { Option } from "types/product";
 import { getConfig } from "./config";
-import { SelectedOptions } from "types/cart";
-import { Product } from "types/store-menu";
+import { Cart, SelectedOptions } from "types/cart";
+import { Product, ProductTypeEnum } from "types/store-menu";
+import { ProductList } from "pages/index/product-list";
+import { useRecoilState } from "recoil";
+import { cartState } from "state";
+import { OrderType, PaymentType } from "types/order";
+import orderApi from "api/order";
 
 export function calcFinalPrice(product: Product) {
   let finalPrice = product.sellingPrice;
@@ -57,5 +62,40 @@ const pay = (amount: number, description?: string) =>
       console.log("Payment error: ", err);
     },
   });
+
+export function countCartAmount(cart: Cart) {
+  cart.totalAmount = 0;
+  cart.discountAmount = 0;
+  cart.productList.map((item) => {
+    cart.totalAmount += item.totalAmount;
+    cart.totalQuantity += item.quantity;
+  });
+  cart.finalAmount = cart.totalAmount - cart.discountAmount!;
+  return cart;
+}
+export function clearCart() {
+  const [cart, setCart] = useRecoilState(cartState);
+
+  let res = {
+    ...cart,
+    orderType: OrderType.EATIN,
+    paymentType: PaymentType.CASH,
+    productList: [],
+    totalAmount: 0,
+    shippingFee: 0,
+    bonusPoint: 0,
+    discountAmount: 0,
+    finalAmount: 0,
+    promotionList: [],
+  };
+  console.log("clear cart", res);
+  setCart(res);
+}
+export async function prepareOrder() {
+  const [cart, setCart] = useRecoilState(cartState);
+  var res = await orderApi.prepareOrder(cart);
+  console.log("prepare cart", res);
+  setCart(res.data);
+}
 
 export default pay;

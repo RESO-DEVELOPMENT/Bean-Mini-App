@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig } from "axios";
 // Custom Axios Type
 export enum AxiosClientFactoryEnum {
   ADMIN = "admin",
-  ZALOAPI = "zalo",
+  ZALOAPI = "zaloApi",
 }
 
 // ----------------------------------------------------------------------
@@ -34,7 +34,7 @@ export const parseParams = (params: any) => {
 };
 
 const admin = `https://admin.reso.vn/api/v1/`;
-const zaloApi = `https://admin.reso.vn/api/v1/`;
+const zaloApi = `https://graph.zalo.me/v2.0/`;
 
 const requestWebAdmin = axios.create({
   baseURL: admin,
@@ -79,7 +79,9 @@ requestZaloApi.interceptors.request.use((options) => {
 requestZaloApi.interceptors.response.use(
   (response) => response,
   (error) =>
-    Promise.reject((error.response && error.response.data) || "Có lỗi xảy ra")
+    Promise.reject(
+      (error.response && error.response.data) || "Có lỗi xảy ra " + `${error}`
+    )
 );
 
 // ----------------------------------------------------------------------
@@ -108,7 +110,7 @@ class AxiosClientFactory {
     switch (type) {
       case "admin":
         return requestWebAdmin;
-      case "zalo":
+      case "zaloApi":
         return requestZaloApi;
       default:
         return requestWebAdmin;
@@ -120,7 +122,7 @@ const axiosClientFactory = new AxiosClientFactory();
 /**
  * Singleton Pattern for Axios Request
  */
-export const axiosInstances = {
+const axiosInstances = {
   webAdmin: axiosClientFactory.getAxiosClient(AxiosClientFactoryEnum.ADMIN),
   zaloApi: axiosClientFactory.getAxiosClient(AxiosClientFactoryEnum.ZALOAPI),
 };
