@@ -5,13 +5,13 @@ import { ListRenderer } from "components/list-renderer";
 import { useToBeImplemented } from "hooks";
 import { useNavigate } from "react-router";
 
-const Subscription: FC = () => {
+export const Subscription: FC = () => {
   const onClick = useToBeImplemented();
 
   return (
     <Box className="m-4" onClick={onClick}>
       <Box
-        className="bg-green text-white rounded-xl p-4 space-y-2"
+        className="bg-primary text-white rounded-xl p-4 space-y-2"
         style={{
           backgroundImage: `url(${subscriptionDecor})`,
           backgroundPosition: "right 8px center",

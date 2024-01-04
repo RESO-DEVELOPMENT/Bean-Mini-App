@@ -8,7 +8,8 @@ export const DisplayPrice: FC<{ children: number }> = ({ children }) => {
   } else {
     return (
       <>
-        {children} {symbol}
+        {children}
+        {symbol}
       </>
     );
   }

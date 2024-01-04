@@ -30,7 +30,7 @@ const HistoryPicker: FC = () => {
             }}
             items={[
               {
-                navigate: "/order",
+                navigate: "/order-detail",
                 left: <Icon icon="zi-user" />,
                 right: (
                   <Box flex>
@@ -87,7 +87,7 @@ const HistoryPicker: FC = () => {
 const HistoryPage: FC = () => {
   return (
     <Page className="flex flex-col">
-      <Header title="Hoạt động" />
+      <Header showBackIcon={false} title="Hoạt động" />
       <HistoryPicker />
     </Page>
   );

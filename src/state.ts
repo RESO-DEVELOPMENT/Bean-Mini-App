@@ -150,9 +150,11 @@ export const recommendProductsState = selector<Product[]>({
   key: "recommendProducts",
   get: ({ get }) => {
     const products = get(productsState);
-    return products.filter(
-      (product) => product.type === "SINGLE" || product.type === "PARENT"
-    );
+    return products
+      .filter(
+        (product) => product.type === "SINGLE" || product.type === "PARENT"
+      )
+      .sort((a, b) => b.displayOrder - a.displayOrder);
   },
 });
 
@@ -161,7 +163,7 @@ export const selectedCategoryIdState = atom({
   default: "coffee",
 });
 
-export const productsByCategoryState = selectorFamily<Product[], CategoryId>({
+export const productsByCategoryState = selectorFamily<Product[], string>({
   key: "productsByCategory",
   get:
     (categoryId) =>
@@ -360,11 +362,9 @@ export const locationState = selector<
 export const phoneState = selector<string | undefined>({
   key: "phone",
   get: async ({ get }) => {
-    const requested = get(requestPhoneTriesState);
     const accessToken = await getAccessToken();
-
     let phone = "0337076898";
-    if (requested) {
+    if (true) {
       const { token } = await getPhoneNumber({ fail: console.warn });
       if (token !== undefined) {
         console.log("token", token);

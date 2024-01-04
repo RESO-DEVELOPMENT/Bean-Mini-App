@@ -4,20 +4,24 @@ import { useLocation, useNavigate } from "react-router";
 import { MenuItem } from "types/menu";
 import { BottomNavigation, Icon } from "zmp-ui";
 import { CartIcon } from "./cart-icon";
+import { OrderIcon } from "./order-icon";
 
 const tabs: Record<string, MenuItem> = {
   "/": {
     label: "Trang chủ",
     icon: <Icon icon="zi-home" />,
   },
-  "/notification": {
-    label: "Thông báo",
-    icon: <Icon icon="zi-notif" />,
+  "/order": {
+    label: "Đặt hàng",
+    icon: <Icon icon="zi-more-grid" />,
   },
   "/cart": {
-    label: "Giỏ hàng",
-    icon: <CartIcon />,
-    activeIcon: <CartIcon active />,
+    label: "Thanh toán",
+    icon: <Icon icon="zi-qrline" />,
+  },
+  "/history": {
+    label: "Lịch sử",
+    icon: <Icon icon="zi-memory" />,
   },
   "/profile": {
     label: "Cá nhân",

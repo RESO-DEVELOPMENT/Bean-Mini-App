@@ -10,9 +10,9 @@ import ProfilePage from "pages/profile";
 import SearchPage from "pages/search";
 import { getSystemInfo } from "zmp-sdk";
 import { ScrollRestoration } from "./scroll-restoration";
-import WalletScreen from "pages/wallet";
 import HistoryPage from "pages/orders/list-order";
 import OrderDetailsPage from "pages/orders/order-details";
+import WalletScreen from "pages/wallet/wallet";
 
 if (getSystemInfo().platform === "android") {
   const androidSafeTop = Math.round(
@@ -31,15 +31,15 @@ export const Layout: FC = () => {
       <ScrollRestoration />
       <Box className="flex-1 flex flex-col overflow-hidden">
         <Routes>
-          <Route path="/" element={<HomePage />}></Route>
-          <Route path="/wallet" element={<WalletScreen />}></Route>
+          <Route path="/order" element={<HomePage />}></Route>
+          <Route path="/" element={<WalletScreen />}></Route>
           <Route path="/search" element={<SearchPage />}></Route>
           <Route path="/category" element={<CategoryPage />}></Route>
           <Route path="/notification" element={<NotificationPage />}></Route>
           <Route path="/cart" element={<CartPage />}></Route>
           <Route path="/profile" element={<ProfilePage />}></Route>
           <Route path="/history" element={<HistoryPage />}></Route>
-          <Route path="/order" element={<OrderDetailsPage />}></Route>
+          <Route path="/order-detail" element={<OrderDetailsPage />}></Route>
         </Routes>
       </Box>
       <Navigation />

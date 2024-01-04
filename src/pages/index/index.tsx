@@ -14,7 +14,7 @@ const HomePage: React.FunctionComponent = () => {
       <Welcome />
       <Box className="flex-1 overflow-auto">
         <Inquiry />
-        <Banner />
+        {/* <Banner /> */}
         <Suspense>
           <Categories />
         </Suspense>

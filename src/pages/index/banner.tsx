@@ -24,7 +24,7 @@ export const Banner: FC = () => {
           blogList.contents.map((blog, i) => (
             <SwiperSlide key={i} className="px-4">
               <Box
-                className="w-full rounded-lg aspect-[2/1] bg-cover bg-center bg-skeleton"
+                className="w-full rounded-lg aspect-[16/9] bg-cover bg-center bg-skeleton"
                 style={{ backgroundImage: `url(${blog.image})` }}
               />
             </SwiperSlide>

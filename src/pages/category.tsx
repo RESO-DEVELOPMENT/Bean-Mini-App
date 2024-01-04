@@ -45,7 +45,7 @@ const CategoryProducts: FC<{ categoryId: string }> = ({ categoryId }) => {
   return (
     <Box className="bg-background grid grid-cols-2 gap-4 p-4">
       {productsByCategory.map((product) => (
-        <ProductItem key={product.id} product={product} />
+        <ProductItem key={product.id} product={product} onQuantityChange={0} />
       ))}
     </Box>
   );

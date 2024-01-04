@@ -14,11 +14,7 @@ export const ProductItem: FC<{
     setQuantity(newQuantity);
   };
   return (
-    <ProductPicker
-      product={product}
-      isUpdate={false}
-      onQuantityChange={(newQuantity) => setQuantity(newQuantity)}
-    >
+    <ProductPicker product={product} isUpdate={false}>
       {({ open }) => (
         <div className="space-y-2 relative" onClick={open}>
           {quantity > 0 && (

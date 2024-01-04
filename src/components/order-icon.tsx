@@ -3,9 +3,7 @@ import { useRecoilValue } from "recoil";
 import { cartState } from "state";
 import { Box, Text } from "zmp-ui";
 
-export const CartIcon: FC<{ active?: boolean }> = ({ active }) => {
-  const cart = useRecoilValue(cartState);
-
+export const OrderIcon: FC<{ active?: boolean }> = ({ active }) => {
   return (
     <Box className="relative">
       <svg
@@ -20,16 +18,6 @@ export const CartIcon: FC<{ active?: boolean }> = ({ active }) => {
           fill={active ? "var(--zmp-primary-color)" : "#767a7f"}
         />
       </svg>
-      {cart.productList.length > 0 && (
-        <Box className="absolute -right-1 -top-[2px] p-[2px] bg-background rounded-full">
-          <Text
-            className="w-4 h-4 pl-1.5 bg-primary rounded-full text-white"
-            size="xxxxSmall"
-          >
-            {cart.productList.length > 9 ? "9+" : cart.productList.length}
-          </Text>
-        </Box>
-      )}
     </Box>
   );
 };
