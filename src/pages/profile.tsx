@@ -3,9 +3,11 @@ import { Box, Header, Icon, Page, Text } from "zmp-ui";
 import subscriptionDecor from "static/subscription-decor.svg";
 import { ListRenderer } from "components/list-renderer";
 import { useToBeImplemented } from "hooks";
+import { useNavigate } from "react-router";
 
 const Subscription: FC = () => {
   const onClick = useToBeImplemented();
+
   return (
     <Box className="m-4" onClick={onClick}>
       <Box
@@ -24,15 +26,21 @@ const Subscription: FC = () => {
 };
 
 const Personal: FC = () => {
-  const onClick = useToBeImplemented();
+  const navigate = useNavigate();
+  const gotoPage = (page: string) => {
+    navigate(page);
+  };
 
   return (
     <Box className="m-4">
       <ListRenderer
         title="Cá nhân"
-        onClick={onClick}
+        onClick={(item) => {
+          gotoPage(item.navigate);
+        }}
         items={[
           {
+            navigate: "/history",
             left: <Icon icon="zi-user" />,
             right: (
               <Box flex>
@@ -44,6 +52,7 @@ const Personal: FC = () => {
             ),
           },
           {
+            navigate: "/history",
             left: <Icon icon="zi-clock-2" />,
             right: (
               <Box flex>

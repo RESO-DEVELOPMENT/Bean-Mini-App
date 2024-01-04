@@ -11,6 +11,8 @@ import SearchPage from "pages/search";
 import { getSystemInfo } from "zmp-sdk";
 import { ScrollRestoration } from "./scroll-restoration";
 import WalletScreen from "pages/wallet";
+import HistoryPage from "pages/orders/list-order";
+import OrderDetailsPage from "pages/orders/order-details";
 
 if (getSystemInfo().platform === "android") {
   const androidSafeTop = Math.round(
@@ -36,6 +38,8 @@ export const Layout: FC = () => {
           <Route path="/notification" element={<NotificationPage />}></Route>
           <Route path="/cart" element={<CartPage />}></Route>
           <Route path="/profile" element={<ProfilePage />}></Route>
+          <Route path="/history" element={<HistoryPage />}></Route>
+          <Route path="/order" element={<OrderDetailsPage />}></Route>
         </Routes>
       </Box>
       <Navigation />
