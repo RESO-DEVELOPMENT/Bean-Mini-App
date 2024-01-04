@@ -1,3 +1,4 @@
+import { ListRenderer } from "components/list-renderer";
 import { ProductItem } from "components/product/item";
 import React, { FC, Suspense } from "react";
 import { useRecoilValue } from "recoil";
@@ -6,11 +7,15 @@ import {
   productsByCategoryState,
   selectedCategoryIdState,
 } from "state";
-import { Box, Header, Page, Tabs, Text } from "zmp-ui";
+import { Box, Header, Icon, Page, Tabs, Text, useNavigate } from "zmp-ui";
 
 const HistoryPicker: FC = () => {
   const categories = useRecoilValue(categoriesState);
   const selectedCategory = useRecoilValue(selectedCategoryIdState);
+  const navigate = useNavigate();
+  const gotoPage = (page: string) => {
+    navigate(page);
+  };
   return (
     <Tabs
       scrollable
@@ -18,9 +23,29 @@ const HistoryPicker: FC = () => {
       className="category-tabs"
     >
       <Tabs.Tab key={0} label="Đơn hàng">
-        {/* <Suspense>
-          <CategoryProducts categoryId={category.id} />
-        </Suspense> */}
+        <Suspense>
+          <ListRenderer
+            onClick={(item) => {
+              gotoPage(item.navigate);
+            }}
+            items={[
+              {
+                navigate: "/order",
+                left: <Icon icon="zi-user" />,
+                right: (
+                  <Box flex>
+                    <Text.Header className="flex-1 items-center font-normal">
+                      Bấm vô đây để vào chi tiết đơn hàng nào
+                    </Text.Header>
+                    <Icon icon="zi-chevron-right" />
+                  </Box>
+                ),
+              },
+            ]}
+            renderLeft={(item) => item.left}
+            renderRight={(item) => item.right}
+          />
+        </Suspense>
       </Tabs.Tab>
       <Tabs.Tab key={1} label="Thanh toán">
         {/* <Suspense>
@@ -36,28 +61,28 @@ const HistoryPicker: FC = () => {
   );
 };
 
-const ListOrder: FC<{ categoryId: string }> = ({ categoryId }) => {
-  const productsByCategory = useRecoilValue(
-    productsByCategoryState(categoryId)
-  );
+// const ListOrder: FC<{ categoryId: string }> = ({ categoryId }) => {
+//   const productsByCategory = useRecoilValue(
+//     productsByCategoryState(categoryId)
+//   );
 
-  if (productsByCategory.length === 0) {
-    return (
-      <Box className="flex-1 bg-background p-4 flex justify-center items-center">
-        <Text size="xSmall" className="text-gray">
-          Không có sản phẩm trong danh mục
-        </Text>
-      </Box>
-    );
-  }
-  return (
-    <Box className="bg-background grid grid-cols-2 gap-4 p-4">
-      {productsByCategory.map((product) => (
-        <ProductItem key={product.id} product={product} onQuantityChange={0} />
-      ))}
-    </Box>
-  );
-};
+//   if (productsByCategory.length === 0) {
+//     return (
+//       <Box className="flex-1 bg-background p-4 flex justify-center items-center">
+//         <Text size="xSmall" className="text-gray">
+//           Không có sản phẩm trong danh mục
+//         </Text>
+//       </Box>
+//     );
+//   }
+//   return (
+//     <Box className="bg-background grid grid-cols-2 gap-4 p-4">
+//       {productsByCategory.map((product) => (
+//         <ProductItem key={product.id} product={product} onQuantityChange={0} />
+//       ))}
+//     </Box>
+//   );
+// };
 
 const HistoryPage: FC = () => {
   return (
