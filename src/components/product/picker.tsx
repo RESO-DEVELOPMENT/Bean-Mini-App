@@ -3,7 +3,13 @@ import { Sheet } from "components/fullscreen-sheet";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { cartState, childrenProductState } from "state";
+import {
+  cartState,
+  childrenProductState,
+  phoneState,
+  selectedStoreState,
+  userState,
+} from "state";
 import { ProductList } from "types/cart";
 import { Product, ProductTypeEnum } from "types/store-menu";
 import { countCartAmount } from "utils/product";
@@ -42,12 +48,14 @@ export const ProductPicker: FC<ProductPickerProps> = ({
 }) => {
   const childProducts = useRecoilValue(childrenProductState);
 
-  let currentChild = childProducts.filter(
-    (p) =>
-      product &&
-      product.type === ProductTypeEnum.PARENT &&
-      p.parentProductId === product.id
-  );
+  let currentChild = childProducts
+    .filter(
+      (p) =>
+        product &&
+        product.type === ProductTypeEnum.PARENT &&
+        p.parentProductId === product.id
+    )
+    .sort((a, b) => b.displayOrder - a.displayOrder);
   const [visible, setVisible] = useState(false);
   // const [options, setOptions] = useState<SelectedOptions>(
   //   selected ? selected.options : getDefaultOptions(product)
@@ -58,13 +66,9 @@ export const ProductPicker: FC<ProductPickerProps> = ({
   );
 
   const [quantity, setQuantity] = useState(1);
-
+  const user = useRecoilValue(userState);
+  const phone = useRecoilValue(phoneState);
   const [cart, setCart] = useRecoilState(cartState);
-
-  useEffect(() => {
-    // console.log("menuProductId", menuProductId);
-    // console.log("quantity", quantity);
-  }, [menuProductId, quantity]);
 
   const addToCart = async () => {
     if (product) {
@@ -126,6 +130,8 @@ export const ProductPicker: FC<ProductPickerProps> = ({
 
           res = {
             ...prevCart,
+            customerPhone: phone,
+            customerName: user.name,
             productList: prevCart.productList.concat(cartItem),
           };
         }
@@ -136,7 +142,6 @@ export const ProductPicker: FC<ProductPickerProps> = ({
         return res;
       });
     }
-    onQuantityChange(quantity);
     setVisible(false);
   };
   return (

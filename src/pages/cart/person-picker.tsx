@@ -13,7 +13,6 @@ export const PersonPicker: FC = () => {
 
   return <ListItem title={`${user.name} - ${phone}`} subtitle="Người nhận" />;
 };
-
 export const RequestPersonPickerPhone: FC = () => {
   const retry = useSetRecoilState(requestPhoneTriesState);
   return (

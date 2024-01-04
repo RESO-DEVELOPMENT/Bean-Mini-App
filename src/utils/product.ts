@@ -99,3 +99,17 @@ export async function prepareOrder() {
 }
 
 export default pay;
+
+export function showPaymentType(paymentType: string) {
+  switch (paymentType) {
+    case PaymentType.CASH:
+      return "Tiền mặt";
+
+    case PaymentType.BANKING:
+      return "Ngân hàng";
+    case PaymentType.POINTIFY:
+      return "Pointify";
+    default:
+      return "Tiền mặt";
+  }
+}

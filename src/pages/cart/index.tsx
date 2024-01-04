@@ -7,15 +7,29 @@ import { TermsAndPolicies } from "./term-and-policies";
 import { Delivery } from "./delivery";
 import { useVirtualKeyboardVisible } from "hooks";
 import { prepareOrder } from "utils/product";
-import { useRecoilState, useRecoilValueLoadable } from "recoil";
-import { cartState, prepareCartState } from "state";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useRecoilValueLoadable,
+  useSetRecoilState,
+} from "recoil";
+import {
+  cartState,
+  phoneState,
+  prepareCartState,
+  selectedStoreState,
+  userState,
+} from "state";
+import { PaymentInfo } from "./payment";
 
 const CartPage: FC = () => {
   const keyboardVisible = useVirtualKeyboardVisible();
+
   return (
     <Page className="flex flex-col">
       <Header title="Giỏ hàng" showBackIcon={false} />
       <CartItems />
+      <PaymentInfo />
       <Delivery />
       <Divider size={12} />
       <TermsAndPolicies />

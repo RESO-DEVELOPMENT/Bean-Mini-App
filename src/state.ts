@@ -357,7 +357,7 @@ export const locationState = selector<
   },
 });
 
-export const phoneState = selector<string | boolean>({
+export const phoneState = selector<string | undefined>({
   key: "phone",
   get: async ({ get }) => {
     const requested = get(requestPhoneTriesState);
@@ -371,7 +371,7 @@ export const phoneState = selector<string | boolean>({
         console.log("accessToken", accessToken);
         await zaloApi.getUserPhone(token, accessToken).then((value) => {
           console.log("phone", value.data.data.number);
-          phone = value.data.data.number;
+          phone = value.data.data.number.replace(/^\84/, "0");
         });
       }
       console.warn(
@@ -386,6 +386,6 @@ export const phoneState = selector<string | boolean>({
 
       return phone;
     }
-    return false;
+    return;
   },
 });
