@@ -3,14 +3,25 @@ import { getConfig } from "utils/config";
 
 export const DisplayPrice: FC<{ children: number }> = ({ children }) => {
   const symbol = getConfig((config) => config.template.currencySymbol);
-  if (getConfig((config) => config.template.prefixCurrencySymbol)) {
-    return <>{children}</>;
-  } else {
-    return (
-      <>
-        {children}
-        {symbol}
-      </>
-    );
-  }
+  const shouldPrefixCurrencySymbol = getConfig(
+    (config) => config.template.prefixCurrencySymbol
+  );
+
+  const formattedAmount = new Intl.NumberFormat("en-US").format(children);
+
+  return (
+    <>
+      {shouldPrefixCurrencySymbol ? (
+        <>
+          {symbol}
+          {formattedAmount}
+        </>
+      ) : (
+        <>
+          {formattedAmount}
+          {symbol}
+        </>
+      )}
+    </>
+  );
 };
