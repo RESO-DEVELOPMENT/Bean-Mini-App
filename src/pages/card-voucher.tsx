@@ -26,28 +26,31 @@ const VoucherCard: React.FC<VoucherCardProps> = ({
     padding: "20px",
     borderRadius: "10px",
     boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-    marginBottom: "20px", // Add margin between cards
+    marginBottom: "20px",
+    marginTop: "10px",
+    marginRight: "10px",
+    marginLeft: "10px",
   };
 
   const cardStyle: React.CSSProperties = {
     position: "relative",
     padding: "20px",
     borderRadius: "8px",
-    display: "flex", // Use flexbox to align horizontally
-    alignItems: "center", // Center vertically
+    display: "flex",
+    alignItems: "center",
   };
 
   const imageStyle: React.CSSProperties = {
     maxWidth: "100%",
     height: "100px",
     borderRadius: "8px",
-    marginRight: "10px", // Spacing between image and text
+    marginRight: "10px",
   };
 
   const buttonStyle: React.CSSProperties = {
     position: "absolute",
     bottom: 1,
-    right: 14,
+    right: 0,
     padding: "10px",
     backgroundColor: "#3498db",
     color: "#ffffff",
@@ -61,8 +64,7 @@ const VoucherCard: React.FC<VoucherCardProps> = ({
       setIsUsed(true);
     }
     setIsButtonClicked(true);
-    // Other handling when the button is clicked
-    onCardAdded(); // Notify the parent component that a card is added
+    onCardAdded();
   };
 
   return (

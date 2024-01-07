@@ -34,22 +34,35 @@ const VoucherPage = () => {
       discount: "Discount: 20%",
       imageUrl: "docs/dummy/product-square-1.jpg",
     },
-    // Add more card data as needed
+    {
+      title: "Giảm Trà đá",
+      description: "Cho đơn từ 1đ",
+      discount: "Discount: 20%",
+      imageUrl: "docs/dummy/product-square-1.jpg",
+    },
   ];
+
   return (
     <Page className="flex flex-col" style={{ overflow: "hidden" }}>
       <Header title="Tìm kiếm" />
       <SpecialOffers />
       <TabBar tabs={tabs} />
-      {cardsData.map((card, index) => (
-        <VoucherCard
-          onCardAdded={function (): void {
-            throw new Error("Không tìm thấy.");
-          }}
-          key={index}
-          {...card}
-        />
-      ))}
+      <div
+        style={{
+          overflowY: "auto",
+          flex: 1,
+        }}
+      >
+        {cardsData.map((card, index) => (
+          <VoucherCard
+            onCardAdded={function (): void {
+              throw new Error("Không tìm thấy.");
+            }}
+            key={index}
+            {...card}
+          />
+        ))}
+      </div>
     </Page>
   );
 };
