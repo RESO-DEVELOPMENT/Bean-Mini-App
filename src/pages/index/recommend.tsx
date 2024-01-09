@@ -18,7 +18,7 @@ export const RecommendContent: FC = () => {
       <Swiper slidesPerView={1.25} spaceBetween={16} className="px-4">
         {recommendProducts.map((product) => (
           <SwiperSlide key={product.id}>
-            <ProductPicker product={product}>
+            <ProductPicker product={product} isUpdate={false}>
               {({ open }) => (
                 <div onClick={open} className="space-y-3">
                   <Box

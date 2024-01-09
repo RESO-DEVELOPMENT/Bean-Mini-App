@@ -34,6 +34,7 @@ export const parseParams = (params: any) => {
 };
 
 const admin = `https://admin.reso.vn/api/v1/`;
+// const admin = `https://localhost:7131/api/v1/`;
 const zaloApi = `https://graph.zalo.me/v2.0/`;
 
 const requestWebAdmin = axios.create({

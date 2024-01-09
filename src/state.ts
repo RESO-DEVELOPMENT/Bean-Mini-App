@@ -27,6 +27,8 @@ import { getAccessToken } from "zmp-sdk/apis";
 import { OrderType, PaymentType } from "types/order";
 import orderApi from "api/order";
 import zaloApi from "api/zalo-api";
+import userApi from "api/user";
+import axios from "utils/axios";
 
 export const accessTokenState = selector({
   key: "accessToken",
@@ -65,6 +67,21 @@ export const phoneTokenState = selector({
 export const userState = selector({
   key: "user",
   get: () => getUserInfo({}).then((res) => res.userInfo),
+});
+
+export const memberState = selector({
+  key: "member",
+  get: ({ get }) => {
+    const user = get(userState);
+    const phone = get(phoneState);
+    if (phone !== undefined) {
+      userApi.userLogin(phone, user.name).then((value) => {
+        console.log("user", value.data.userInfo);
+
+        return value.data.userInfo;
+      });
+    }
+  },
 });
 
 export const listStoreState = selector({

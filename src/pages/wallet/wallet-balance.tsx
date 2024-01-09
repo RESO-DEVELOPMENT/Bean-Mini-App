@@ -7,7 +7,12 @@ import { CartIcon } from "components/cart-icon";
 import { useNavigate } from "react-router";
 import point from "static/point.png";
 import wallet from "static/wallet.png";
-export const WalletBalance: FC = () => {
+import { MemberWallet } from "types/user";
+
+export interface MemberBalanceProps {
+  memberBalance?: MemberWallet[];
+}
+export const WalletBalance: FC<MemberBalanceProps> = ({ memberBalance }) => {
   const onClick = useToBeImplemented();
   const navigate = useNavigate();
 

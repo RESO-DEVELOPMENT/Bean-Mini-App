@@ -4,20 +4,20 @@ import { Categories } from "pages/index/categories";
 import { Subscription } from "pages/profile";
 import React, { Suspense } from "react";
 import { useRecoilValueLoadable } from "recoil";
-import { phoneState, userState } from "state";
+import { memberState, phoneState, userState } from "state";
 import { Box, Page } from "zmp-ui";
 import { Features } from "./categories";
 import { WelcomeUser } from "./hello";
 import { WalletBalance } from "./wallet-balance";
 const WalletScreen: React.FunctionComponent = () => {
-  const phone = useRecoilValueLoadable(phoneState);
+  const member = useRecoilValueLoadable(memberState);
   return (
     <Page className="relative flex-1 flex flex-col bg-white">
       <WelcomeUser />
       <Box className="flex-1 overflow-auto">
-        {phone.state === "hasValue" ? (
+        {member.state === "hasValue" && member.contents !== null ? (
           <>
-            <WalletBalance />
+            <WalletBalance memberBalance={member.contents} />
             <Banner />
             <Suspense>
               <Features />
