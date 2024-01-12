@@ -1,0 +1,15 @@
+.time-order {
+  width: 350px;
+}
+.img-orders {
+  width: 72px;
+  min-width: 72px;
+  height: 72px;
+}
+
+hr {
+  height: 1px;
+  border-width: 0;
+  color: rgba(128, 128, 128, 0.514);
+  background-color: rgba(128, 128, 128, 0.137);
+}

@@ -5,7 +5,7 @@ interface ListRendererProps<T> {
   title?: string;
   limit?: number;
   items: T[];
-  renderLeft: (item: T) => ReactNode;
+  // renderLeft: (item: T) => ReactNode;
   renderRight: (item: T) => ReactNode;
   renderKey?: (item: T) => string;
   onClick?: (item: T) => void;
@@ -16,7 +16,7 @@ export function ListRenderer<T>({
   title,
   items,
   limit,
-  renderLeft,
+  // renderLeft,
   renderRight,
   renderKey,
   onClick,
@@ -28,16 +28,16 @@ export function ListRenderer<T>({
   }, [items]);
 
   return (
-    <Box className="bg-background rounded-xl">
+    <Box className="bg-background mb-3 mt-3">
       {title && <Text.Title className="p-4 pb-0">{title}</Text.Title>}
       <Box>
         {(isCollapsed ? collapsedItems : items).map((item, i, list) => (
           <div
             key={renderKey ? renderKey(item) : i}
             onClick={() => onClick?.(item)}
-            className="flex space-x-4 p-4 last:pb-0"
+            className="flex space-x-4 p-3 last:pb-0"
           >
-            {renderLeft(item)}
+            {/* {renderLeft(item)} */}
             <Box className="flex-1 min-w-0 relative">
               {renderRight(item)}
               {!noDivider && i < list.length - 1 && (
