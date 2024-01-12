@@ -6,6 +6,7 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import {
   cartState,
   childrenProductState,
+  memberState,
   phoneState,
   selectedStoreState,
   userState,
@@ -64,7 +65,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
   );
 
   const [quantity, setQuantity] = useState(1);
-  const user = useRecoilValue(userState);
+  const user = useRecoilValue(memberState);
   const phone = useRecoilValue(phoneState);
   const [cart, setCart] = useRecoilState(cartState);
 
@@ -128,10 +129,10 @@ export const ProductPicker: FC<ProductPickerProps> = ({
 
           res = {
             ...prevCart,
-            customerPhone: phone,
-            customerName: user.name,
+            customerId: user?.id,
             productList: prevCart.productList.concat(cartItem),
           };
+          console.log("cart", res);
         }
         orderApi.prepareOrder(countCartAmount(res)).then((value) => {
           console.log("prepareCart", value.data);

@@ -1,17 +1,22 @@
 import { ListRenderer } from "components/list-renderer";
 import { ProductItem } from "components/product/item";
 import React, { FC, Suspense } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilValueLoadable } from "recoil";
 import {
   categoriesState,
+  listOrderState,
+  listTransactionState,
   productsByCategoryState,
   selectedCategoryIdState,
 } from "state";
 import { Box, Header, Icon, Page, Tabs, Text, useNavigate } from "zmp-ui";
+import OrderCard from "./card-order";
+import TransactionCard from "./card-transaction";
 
 const HistoryPicker: FC = () => {
-  const categories = useRecoilValue(categoriesState);
   const selectedCategory = useRecoilValue(selectedCategoryIdState);
+  const orderListData = useRecoilValueLoadable(listOrderState);
+  const transactionListData = useRecoilValueLoadable(listTransactionState);
   const navigate = useNavigate();
   const gotoPage = (page: string) => {
     navigate(page);
@@ -24,38 +29,41 @@ const HistoryPicker: FC = () => {
     >
       <Tabs.Tab key={0} label="Đơn hàng">
         <Suspense>
-          <ListRenderer
-            onClick={(item) => {
-              gotoPage(item.navigate);
-            }}
-            items={[
-              {
-                navigate: "/order-detail",
-                left: <Icon icon="zi-user" />,
-                right: (
-                  <Box flex>
-                    <Text.Header className="flex-1 items-center font-normal">
-                      Bấm vô đây để vào chi tiết đơn hàng nào
-                    </Text.Header>
-                    <Icon icon="zi-chevron-right" />
-                  </Box>
-                ),
-              },
-            ]}
-            renderLeft={(item) => item.left}
-            renderRight={(item) => item.right}
-          />
+          {orderListData.state === "hasValue" &&
+          orderListData.contents !== null ? (
+            <div
+              style={{
+                overflowY: "auto",
+                flex: 1,
+              }}
+            >
+              {orderListData.contents.map((order) => (
+                <OrderCard order={order} />
+              ))}
+            </div>
+          ) : (
+            <Box />
+          )}
         </Suspense>
       </Tabs.Tab>
-      <Tabs.Tab key={1} label="Thanh toán">
-        {/* <Suspense>
-          <CategoryProducts categoryId={category.id} />
-        </Suspense> */}
-      </Tabs.Tab>
-      <Tabs.Tab key={1} label="Tích điểm">
-        {/* <Suspense>
-          <CategoryProducts categoryId={category.id} />
-        </Suspense> */}
+      <Tabs.Tab key={1} label="Giao dịch">
+        <Suspense>
+          {transactionListData.state === "hasValue" &&
+          transactionListData.contents !== null ? (
+            <div
+              style={{
+                overflowY: "auto",
+                flex: 1,
+              }}
+            >
+              {transactionListData.contents.map((order) => (
+                <TransactionCard trans={order} />
+              ))}
+            </div>
+          ) : (
+            <Box />
+          )}
+        </Suspense>
       </Tabs.Tab>
     </Tabs>
   );
@@ -88,7 +96,7 @@ const HistoryPage: FC = () => {
   return (
     <Page className="flex flex-col">
       <Header showBackIcon={false} title="Hoạt động" />
-      <HistoryPicker />
+      <HistoryPicker key={1} />
     </Page>
   );
 };

@@ -14,3 +14,18 @@ export enum PaymentType {
   BANKING = "BANKING",
   POINTIFY = "POINTIFY",
 }
+
+export interface OrderPreview {
+  id: string;
+  invoiceId: string;
+  staffName: string;
+  startDate: string;
+  endDate: string;
+  finalAmount: number;
+  orderType: string;
+  status: string;
+  paymentType: string;
+  customerName: string;
+  phone: string;
+  address: string;
+}

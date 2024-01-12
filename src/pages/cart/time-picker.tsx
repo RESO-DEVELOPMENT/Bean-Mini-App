@@ -1,6 +1,6 @@
 import React, { FC, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
-import { selectedDeliveryTimeState } from "state";
+import { cartState, selectedDeliveryTimeState } from "state";
 import { displayDate, displayHalfAnHourTimeRange } from "utils/date";
 import { matchStatusBarColor } from "utils/device";
 import { Picker } from "zmp-ui";
@@ -8,15 +8,17 @@ import { Picker } from "zmp-ui";
 export const TimePicker: FC = () => {
   const [date, setDate] = useState(+new Date());
   const [time, setTime] = useRecoilState(selectedDeliveryTimeState);
+  const [cart, setCart] = useRecoilState(cartState);
 
   const availableDates = useMemo(() => {
     const days: Date[] = [];
     const today = new Date();
-    for (let i = 0; i < 5; i++) {
-      const nextDay = new Date(today);
-      nextDay.setDate(today.getDate() + i);
-      days.push(nextDay);
-    }
+    // for (let i = 0; i < 5; i++) {
+    //   const nextDay = new Date(today);
+    //   nextDay.setDate(today.getDate() + i);
+    //   days.push(nextDay);
+    // }
+    days.push(today);
     return days;
   }, []);
 
@@ -74,6 +76,18 @@ export const TimePicker: FC = () => {
         }
         if (time) {
           setTime(+time.value);
+          console.log("time", time.value);
+          setCart((prevCart) => {
+            let res = { ...prevCart };
+            res = {
+              ...prevCart,
+              customerNote: `${displayHalfAnHourTimeRange(
+                new Date(time.value)
+              )}, ${displayDate(new Date(date.value))}`,
+            };
+            console.log("res", res);
+            return res;
+          });
         }
       }}
       data={[

@@ -9,8 +9,9 @@ import { RequestStorePickerLocation, StorePicker } from "./store-picker";
 import { TimePicker } from "./time-picker";
 
 export const Delivery: FC = () => {
+  const [cart, setCart] = useRecoilState(cartState);
   return (
-    <Box className="space-y-3 px-4">
+    <Box className="space-y-2 px-4">
       <Text.Header>Hình thức nhận hàng</Text.Header>
       <ListRenderer
         items={[
@@ -37,18 +38,21 @@ export const Delivery: FC = () => {
             ),
           },
           {
-            left: <Icon icon="zi-user" className="my-auto" />,
-            right: (
-              <Suspense fallback={<RequestPersonPickerPhone />}>
-                <PersonPicker />
-              </Suspense>
-            ),
-          },
-          {
             left: <Icon icon="zi-note" className="my-auto" />,
             right: (
               <Box flex>
                 <ElasticTextarea
+                  onChange={(e) =>
+                    setCart((prevCart) => {
+                      let res = { ...prevCart };
+                      res = {
+                        ...prevCart,
+                        notes: e.currentTarget.value,
+                      };
+                      console.log("res", res);
+                      return res;
+                    })
+                  }
                   placeholder="Nhập ghi chú..."
                   className="border-none px-0 w-full focus:outline-none"
                   maxRows={4}

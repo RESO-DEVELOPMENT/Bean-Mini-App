@@ -10,7 +10,7 @@ export interface Cart {
   bonusPoint: number;
   promotionCode?: string;
   voucherCode?: string;
-  promotionList: PromotionList[];
+  promotionList?: PromotionList[];
   customerId?: string;
   customerName?: string;
   customerPhone?: string;
@@ -18,6 +18,8 @@ export interface Cart {
   message?: string;
   customerNumber?: number;
   totalQuantity: number;
+  customerNote?: string;
+  notes?: string;
 }
 
 export interface ProductList {

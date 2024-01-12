@@ -10,6 +10,7 @@ import {
 } from "recoil";
 import {
   cartState,
+  memberState,
   nearbyStoresState,
   requestLocationTriesState,
   selectedStoreIndexState,
@@ -26,6 +27,7 @@ export const StorePicker: FC = () => {
   const setSelectedStoreIndex = useSetRecoilState(selectedStoreIndexState);
   const selectedStore = useRecoilValue(selectedStoreState);
   const [cart, setCart] = useRecoilState(cartState);
+  const member = useRecoilValue(memberState);
   if (!selectedStore) {
     return <RequestStorePickerLocation />;
   }
@@ -36,6 +38,7 @@ export const StorePicker: FC = () => {
         res = {
           ...prevCart,
           storeId: selectedStore.id,
+          customerId: member?.id ?? undefined,
         };
 
         console.log("res", res);

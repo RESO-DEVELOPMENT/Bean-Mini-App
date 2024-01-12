@@ -4,9 +4,10 @@ import { Box, Text } from "zmp-ui";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { categoriesState, selectedCategoryIdState } from "state";
 import { useNavigate } from "react-router";
-import payment from "static/payment.png";
+import qrwallet from "static/qrwallet.png";
 import qrpoint from "static/qrpoint.png";
 import order from "static/order.png";
+import voucher from "static/voucher.png";
 export const Features: FC = () => {
   const categories = useRecoilValue(categoriesState);
 
@@ -18,13 +19,13 @@ export const Features: FC = () => {
   };
 
   return (
-    <Box className="bg-white grid grid-cols-3 gap-4 p-4">
+    <Box className="bg-white grid grid-cols-4 gap-4 p-4">
       <div
         key={0}
         onClick={() => gotoCategory}
         className="flex flex-col space-y-1 items-center"
       >
-        <img className="w-10 h-10" src={payment} />
+        <img className="w-10 h-10" src={qrwallet} />
         <Text size="small" className="text-gray  text-center">
           Thanh toán
         </Text>
@@ -47,6 +48,16 @@ export const Features: FC = () => {
         <img className="w-10 h-10" src={order} />
         <Text size="small" className="text-gray  text-center">
           Đặt hàng
+        </Text>
+      </div>
+      <div
+        key={1}
+        onClick={() => navigate("/voucher")}
+        className="flex flex-col space-y-1 items-center"
+      >
+        <img className="w-10 h-10" src={voucher} />
+        <Text size="small" className="text-gray  text-center">
+          Ưu đãi
         </Text>
       </div>
     </Box>

@@ -1,7 +1,7 @@
 export interface User {
   message: string;
   accessToken: string;
-  userInfo: UserInfo;
+  userId: string;
 }
 
 export interface UserInfo {

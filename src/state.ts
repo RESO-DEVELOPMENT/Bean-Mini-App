@@ -71,16 +71,27 @@ export const userState = selector({
 
 export const memberState = selector({
   key: "member",
-  get: ({ get }) => {
+  get: async ({ get }) => {
     const user = get(userState);
     const phone = get(phoneState);
     if (phone !== undefined) {
-      userApi.userLogin(phone, user.name).then((value) => {
-        console.log("user", value.data.userInfo);
-
-        return value.data.userInfo;
-      });
+      var response = await userApi.userLogin(phone, user.name);
+      axios.defaults.headers.common.Authorization = `Bearer ${response.data.accessToken}`;
+      var member = await userApi.getUserInfo(response.data.userId ?? "");
+      return member.data;
     }
+    return null;
+  },
+  set: ({ set, get }) => {
+    const cart = get(cartState);
+    const member = get(memberState);
+    let res = { ...cart };
+    res = {
+      ...cart,
+      customerId: member?.id,
+    };
+    console.log("cart set", res);
+    set(cartState, res);
   },
 });
 
@@ -96,6 +107,39 @@ export const listStoreState = selector({
   },
 });
 
+export const listOrderState = selector({
+  key: "listOrder",
+  get: async ({ get }) => {
+    const member = get(memberState);
+    const listOrder = await orderApi.getListOrder(member?.id ?? "", {
+      page: 1,
+      size: 100,
+    });
+    return listOrder.data.items;
+  },
+});
+
+export const listTransactionState = selector({
+  key: "listTransaction",
+  get: async ({ get }) => {
+    const member = get(memberState);
+    const listOrder = await orderApi.getListTransactions(member?.id ?? "", {
+      page: 1,
+      size: 100,
+    });
+    return listOrder.data.items;
+  },
+});
+export const listPromotionState = selector({
+  key: "listPromotion",
+  get: async ({ get }) => {
+    const member = get(memberState);
+    const listOrder = await userApi.getListPromotion(member?.id ?? "", {
+      brandCode: "BeanApp",
+    });
+    return listOrder.data;
+  },
+});
 export const listBlogState = selector({
   key: "listBlog",
   get: async () => {
@@ -196,7 +240,6 @@ export const productsByCategoryState = selectorFamily<Product[], string>({
 
 export const cartState = atom<Cart>({
   key: "cart",
-
   default: {
     storeId: "",
     orderType: OrderType.EATIN,
@@ -207,8 +250,14 @@ export const cartState = atom<Cart>({
     bonusPoint: 0,
     discountAmount: 0,
     finalAmount: 0,
-    promotionList: [],
     totalQuantity: 0,
+  },
+});
+export const getCartState = selector({
+  key: "totalQuantity",
+  get: ({ get }) => {
+    const cart = get(cartState);
+    return cart;
   },
 });
 
@@ -233,6 +282,7 @@ export const totalPriceState = selector({
 
 export const notificationsState = atom<Notification[]>({
   key: "notifications",
+
   default: [
     {
       id: 1,
