@@ -11,7 +11,7 @@ export const WelcomeUser: FC = () => {
 
   return (
     <Header
-      className="app-header no-border pl-4 flex-none pb-[6px]"
+      className={`app-header no-border pl-4 flex-none pb-[6px] custom-header`}
       showBackIcon={false}
       title={
         (
