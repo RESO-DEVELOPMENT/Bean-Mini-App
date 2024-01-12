@@ -6,7 +6,7 @@ import { Product, ProductTypeEnum } from "types/store-menu";
 import { ProductList } from "pages/index/product-list";
 import { useRecoilState } from "recoil";
 import { cartState } from "state";
-import { OrderType, PaymentType } from "types/order";
+import { OrderStatus, OrderType, PaymentType } from "types/order";
 import orderApi from "api/order";
 
 export function calcFinalPrice(product: Product) {
@@ -109,6 +109,19 @@ export function showPaymentType(paymentType: string) {
       return "Ngân hàng";
     case PaymentType.POINTIFY:
       return "Pointify";
+    default:
+      return "Tiền mặt";
+  }
+}
+export function showOrderStatue(status: string) {
+  switch (status) {
+    case OrderStatus.PENDING:
+      return "Đang thực hiện";
+
+    case OrderStatus.PAID:
+      return "Đã hoàn thành";
+    case OrderStatus.CANCELED:
+      return "Đã huỹ";
     default:
       return "Tiền mặt";
   }
