@@ -15,7 +15,7 @@ const tabs: Record<string, MenuItem> = {
     label: "Đặt hàng",
     icon: <Icon icon="zi-more-grid" />,
   },
-  "/cart": {
+  "/qr": {
     label: "Thanh toán",
     icon: <Icon icon="zi-qrline" />,
   },
