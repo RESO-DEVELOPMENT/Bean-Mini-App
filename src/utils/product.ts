@@ -113,7 +113,7 @@ export function showPaymentType(paymentType: string) {
       return "Tiền mặt";
   }
 }
-export function showOrderStatue(status: string) {
+export function showOrderStatus(status: string) {
   switch (status) {
     case OrderStatus.PENDING:
       return "Đang thực hiện";
@@ -123,6 +123,6 @@ export function showOrderStatue(status: string) {
     case OrderStatus.CANCELED:
       return "Đã huỹ";
     default:
-      return "Tiền mặt";
+      return "Đang thực hiện";
   }
 }

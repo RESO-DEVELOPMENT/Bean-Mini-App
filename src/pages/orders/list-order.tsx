@@ -16,6 +16,7 @@ import TransactionCard from "./card-transaction";
 import { Card } from "react-bootstrap";
 import { displayDate, displayTime } from "utils/date";
 import { DisplayPrice } from "components/display/price";
+import { showOrderStatus } from "utils/product";
 
 const HistoryPicker: FC = () => {
   const selectedCategory = useRecoilValue(selectedCategoryIdState);
@@ -49,11 +50,11 @@ const HistoryPicker: FC = () => {
                         {displayTime(new Date(order.endDate))}{" "}
                         {displayDate(new Date(order.endDate))}
                       </Text>
-                      <Text className="font-bold bg-emerald-100 p-0.5 pr-1 pl-1 rounded-md text-green">
-                        {order.status}
+                      <Text className="font-bold bg-emerald-100 p-1 rounded-md text-green">
+                        {showOrderStatus(order.status)}
                       </Text>
                     </div>
-                    <div className="flex mb-2">
+                    <div className="flex ">
                       <div className="m-2">
                         <img
                           className="img-orders rounded-md"
@@ -61,12 +62,11 @@ const HistoryPicker: FC = () => {
                         />
                       </div>
                       <div>
-                        <Text.Header className="text-[18px] leading-6 mb-2">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit.
+                        <Text.Header className="text-md leading-6 m-2">
+                          {order.invoiceId}
                         </Text.Header>
                         <Text className="text-[17px]">
-                          <b className="font-semibold">
+                          <b className="font-semibold  m-2">
                             <DisplayPrice>{order.finalAmount}</DisplayPrice>
                           </b>
                         </Text>

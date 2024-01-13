@@ -6,7 +6,7 @@ import "swiper/swiper-bundle.min.css";
 import { Box } from "zmp-ui";
 import { IoTicket, IoTicketOutline } from "react-icons/io5";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaCartPlus } from "react-icons/fa";
 import { MdPayments } from "react-icons/md";
 import { FaStore } from "react-icons/fa";
 
@@ -30,42 +30,43 @@ const iconSize = "30px";
 const swiperSlides1 = [
   <SwiperSlide>
     <div style={containerStyle}>
-      <IoTicketOutline className="icon-color" size={iconSize} />
+      <MdPayments className="icon-color" size={iconSize} />
     </div>
-    <div className="ml-3">Voucher</div>
-  </SwiperSlide>,
-  <SwiperSlide>
-    <div style={containerStyle}>
-      <FaStore className="icon-color" size={iconSize} />
-    </div>
-    <div className="ml-6">Deer</div>
-  </SwiperSlide>,
-  <SwiperSlide>
-    <div style={containerStyle}>
-      <FaMoneyBillTransfer className="icon-color" size={iconSize} />
-    </div>
-    <div className="ml-3">Đổi Điểm</div>
+    <div className="text-center">Thanh toán</div>
   </SwiperSlide>,
   <SwiperSlide>
     <div style={containerStyle}>
       <FaStar className="icon-color" size={iconSize} />
     </div>
-    <div className="ml-2">Tích Điểm</div>
+    <div className="text-center">Tích Điểm</div>
   </SwiperSlide>,
   <SwiperSlide>
     <div style={containerStyle}>
-      <MdPayments className="icon-color" size={iconSize} />
+      <FaCartPlus className="icon-color" size={iconSize} />
     </div>
-    <div className="ml-3">Payment</div>
+    <div className="text-center">Đặt món</div>
+  </SwiperSlide>,
+  <SwiperSlide>
+    <div style={containerStyle}>
+      <IoTicketOutline className="icon-color" size={iconSize} />
+    </div>
+    <div className="text-center">Voucher</div>
+  </SwiperSlide>,
+
+  <SwiperSlide>
+    <div style={containerStyle}>
+      <FaMoneyBillTransfer className="icon-color" size={iconSize} />
+    </div>
+    <div className="text-center">Đổi Điểm</div>
   </SwiperSlide>,
 ];
 
 export const SwiperItem: FC = () => {
   const navigate = useNavigate();
   return (
-    <Box m={4}>
+    <Box m={2}>
       <Swiper
-        spaceBetween={10}
+        spaceBetween={5}
         slidesPerView={4}
         onSlideChange={() => console.log("slide change")}
         onSwiper={(swiper) => console.log(swiper)}

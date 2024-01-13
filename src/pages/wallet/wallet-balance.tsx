@@ -24,42 +24,70 @@ export const WalletBalance: FC<MemberBalanceProps> = ({ memberInfo }) => {
   );
 
   return (
-    <Box className="bg-white flex  items-center flex-row  m-2 ">
-      <Box className="bg-white basis-1/3 items-center flex flex-row border-solid border border-gray text-gray rounded-full p-1 mx-0.5">
-        <img className="w-8 h-8" src={point} />
+    <Box className="bg-white flex  items-center flex-row  m-2 mt-2 ">
+      <Box className="bg-white basis-1/3 items-center flex flex-row border-solid border border-gray text-gray rounded-full p-2 mx-0.5">
+        <img className="w-6 h-6 mr-1" src={point} />
         <Text className="font-bold">
-          <DisplayValue
-            value={pointWallet?.balance ?? 0}
-            unit={pointWallet?.walletType.currency}
-          />
+          <DisplayValue value={3000} unit="ps" />
         </Text>
       </Box>
 
-      <Box className=" basis-1/3 items-center flex flex-row border-solid border border-gray text-gray rounded-full p-2 mx-1">
-        <img className="w-6 h-6" src={wallet} />
+      <Box className="bg-white basis-1/3 items-center flex flex-row border-solid border border-gray text-gray rounded-full p-2 mx-1">
+        <img className="w-6 h-6 mr-1" src={wallet} />
         <Text className="font-bold">
-          <DisplayPrice>{monney?.balance ?? 0}</DisplayPrice>
+          <DisplayPrice>{30000}</DisplayPrice>
         </Text>
       </Box>
-      {/* <Box
-        onClick={() => navigate("/voucher")}
-        className="bg-white border-solid border border-gray text-gray rounded-full p-2 ml-1"
-      >
-        <Icon icon="zi-inbox" />
-      </Box> */}
       <Box
         onClick={() => navigate("/cart")}
         className="bg-white mx-1 border-solid border border-gray text-gray rounded-full p-2 ml-1"
       >
-        <CartIcon></CartIcon>
+        <Icon icon="zi-search" />
       </Box>
 
       <Box
         onClick={() => navigate("/notification")}
         className="bg-white border-solid border border-gray text-gray rounded-full p-2 ml-1"
       >
-        <Icon icon="zi-notif" />
+        <Icon icon="zi-save-to-collection" />
       </Box>
     </Box>
+    // <Box className="bg-white flex  items-center flex-row  m-2 ">
+    //   <Box className="bg-white basis-1/3 items-center flex flex-row border-solid border border-gray text-gray rounded-full p-1 mx-0.5">
+    //     <img className="w-8 h-8" src={point} />
+    //     <Text className="font-bold">
+    //       <DisplayValue
+    //         value={pointWallet?.balance ?? 0}
+    //         unit={pointWallet?.walletType.currency}
+    //       />
+    //     </Text>
+    //   </Box>
+
+    //   <Box className=" basis-1/3 items-center flex flex-row border-solid border border-gray text-gray rounded-full p-2 mx-1">
+    //     <img className="w-6 h-6" src={wallet} />
+    //     <Text className="font-bold">
+    //       <DisplayPrice>{monney?.balance ?? 0}</DisplayPrice>
+    //     </Text>
+    //   </Box>
+    //   {/* <Box
+    //     onClick={() => navigate("/voucher")}
+    //     className="bg-white border-solid border border-gray text-gray rounded-full p-2 ml-1"
+    //   >
+    //     <Icon icon="zi-inbox" />
+    //   </Box> */}
+    //   <Box
+    //     onClick={() => navigate("/cart")}
+    //     className="bg-white mx-1 border-solid border border-gray text-gray rounded-full p-2 ml-1"
+    //   >
+    //     <CartIcon></CartIcon>
+    //   </Box>
+
+    //   <Box
+    //     onClick={() => navigate("/notification")}
+    //     className="bg-white border-solid border border-gray text-gray rounded-full p-2 ml-1"
+    //   >
+    //     <Icon icon="zi-notif" />
+    //   </Box>
+    // </Box>
   );
 };
