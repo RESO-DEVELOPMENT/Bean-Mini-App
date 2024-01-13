@@ -35,10 +35,12 @@ const QRCodePage: React.FC = () => {
     >
       <div className="p-4">
         {/* Header */}
-        <div className="flex justify-between items-center">
-          <Icon className="mt-8" icon="zi-arrow-left" />
-          <span className="text-2xl font-bold mt-8">QR Thanh toán</span>
-          <Icon className="mt-8" icon="zi-more-horiz-solid" />
+        <div className="flex justify-center items-center">
+          {/* <Icon className="mt-8" icon="zi-arrow-left" /> */}
+          <span className="text-xl text-white font-bold mt-8">
+            QR Thanh toán
+          </span>
+          {/* <Icon className="mt-8 color-white" icon="zi-more-horiz-solid" /> */}
         </div>
 
         <div className="bg-white p-8 rounded-lg my-4 text-black">
@@ -82,33 +84,16 @@ const QRCodePage: React.FC = () => {
         >
           <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-white my-2 text-black">
             <div className="flex items-center">
-              <Text.Title
-                style={{
-                  fontSize: "18px",
-                  lineHeight: "1",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                Tài Khoản/Thẻ
-              </Text.Title>
-              <IoEyeSharp className="ml-4" size={iconSize} />
+              <Text.Title className="text-sm">Tài Khoản/Điểm</Text.Title>
+              {/* <IoEyeSharp className="ml-4" size={iconSize} /> */}
             </div>
-            <div className="flex items-center">
-              <Text
-                style={{
-                  fontSize: "18px",
-                  lineHeight: "1",
-                  whiteSpace: "nowrap",
-                }}
-                className="text-green-600"
-              >
-                Xem tất cả
-              </Text>
-            </div>
+            {/* <div className="flex items-center">
+              <Text className="text-primary text-sm">Xem tất cả</Text>
+            </div> */}
           </div>
 
           {/* Wallet Info */}
-          <div className="flex space-x-4 ml-1">
+          <div className="flex space-x-4 m-2">
             {[0, 1].map((index) => (
               <div
                 key={index}
@@ -148,13 +133,13 @@ const QRCodePage: React.FC = () => {
             className="flex items-end justify-end px-2 py-2 rounded-lg text-white w-46 h-10 ml-14 font-bold"
             style={{ background: "#6AD9CE" }}
           >
-            <span className="text-sm whitespace-nowrap mb-0.5">
-              Xem thêm - Nhập mã{" "}
-            </span>{" "}
+            <span className="text-m items-center whitespace-nowrap mr-1">
+              Xem thêm
+            </span>
             <Icon icon="zi-chevron-right" className="ml-1" />
           </div>
         </div>
-        <div className="flex">
+        {/* <div className="flex">
           <div
             className="flex items-start justify-between px-3 py-2 mt-18 rounded-lg bg-white border-solid border border-green text-black"
             style={{
@@ -170,18 +155,12 @@ const QRCodePage: React.FC = () => {
               <div className="w-10 h-10 bg-green rounded-full mr-2 mb-12">
                 <img className="mr-1" src={wallet} alt="Wallet" />
               </div>
-              <div className="flex-1" style={{ marginTop: "-24px" }}>
-                <p style={{ fontSize: "14px" }}>Chuyển tiền đ...</p>
+              <div className="flex-1">
+                <p className="text-m">Chuyển tiền đ...</p>
                 <div className="flex items-center">
-                  <p
-                    className="mr-3 font-bold relative"
-                    style={{ fontSize: "14px", whiteSpace: "nowrap" }}
-                  >
-                    Hoàn 50%
-                  </p>
-
+                  <p className="mr-3 font-bold relative text-sm">Hoàn 50%</p>
                   <button
-                    className="bg-white rounded-full ml-8 text-green relative font-bold"
+                    className="bg-white rounded-full  text-green relative font-bold"
                     style={{
                       fontSize: "18px",
                       padding: "6px",
@@ -196,13 +175,13 @@ const QRCodePage: React.FC = () => {
                     Chọn
                   </button>
                 </div>
-                <p className="order-2" style={{ float: "left" }}>
+                <p className="order-2" style={{ float: "right" }}>
                   HSD: 1/12/2024
                 </p>
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
