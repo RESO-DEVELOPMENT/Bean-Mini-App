@@ -6,14 +6,13 @@ import { SwiperEn } from "pages/swiper-entertainment";
 import { SwiperItem } from "pages/swiper-items";
 import React, { Suspense } from "react";
 import { useRecoilState, useRecoilValueLoadable } from "recoil";
-import { cartState, memberState } from "state";
+import { memberState } from "state";
 import { Box, Page, Text } from "zmp-ui";
 import { Features } from "./categories";
 import { WelcomeUser } from "./hello";
 import { WalletBalance } from "./wallet-balance";
 const WalletScreen: React.FunctionComponent = () => {
   const member = useRecoilValueLoadable(memberState);
-  const [cart, setCart] = useRecoilState(cartState);
   const imageStyle: React.CSSProperties = {
     maxWidth: "100%",
     height: "60px",
@@ -41,9 +40,12 @@ const WalletScreen: React.FunctionComponent = () => {
             <SwiperAd />
             <Box className="mx-5 mt-5" style={flexContainerStyle}>
               <Text.Title size="large">Dịch vụ</Text.Title>
-              <Text.Title style={blueTextStyle}>Tất cả</Text.Title>
+              {/* <Text.Title className="text-sm" style={blueTextStyle}>
+                Tất cả
+              </Text.Title> */}
             </Box>
             <SwiperItem />
+            {/* <Features /> */}
             <Box className="mx-5 mt-5" style={flexContainerStyle}>
               <Text.Title size="large">Chương trình</Text.Title>
               <Text.Title style={blueTextStyle}>Tất cả</Text.Title>

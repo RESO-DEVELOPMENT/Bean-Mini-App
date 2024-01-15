@@ -13,7 +13,7 @@ import {
 } from "state";
 import { ProductList } from "types/cart";
 import { Product, ProductTypeEnum } from "types/store-menu";
-import { countCartAmount } from "utils/product";
+import { prepareCart } from "utils/product";
 import { Box, Button, Text } from "zmp-ui";
 import { QuantityPicker } from "./quantity-picker";
 import { SingleOptionPicker } from "./single-option-picker";
@@ -66,7 +66,6 @@ export const ProductPicker: FC<ProductPickerProps> = ({
 
   const [quantity, setQuantity] = useState(1);
   const user = useRecoilValue(memberState);
-  const phone = useRecoilValue(phoneState);
   const [cart, setCart] = useRecoilState(cartState);
 
   const addToCart = async () => {
@@ -132,13 +131,9 @@ export const ProductPicker: FC<ProductPickerProps> = ({
             customerId: user?.id,
             productList: prevCart.productList.concat(cartItem),
           };
-          console.log("cart", res);
         }
-        orderApi.prepareOrder(countCartAmount(res)).then((value) => {
-          console.log("prepareCart", value.data);
-          return value.data;
-        });
-        return res;
+
+        return prepareCart(res);
       });
     }
     setVisible(false);

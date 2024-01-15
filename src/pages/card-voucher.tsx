@@ -3,15 +3,22 @@
 import React, { FC, useState } from "react";
 import { Promotion } from "types/promotion";
 import { displayDate } from "utils/date";
+import { Button } from "zmp-react";
 import { Box, Text } from "zmp-ui";
 
 interface VoucherCardProps {
   promotion: Promotion;
   onClick: () => void;
+  onCancle: () => void;
   isUsed: boolean;
 }
 
-const VoucherCard: FC<VoucherCardProps> = ({ promotion, onClick, isUsed }) => {
+const VoucherCard: FC<VoucherCardProps> = ({
+  promotion,
+  onClick,
+  onCancle,
+  isUsed,
+}) => {
   const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const containerStyle: React.CSSProperties = {
@@ -44,7 +51,10 @@ const VoucherCard: FC<VoucherCardProps> = ({ promotion, onClick, isUsed }) => {
 
   const buttonStyle: React.CSSProperties = {
     position: "absolute",
+    alignItems: "center",
+    textAlign: "center",
     bottom: 1,
+    width: "80px",
     right: 1,
     margin: "6px",
     padding: "6px",
@@ -61,13 +71,17 @@ const VoucherCard: FC<VoucherCardProps> = ({ promotion, onClick, isUsed }) => {
           <Text className="font-bold">{promotion.promotionName}</Text>
           <p>{promotion.description}</p>
           <p>HSD {displayDate(new Date(promotion.endDate))}</p>
-          <button
+          <Button
             style={buttonStyle}
-            className="bg-primary text-white align-sub"
-            onClick={onClick}
+            className={
+              isUsed
+                ? "bg-gray text-white align-sub"
+                : "bg-primary text-white align-sub"
+            }
+            onClick={isUsed ? onCancle : onClick}
           >
-            {isUsed ? "Đang sử dụng" : "Dùng ngay"}
-          </button>
+            {isUsed ? "Huỷ" : "Sử dụng"}
+          </Button>
         </Box>
       </Box>
     </Box>

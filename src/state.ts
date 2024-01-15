@@ -24,7 +24,7 @@ import blogApi from "api/blog";
 import { CategoryId } from "types/category";
 
 import { getAccessToken } from "zmp-sdk/apis";
-import { OrderType, PaymentType } from "types/order";
+import { OrderDetails, OrderType, PaymentType } from "types/order";
 import orderApi from "api/order";
 import zaloApi from "api/zalo-api";
 import userApi from "api/user";
@@ -119,6 +119,14 @@ export const listOrderState = selector({
   },
 });
 
+export const getOrderDetailstate = selectorFamily<OrderDetails, string>({
+  key: "orderDetails",
+  get: (orderId) => async () => {
+    const order = await orderApi.getOrderDetails(orderId);
+    return order.data;
+  },
+});
+
 export const listTransactionState = selector({
   key: "listTransaction",
   get: async ({ get }) => {
@@ -152,12 +160,11 @@ export const listBlogState = selector({
   },
 });
 
-export const prepareCartState = selector({
-  key: "preopareCart",
+export const prepareCartState = selector<Cart>({
+  key: "prepareCart",
   get: async ({ get }) => {
     const cart = get(cartState);
     var res = await orderApi.prepareOrder(cart);
-    console.log("prepare cart", res);
     return res.data;
   },
 });
@@ -251,21 +258,9 @@ export const cartState = atom<Cart>({
     discountAmount: 0,
     finalAmount: 0,
     totalQuantity: 0,
-  },
-});
-export const getCartState = selector({
-  key: "totalQuantity",
-  get: ({ get }) => {
-    const cart = get(cartState);
-    return cart;
-  },
-});
-
-export const totalQuantityState = selector({
-  key: "totalQuantity",
-  get: ({ get }) => {
-    const cart = get(cartState);
-    return cart.productList.reduce((total, item) => total + item.quantity, 0);
+    customerId: null,
+    promotionList: [],
+    promotionCode: null,
   },
 });
 

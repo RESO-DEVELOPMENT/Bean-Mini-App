@@ -1,10 +1,14 @@
 import { ElasticTextarea } from "components/elastic-textarea";
 import { ListRenderer } from "components/list-renderer";
-import React, { FC, Suspense, useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { cartState, selectedStoreState } from "state";
-import { Box, Icon, Input, Text } from "zmp-ui";
-import { PersonPicker, RequestPersonPickerPhone } from "./person-picker";
+import React, { FC, Suspense } from "react";
+import {
+  useRecoilState,
+  useRecoilStateLoadable,
+  useSetRecoilState,
+} from "recoil";
+import { cartState } from "state";
+import { Cart } from "types/cart";
+import { Box, Icon, Text } from "zmp-ui";
 import { RequestStorePickerLocation, StorePicker } from "./store-picker";
 import { TimePicker } from "./time-picker";
 
@@ -13,6 +17,7 @@ export const Delivery: FC = () => {
   return (
     <Box className="space-y-2 px-4">
       <Text.Header>Hình thức nhận hàng</Text.Header>
+
       <ListRenderer
         items={[
           {
@@ -49,7 +54,6 @@ export const Delivery: FC = () => {
                         ...prevCart,
                         notes: e.currentTarget.value,
                       };
-                      console.log("res", res);
                       return res;
                     })
                   }

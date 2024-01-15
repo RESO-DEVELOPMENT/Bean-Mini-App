@@ -3,7 +3,6 @@ import { ListItem } from "components/list-item";
 import React, { FC, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import {
-  useRecoilState,
   useRecoilValue,
   useRecoilValueLoadable,
   useSetRecoilState,
@@ -16,7 +15,6 @@ import {
   selectedStoreIndexState,
   selectedStoreState,
 } from "state";
-import { Store } from "types/delivery";
 import { TStore } from "types/store";
 import { displayDistance } from "utils/location";
 
@@ -26,7 +24,7 @@ export const StorePicker: FC = () => {
   const nearbyStores = useRecoilValueLoadable(nearbyStoresState);
   const setSelectedStoreIndex = useSetRecoilState(selectedStoreIndexState);
   const selectedStore = useRecoilValue(selectedStoreState);
-  const [cart, setCart] = useRecoilState(cartState);
+  const setCart = useSetRecoilState(cartState);
   const member = useRecoilValue(memberState);
   if (!selectedStore) {
     return <RequestStorePickerLocation />;
@@ -40,10 +38,9 @@ export const StorePicker: FC = () => {
           storeId: selectedStore.id,
           customerId: member?.id ?? undefined,
         };
-
-        console.log("res", res);
         return res;
       });
+      // setCart(cart);
     },
     //eslint-disable-next-line
     [selectedStore]

@@ -1,6 +1,7 @@
 import React, { FC, useMemo, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { cartState, selectedDeliveryTimeState } from "state";
+import { Cart } from "types/cart";
 import { displayDate, displayHalfAnHourTimeRange } from "utils/date";
 import { matchStatusBarColor } from "utils/device";
 import { Picker } from "zmp-ui";
@@ -85,7 +86,6 @@ export const TimePicker: FC = () => {
                 new Date(time.value)
               )}, ${displayDate(new Date(date.value))}`,
             };
-            console.log("res", res);
             return res;
           });
         }

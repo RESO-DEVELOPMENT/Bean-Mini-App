@@ -17,14 +17,15 @@ import { Card } from "react-bootstrap";
 import { displayDate, displayTime } from "utils/date";
 import { DisplayPrice } from "components/display/price";
 import { showOrderStatus } from "utils/product";
+import { OrderStatus } from "types/order";
 
 const HistoryPicker: FC = () => {
   const selectedCategory = useRecoilValue(selectedCategoryIdState);
   const orderListData = useRecoilValueLoadable(listOrderState);
   const transactionListData = useRecoilValueLoadable(listTransactionState);
   const navigate = useNavigate();
-  const gotoPage = (page: string) => {
-    navigate(page);
+  const gotoPage = (id: string) => {
+    navigate("/order-detail", { state: { id } });
   };
   return (
     <Tabs
@@ -42,15 +43,28 @@ const HistoryPicker: FC = () => {
                 flex: 1,
               }}
             >
-              {orderListData.contents.map((order) => (
-                <Box className="my-2 p-2 bg-white" flex>
+              {orderListData.contents.map((order, index) => (
+                <Box
+                  key={index}
+                  onClick={() => gotoPage(order.id)}
+                  className="my-2 p-2 bg-white"
+                  flex
+                >
                   <Card>
                     <div className="flex justify-between time-order  mb-2">
                       <Text className="text-s">
                         {displayTime(new Date(order.endDate))}{" "}
                         {displayDate(new Date(order.endDate))}
                       </Text>
-                      <Text className="font-bold bg-emerald-100 p-1 rounded-md text-green">
+                      <Text
+                        className={
+                          order.status == OrderStatus.PENDING
+                            ? "font-bold bg-blue-300 p-1 rounded-md text-white"
+                            : order.status == OrderStatus.PAID
+                            ? "font-bold bg-emerald-400 p-1 rounded-md text-white"
+                            : "font-bold bg-red-400 p-1 rounded-md text-green"
+                        }
+                      >
                         {showOrderStatus(order.status)}
                       </Text>
                     </div>

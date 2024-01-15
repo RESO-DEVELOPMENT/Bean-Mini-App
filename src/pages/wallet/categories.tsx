@@ -8,6 +8,7 @@ import qrwallet from "static/qrwallet.png";
 import qrpoint from "static/qrpoint.png";
 import order from "static/order.png";
 import voucher from "static/voucher.png";
+import { MdPayments } from "react-icons/md";
 export const Features: FC = () => {
   const categories = useRecoilValue(categoriesState);
 
@@ -17,7 +18,7 @@ export const Features: FC = () => {
   const gotoCategory = () => {
     navigate("/category");
   };
-
+  const iconSize = "32px";
   return (
     <Box className="bg-white grid grid-cols-4 gap-4 p-4">
       <div
@@ -25,7 +26,7 @@ export const Features: FC = () => {
         onClick={() => gotoCategory}
         className="flex flex-col space-y-1 items-center"
       >
-        <img className="w-10 h-10" src={qrwallet} />
+        <MdPayments className="icon-color" size={iconSize} />
         <Text size="small" className="text-gray  text-center">
           Thanh toán
         </Text>

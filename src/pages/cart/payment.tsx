@@ -1,18 +1,13 @@
-import { FinalPrice } from "components/display/final-price";
 import { DisplayPrice } from "components/display/price";
-import { DisplaySelectedOptions } from "components/display/selected-options";
 import { ListRenderer } from "components/list-renderer";
-import { ProductPicker } from "components/product/picker";
-import React, { FC, useState } from "react";
-import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from "recoil";
+import React, { FC } from "react";
+import { useRecoilValue, useRecoilValueLoadable } from "recoil";
 import { cartState, prepareCartState } from "state";
-import { ProductList } from "types/cart";
-import { showPaymentType } from "utils/product";
-import { Box, Icon, Text } from "zmp-ui";
+import { prepareCart, showPaymentType } from "utils/product";
+import { Box, Text } from "zmp-ui";
 
 export const PaymentInfo: FC = () => {
-  const cart = useRecoilValue(cartState);
-
+  const cartPrepare = useRecoilValueLoadable(prepareCartState);
   return (
     <Box className="space-y-3 px-4 mb-2">
       <Text.Header>Thông tin thanh toán</Text.Header>
@@ -24,7 +19,12 @@ export const PaymentInfo: FC = () => {
               <Box flex className="space-x-1">
                 <Box className="flex-1 space-y-[2px]"></Box>
                 <Text size="small">
-                  <DisplayPrice>{cart.finalAmount}</DisplayPrice>
+                  <DisplayPrice>
+                    {cartPrepare.state == "hasValue" &&
+                    cartPrepare.contents !== null
+                      ? cartPrepare.contents.totalAmount
+                      : 0}
+                  </DisplayPrice>
                 </Text>
               </Box>
             ),
@@ -32,24 +32,53 @@ export const PaymentInfo: FC = () => {
           {
             left: (
               <Box className="flex-1 space-y-[1px]">
-                <Text size="small">Giảm giá</Text>
+                {cartPrepare.state == "hasValue" &&
+                cartPrepare.contents !== null
+                  ? cartPrepare.contents.promotionList!.map((p) => (
+                      <Text size="xxSmall">{p.name}</Text>
+                    ))
+                  : ""}
               </Box>
             ),
-            right: (
-              <Box flex className="space-x-1">
-                <Box className="flex-1 space-y-[1px]"></Box>
-                <Text size="small">
-                  <DisplayPrice>{cart.discountAmount}</DisplayPrice>
-                </Text>
-              </Box>
-            ),
+            right:
+              cartPrepare.state == "hasValue" &&
+              cartPrepare.contents !== null ? (
+                cartPrepare.contents.promotionList!.map((p) =>
+                  p.effectType == "setDiscount" ? (
+                    <Box flex className="space-x-1">
+                      <Box className="flex-1 space-y-[2px]"></Box>
+                      <Text size="xxSmall">
+                        -<DisplayPrice>{p.discountAmount}</DisplayPrice>
+                      </Text>
+                    </Box>
+                  ) : (
+                    <Box flex className="space-x-1">
+                      <Box className="flex-1 space-y-[2px]"></Box>
+                      <Text size="xxSmall">+{p.discountAmount}</Text>
+                    </Box>
+                  )
+                )
+              ) : (
+                <Box />
+              ),
           },
           {
-            left: <Text size="small">Thanh toán</Text>,
+            left: (
+              <Box className="flex-1 space-y-[1px]">
+                <Text.Title size="small">Thanh toán</Text.Title>
+              </Box>
+            ),
             right: (
               <Box flex className="space-x-1">
                 <Box className="flex-1 space-y-[1px]"></Box>
-                <Text size="small">{showPaymentType(cart.paymentType)}</Text>
+                <Text.Title size="small">
+                  <DisplayPrice>
+                    {cartPrepare.state == "hasValue" &&
+                    cartPrepare.contents !== null
+                      ? cartPrepare.contents.finalAmount
+                      : 0}
+                  </DisplayPrice>
+                </Text.Title>
               </Box>
             ),
           },

@@ -1,5 +1,5 @@
 export interface Cart {
-  storeId: string;
+  storeId?: string | null;
   orderType: string;
   paymentType: string;
   productList: ProductList[];
@@ -8,10 +8,10 @@ export interface Cart {
   shippingFee: number;
   finalAmount: number;
   bonusPoint: number;
-  promotionCode?: string;
-  voucherCode?: string;
+  promotionCode?: string | null;
+  voucherCode?: string | null;
   promotionList?: PromotionList[];
-  customerId?: string;
+  customerId?: string | null;
   customerName?: string;
   customerPhone?: string;
   deliveryAddress?: string;

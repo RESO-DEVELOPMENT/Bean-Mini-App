@@ -1,18 +1,14 @@
-import { FinalPrice } from "components/display/final-price";
 import { DisplayPrice } from "components/display/price";
-import { DisplaySelectedOptions } from "components/display/selected-options";
 import { ListRenderer } from "components/list-renderer";
-import { ProductPicker } from "components/product/picker";
 import React, { FC, useState } from "react";
-import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from "recoil";
-import { cartState, prepareCartState } from "state";
-import { ProductList } from "types/cart";
+import { useRecoilStateLoadable, useRecoilValue } from "recoil";
+import { cartState } from "state";
+import { Cart, ProductList } from "types/cart";
 import { Box, Text } from "zmp-ui";
 
 export const CartItems: FC = () => {
-  const cart = useRecoilValue(cartState);
   const [editingItem, setEditingItem] = useState<ProductList | undefined>();
-
+  const cart = useRecoilValue(cartState);
   return (
     <Box className="py-3 px-4">
       {cart.productList.length > 0 ? (

@@ -1,18 +1,14 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Header, Icon, Page, Tabs, Text } from "zmp-ui";
-import { SpecialOffers } from "./search/inquiry";
-import { Banner } from "./index/banner";
-import TabBar from "components/display/tabbar";
+import { Box, Header, Page, Tabs } from "zmp-ui";
 import VoucherCard from "./card-voucher";
 import { cartState, listPromotionState } from "state";
 import { useRecoilState, useRecoilValueLoadable } from "recoil";
-import OrderCard from "./orders/card-order";
-import TransactionCard from "./orders/card-transaction";
+import { prepareCart } from "utils/product";
+import orderApi from "api/order";
 
 const VoucherPage = () => {
   const navigate = useNavigate();
-
   const promotionListData = useRecoilValueLoadable(listPromotionState);
   const [cart, setCart] = useRecoilState(cartState);
 
@@ -35,6 +31,7 @@ const VoucherPage = () => {
                   .filter((e) => e.promotionType === 3)
                   .map((promotion) => (
                     <VoucherCard
+                      key={promotion.promotionId}
                       promotion={promotion}
                       onClick={() =>
                         setCart((prevCart) => {
@@ -43,12 +40,20 @@ const VoucherPage = () => {
                             ...prevCart,
                             promotionCode: promotion.promotionCode,
                           };
-
-                          console.log("res", res);
-                          return res;
+                          return prepareCart(res);
                         })
                       }
                       isUsed={cart.promotionCode === promotion.promotionCode}
+                      onCancle={() =>
+                        setCart((prevCart) => {
+                          let res = { ...prevCart };
+                          res = {
+                            ...prevCart,
+                            promotionCode: null,
+                          };
+                          return prepareCart(res);
+                        })
+                      }
                     />
                   ))}
               </div>
@@ -71,6 +76,7 @@ const VoucherPage = () => {
                   .filter((e) => e.promotionType === 2)
                   .map((promotion) => (
                     <VoucherCard
+                      key={promotion.promotionId}
                       promotion={promotion}
                       onClick={() =>
                         setCart((prevCart) => {
@@ -79,11 +85,21 @@ const VoucherPage = () => {
                             ...prevCart,
                             promotionCode: promotion.promotionCode,
                           };
-
-                          return res;
+                          return prepareCart(res);
                         })
                       }
                       isUsed={cart.promotionCode === promotion.promotionCode}
+                      onCancle={() =>
+                        setCart((prevCart) => {
+                          let res = { ...prevCart };
+                          res = {
+                            ...prevCart,
+                            promotionCode: null,
+                          };
+
+                          return prepareCart(res);
+                        })
+                      }
                     />
                   ))}
               </div>
