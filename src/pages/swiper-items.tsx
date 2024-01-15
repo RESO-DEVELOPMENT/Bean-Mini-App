@@ -17,12 +17,12 @@ const containerStyle: React.CSSProperties = {
   backgroundColor: "#ffffff",
   padding: "6px",
   borderRadius: "10px",
-  boxShadow: "0 0 2px rgba(0, 0, 0, 0.1)",
+  // boxShadow: "0 0 2px rgba(0, 0, 0, 0.1)",
   margin: "10px",
   width: "60px",
-  height: "50px", // Adjust height as needed
+  height: "60px", // Adjust height as needed
 };
-const iconSize = "40px";
+const iconSize = "38px";
 export const SwiperItem: FC = () => {
   const navigate = useNavigate();
   const swiperSlides1 = [
@@ -30,32 +30,32 @@ export const SwiperItem: FC = () => {
       <div style={containerStyle}>
         <MdPayments className="icon-color" size={iconSize} />
       </div>
-      <div className="text-center">Thanh toán</div>
+      <div className="text-center text-sm">Thanh toán</div>
     </SwiperSlide>,
     <SwiperSlide key={1} onClick={() => navigate("/qr")}>
       <div style={containerStyle}>
         <FaStar className="icon-color" size={iconSize} />
       </div>
-      <div className="text-center">Tích Điểm</div>
+      <div className="text-center text-sm">Tích Điểm</div>
     </SwiperSlide>,
     <SwiperSlide key={2} onClick={() => navigate("/cart")}>
       <div style={containerStyle}>
         <FaCartPlus className="icon-color" size={iconSize} />
       </div>
-      <div className="text-center">Đặt món</div>
+      <div className="text-center text-sm">Đặt món</div>
     </SwiperSlide>,
     <SwiperSlide key={3} onClick={() => navigate("/voucher")}>
       <div style={containerStyle}>
         <IoTicketOutline className="icon-color" size={iconSize} />
       </div>
-      <div className="text-center">Voucher</div>
+      <div className="text-center text-sm">Voucher</div>
     </SwiperSlide>,
 
     <SwiperSlide key={4}>
       <div style={containerStyle}>
         <FaMoneyBillTransfer className="icon-color" size={iconSize} />
       </div>
-      <div className="text-center">Đổi Điểm</div>
+      <div className="text-center text-sm">Đổi Điểm</div>
     </SwiperSlide>,
   ];
   return (

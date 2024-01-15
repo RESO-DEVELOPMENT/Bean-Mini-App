@@ -4,12 +4,14 @@ import { IoEyeSharp } from "react-icons/io5";
 import wallet from "static/wallet.png";
 import QRCode from "react-qr-code";
 import Barcode from "react-barcode";
+import { useRecoilValueLoadable } from "recoil";
+import { qrState } from "state";
 
 const QRCodePage: React.FC = () => {
   const [countdown, setCountdown] = useState(120);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const iconSize = "20px";
-
+  const qrCode = useRecoilValueLoadable(qrState);
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (countdown > 0) {
@@ -33,7 +35,7 @@ const QRCodePage: React.FC = () => {
       className="flex flex-col w-full h-full"
       style={{ background: "#14D9C5" }}
     >
-      <div className="p-4">
+      <div className="px-4 py-8">
         {/* Header */}
         <div className="flex justify-center items-center">
           {/* <Icon className="mt-8" icon="zi-arrow-left" /> */}
@@ -46,11 +48,16 @@ const QRCodePage: React.FC = () => {
         <div className="bg-white p-8 rounded-lg my-4 text-black">
           <div className="text-center">Đưa mã này cho thu ngân</div>
 
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <Barcode value="1234567890" width={2} height={50} fontSize={14} />
-          </div>
-          <div className="flex justify-center">
-            <QRCode value="https://example.com" size={160} />
+          {/* <div style={{ display: "flex", justifyContent: "center" }}>
+            <Barcode
+              value={qrCode.contents ?? 0}
+              width={2}
+              height={50}
+              fontSize={14}
+            />
+          </div> */}
+          <div className="flex justify-center my-8">
+            <QRCode value={qrCode.contents ?? 0} size={200} />
           </div>
           <div className="text-center text-sm mt-2">
             Tự động cập nhật sau {countdown}s.{" "}
@@ -124,8 +131,7 @@ const QRCodePage: React.FC = () => {
           </div>
         </div>
         {/* Promotions */}
-        <div className="flex flex-row items-center my-2">
-          {/* Separate Text "Ưu đãi của tôi" */}
+        {/* <div className="flex flex-row items-center my-2">
           <div className="flex items-center">
             <span className="font-bold text-white">Ưu đãi của tôi</span>
           </div>
@@ -138,7 +144,7 @@ const QRCodePage: React.FC = () => {
             </span>
             <Icon icon="zi-chevron-right" className="ml-1" />
           </div>
-        </div>
+        </div> */}
         {/* <div className="flex">
           <div
             className="flex items-start justify-between px-3 py-2 mt-18 rounded-lg bg-white border-solid border border-green text-black"

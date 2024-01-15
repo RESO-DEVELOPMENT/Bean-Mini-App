@@ -27,11 +27,16 @@ const getUserInfo = (id: string, params?: any) =>
   requestWebAdmin.get<UserInfo>(`users/${id}`, {
     params,
   });
+const generateQrCode = (id: string, params?: any) =>
+  requestWebAdmin.post<string>(`users/${id}/generate-qr`, {
+    params,
+  });
 
 const userApi = {
   getListStore,
   userLogin,
   getListPromotion,
+  generateQrCode,
   getUserInfo,
 };
 

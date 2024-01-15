@@ -1,4 +1,5 @@
 export interface TBlog {
+  [x: string]: string | undefined;
   id: string;
   title: string;
   blogContent: string;

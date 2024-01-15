@@ -15,14 +15,10 @@ import {
 } from "types/store-menu";
 import { Cart } from "types/cart";
 import { Notification } from "types/notification";
-import { calculateDistance } from "utils/location";
-import { TStore } from "types/store";
 import { wait } from "utils/async";
 import storeApi from "api/store";
 import menuApi from "api/menu";
 import blogApi from "api/blog";
-import { CategoryId } from "types/category";
-
 import { getAccessToken } from "zmp-sdk/apis";
 import { OrderDetails, OrderType, PaymentType } from "types/order";
 import orderApi from "api/order";
@@ -74,11 +70,13 @@ export const memberState = selector({
   get: async ({ get }) => {
     const user = get(userState);
     const phone = get(phoneState);
-    if (phone !== undefined) {
+    if (phone !== undefined && user != null) {
       var response = await userApi.userLogin(phone, user.name);
-      axios.defaults.headers.common.Authorization = `Bearer ${response.data.accessToken}`;
-      var member = await userApi.getUserInfo(response.data.userId ?? "");
-      return member.data;
+      if (response.status == 200) {
+        axios.defaults.headers.common.Authorization = `Bearer ${response.data.accessToken}`;
+        var member = await userApi.getUserInfo(response.data.userId ?? "");
+        return member.data;
+      }
     }
     return null;
   },
@@ -111,11 +109,26 @@ export const listOrderState = selector({
   key: "listOrder",
   get: async ({ get }) => {
     const member = get(memberState);
-    const listOrder = await orderApi.getListOrder(member?.id ?? "", {
-      page: 1,
-      size: 100,
-    });
-    return listOrder.data.items;
+    if (member !== null) {
+      const listOrder = await orderApi.getListOrder(member?.id ?? "", {
+        page: 1,
+        size: 100,
+      });
+      return listOrder.data.items;
+    }
+    return [];
+  },
+});
+
+export const qrState = selector({
+  key: "qrCode",
+  get: async ({ get }) => {
+    const member = get(memberState);
+    if (member !== null) {
+      const listOrder = await userApi.generateQrCode(member?.id ?? "");
+      return listOrder.data;
+    }
+    return null;
   },
 });
 
@@ -319,27 +332,27 @@ export const nearbyStoresState = selector({
   key: "nearbyStores",
   get: ({ get }) => {
     // Get the current location from the locationState atom
-    const location = get(locationState);
+    // const location = get(locationState);
     // Get the list of stores from the storesState atom
     const stores = get(listStoreState);
 
-    if (location) {
-      const storesWithDistance = stores.map((store: TStore) => ({
-        ...store,
-        distance: calculateDistance(
-          location.latitude,
-          location.longitude,
-          store.lat,
-          store.long
-        ),
-      }));
-      // Sort the stores by distance from the current location
-      const nearbyStores = storesWithDistance.sort(
-        (a, b) => a.distance - b.distance
-      );
+    // if (location) {
+    //   const storesWithDistance = stores.map((store: TStore) => ({
+    //     ...store,
+    //     distance: calculateDistance(
+    //       location.latitude,
+    //       location.longitude,
+    //       store.lat,
+    //       store.long
+    //     ),
+    //   }));
+    //   // Sort the stores by distance from the current location
+    //   const nearbyStores = storesWithDistance.sort(
+    //     (a, b) => a.distance - b.distance
+    //   );
 
-      return nearbyStores;
-    }
+    //   return nearbyStores;
+    // }
     return stores;
   },
 });

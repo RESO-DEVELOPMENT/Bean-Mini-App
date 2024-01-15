@@ -37,18 +37,18 @@ const WalletScreen: React.FunctionComponent = () => {
         {member.state === "hasValue" && member.contents !== null ? (
           <>
             <WalletBalance memberInfo={member.contents} />
-            <SwiperAd />
-            <Box className="mx-5 mt-5" style={flexContainerStyle}>
-              <Text.Title size="large">Dịch vụ</Text.Title>
+            <Banner />
+            <Box className="mx-4 mt-4" style={flexContainerStyle}>
+              <Text.Title size="normal">Dịch vụ</Text.Title>
               {/* <Text.Title className="text-sm" style={blueTextStyle}>
                 Tất cả
               </Text.Title> */}
             </Box>
             <SwiperItem />
             {/* <Features /> */}
-            <Box className="mx-5 mt-5" style={flexContainerStyle}>
-              <Text.Title size="large">Chương trình</Text.Title>
-              <Text.Title style={blueTextStyle}>Tất cả</Text.Title>
+            <Box className="mx-4 mt-4" style={flexContainerStyle}>
+              <Text.Title size="normal">Chương trình</Text.Title>
+              {/* <Text.Title size="normal">Tất cả</Text.Title> */}
             </Box>
             <SwiperEn />
             <Suspense>{/* <Features /> */}</Suspense>
