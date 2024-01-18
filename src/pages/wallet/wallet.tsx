@@ -59,7 +59,7 @@ const WalletScreen: React.FunctionComponent = () => {
             <Subscription />
           </>
         )}
-        <Divider />
+        {/* <Divider /> */}
       </Box>
     </Page>
   );

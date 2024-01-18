@@ -91,7 +91,7 @@ const QRCodePage: React.FC = () => {
         >
           <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-white my-2 text-black">
             <div className="flex items-center">
-              <Text.Title className="text-sm">Tài Khoản/Điểm</Text.Title>
+              <Text.Title className="text-tm">Tài Khoản / Điểm</Text.Title>
               {/* <IoEyeSharp className="ml-4" size={iconSize} /> */}
             </div>
             {/* <div className="flex items-center">
@@ -123,7 +123,9 @@ const QRCodePage: React.FC = () => {
                   <div className="w-8 h-8 bg-green rounded-full mr-2">
                     <img className=" mr-1" src={wallet} />
                   </div>
-                  <span className="font-bold">Ví Bean</span>
+                  <span className="font-bold " style={{ whiteSpace: "nowrap" }}>
+                    Ví Bean
+                  </span>
                 </div>
                 <span className="order-2 mr-2 font-bold ">239đ</span>
               </div>
