@@ -62,7 +62,7 @@ const HistoryPicker: FC = () => {
                             ? "font-bold bg-blue-300 p-1 rounded-md text-white"
                             : order.status == OrderStatus.PAID
                             ? "font-bold bg-emerald-400 p-1 rounded-md text-white"
-                            : "font-bold bg-red-400 p-1 rounded-md text-green"
+                            : "font-bold bg-red-400 p-1 rounded-md text-white"
                         }
                       >
                         {showOrderStatus(order.status)}

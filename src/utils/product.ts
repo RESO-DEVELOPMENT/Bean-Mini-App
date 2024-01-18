@@ -71,7 +71,7 @@ export function showOrderStatus(status: string) {
     case OrderStatus.PAID:
       return "Đã hoàn thành";
     case OrderStatus.CANCELED:
-      return "Đã huỹ";
+      return "Đã huỷ";
     default:
       return "Đang thực hiện";
   }
