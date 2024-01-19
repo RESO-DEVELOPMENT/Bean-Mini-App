@@ -59,7 +59,7 @@ const HistoryPicker: FC = () => {
               {orderListData.contents.map((order, index) => (
                 <Box
                   key={index}
-                  // onClick={() => gotoPage(order.id)}
+                  onClick={() => gotoPage(order.id)}
                   className="my-2 p-2 bg-white"
                   flex
                 >
@@ -103,7 +103,7 @@ const HistoryPicker: FC = () => {
                     <div className="flex mt-2 justify-center">
                       <Text.Header
                         className=" m-1 flex-1 align-middle font-normal text-m text-primary"
-                        onClick={() => handleViewOrderDetails(order.id)}
+                        onClick={() => gotoPage(order.id)}
                       >
                         Xem chi tiết đơn hàng
                       </Text.Header>
