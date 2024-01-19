@@ -46,7 +46,7 @@ const WalletScreen: React.FunctionComponent = () => {
             </Box>
             <SwiperItem />
             {/* <Features /> */}
-            <Box className="mx-4 mt-4" style={flexContainerStyle}>
+            <Box className="mx-4 mt-8" style={flexContainerStyle}>
               <Text.Title size="normal">Chương trình</Text.Title>
               {/* <Text.Title size="normal">Tất cả</Text.Title> */}
             </Box>
@@ -64,6 +64,7 @@ const WalletScreen: React.FunctionComponent = () => {
             <SwiperEn />
           </>
         )}
+        {/* <Divider /> */}
       </Box>
     </Page>
   );

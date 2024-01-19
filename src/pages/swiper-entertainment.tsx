@@ -73,7 +73,7 @@ export const SwiperEn: FC = () => {
                 }}
               />
             </div>
-            <div className="slide-label" style={{ textAlign: "center" }}>
+            <div className="slide-label mr-1" style={{ textAlign: "center" }}>
               {item.title}
             </div>
           </SwiperSlide>

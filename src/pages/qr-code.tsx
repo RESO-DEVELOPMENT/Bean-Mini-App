@@ -111,7 +111,7 @@ const QRCodePage: React.FC = () => {
         >
           <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-white my-2 text-black">
             <div className="flex items-center">
-              <Text.Title className="text-sm">Tài Khoản/Điểm</Text.Title>
+              <Text.Title className="text-tm">Tài Khoản / Điểm</Text.Title>
               {/* <IoEyeSharp className="ml-4" size={iconSize} /> */}
             </div>
             {/* <div className="flex items-center">

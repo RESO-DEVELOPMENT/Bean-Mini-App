@@ -40,7 +40,7 @@ const Personal: FC = () => {
         }}
         items={[
           {
-            navigate: "/history",
+            navigate: "/info",
             left: <Icon icon="zi-user" />,
             right: (
               <Box flex>

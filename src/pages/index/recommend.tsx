@@ -15,12 +15,12 @@ export const RecommendContent: FC = () => {
 
   return (
     <Section title="Gợi ý cho bạn" padding="title-only">
-      <Swiper slidesPerView={1.25} spaceBetween={16} className="px-4">
+      <Swiper slidesPerView={1.25} spaceBetween={16} className="">
         {recommendProducts.map((product) => (
           <SwiperSlide key={product.id}>
             <ProductPicker product={product} isUpdate={false}>
               {({ open }) => (
-                <div onClick={open} className="space-y-3">
+                <div onClick={open} className="space-y-3 ml-3">
                   <Box
                     className="relative aspect-video rounded-lg bg-cover bg-center bg-skeleton"
                     style={{ backgroundImage: `url(${product.picUrl})` }}
