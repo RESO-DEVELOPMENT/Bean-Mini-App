@@ -14,6 +14,11 @@ export enum PaymentType {
   BANKING = "BANKING",
   POINTIFY = "POINTIFY",
 }
+export enum PaymentStatus {
+  PENDING = "PENDING",
+  FAIL = "FAIL",
+  PAID = "PAID",
+}
 
 export interface OrderPreview {
   id: string;

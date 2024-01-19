@@ -1,13 +1,18 @@
 import { ListRenderer } from "components/list-renderer";
 import { ProductItem } from "components/product/item";
-import React, { FC, Suspense } from "react";
-import { useRecoilValue, useRecoilValueLoadable } from "recoil";
+import React, { FC, Suspense, useEffect } from "react";
+import {
+  useRecoilValue,
+  useRecoilValueLoadable,
+  useSetRecoilState,
+} from "recoil";
 import "./orders.css";
 import {
   categoriesState,
   listOrderState,
   listTransactionState,
   productsByCategoryState,
+  requestOrderTransactionTriesState,
   selectedCategoryIdState,
 } from "state";
 import { Box, Header, Page, Tabs, Text, useNavigate } from "zmp-ui";
@@ -23,7 +28,11 @@ const HistoryPicker: FC = () => {
   const selectedCategory = useRecoilValue(selectedCategoryIdState);
   const orderListData = useRecoilValueLoadable(listOrderState);
   const transactionListData = useRecoilValueLoadable(listTransactionState);
+  const retry = useSetRecoilState(requestOrderTransactionTriesState);
   const navigate = useNavigate();
+  useEffect(() => {
+    retry((r) => r + 1);
+  }, []);
   const gotoPage = (id: string) => {
     navigate("/order-detail", { state: { id } });
   };

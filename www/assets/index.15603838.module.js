@@ -1,0 +1,1 @@
+import{b as e,c as s,P as r,j as a,H as t}from"./index.2cc98fd5.module.js";import{TabOrder as o}from"./tabs.1fcfda7e.module.js";const n=()=>(e(),s(r,{className:"flex flex-col",children:[a(t,{title:"Tr\u1EA1ng th\xE1i \u0111\u01A1n h\xE0ng: abc...",showBackIcon:!1}),a(o,{})]}));export{n as OrderStatus,n as default};

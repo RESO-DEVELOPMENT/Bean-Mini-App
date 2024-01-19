@@ -4,25 +4,45 @@ import { IoEyeSharp } from "react-icons/io5";
 import wallet from "static/wallet.png";
 import QRCode from "react-qr-code";
 import Barcode from "react-barcode";
-import { useRecoilValueLoadable } from "recoil";
-import { qrState } from "state";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useRecoilValueLoadable,
+  useSetRecoilState,
+} from "recoil";
+import { qrState, memberState, requestRetriveQRstate } from "state";
+import { DisplayPrice } from "components/display/price";
 
 const QRCodePage: React.FC = () => {
   const [countdown, setCountdown] = useState(120);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const iconSize = "20px";
   const qrCode = useRecoilValueLoadable(qrState);
+  const member = useRecoilValue(memberState);
+  const pointWallet = member?.level.memberWallet.find(
+    (e) => e.walletType.name === "POINT"
+  );
+  const monney = member?.level.memberWallet.find(
+    (e) => e.walletType.name === "MONEY"
+  );
+  const [retry, setRetry] = useRecoilState(requestRetriveQRstate);
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (countdown > 0) {
         setCountdown(countdown - 1);
       }
     }, 1000);
-
-    return () => clearInterval(intervalId);
+    if (retry == 0 || countdown == 0) {
+      setRetry((r) => r + 1);
+      setCountdown(120);
+    }
+    return () => {
+      clearInterval(intervalId);
+    };
   }, [countdown]);
 
   const handleUpdateClick = () => {
+    setRetry((r) => r + 1);
     setCountdown(120);
   };
 
@@ -101,33 +121,52 @@ const QRCodePage: React.FC = () => {
 
           {/* Wallet Info */}
           <div className="flex space-x-4 m-2">
-            {[0, 1].map((index) => (
-              <div
-                key={index}
-                onClick={() => handleClick(index)}
-                className={`flex items-center justify-between px-3 py-2 rounded-lg bg-white text-black ${
-                  selectedIndex === index
-                    ? "border-solid border border-green-600"
-                    : ""
-                }`}
-                style={{
-                  flexDirection: "column",
-                  alignItems: "center",
-                  boxShadow: "0 0 20px rgba(0, 0, 0, 0.1)",
-                  width: "160px",
-                  height: "70px",
-                  cursor: "pointer",
-                }}
-              >
-                <div className="flex items-center mr-8">
-                  <div className="w-8 h-8 bg-green rounded-full mr-2">
-                    <img className=" mr-1" src={wallet} />
-                  </div>
-                  <span className="font-bold">Ví Bean</span>
+            <div
+              className={
+                "flex items-center justify-between px-3 py-2 rounded-lg bg-white text-black border-solid border border-green-600"
+              }
+              style={{
+                flexDirection: "column",
+                alignItems: "center",
+                boxShadow: "0 0 20px rgba(0, 0, 0, 0.1)",
+                width: "160px",
+                height: "70px",
+                cursor: "pointer",
+              }}
+            >
+              <div className="flex items-center mr-8">
+                <div className="w-8 h-8 bg-green rounded-full mr-2">
+                  <img className=" mr-1" src={wallet} />
                 </div>
-                <span className="order-2 mr-2 font-bold ">239đ</span>
+                <span className="font-bold">Ví Bean </span>
               </div>
-            ))}
+              <span className="order-2 mr-2 font-bold ">
+                <DisplayPrice>{monney?.balance ?? 0}</DisplayPrice>
+              </span>
+            </div>
+            <div
+              className={
+                "flex items-center justify-between px-3 py-2 rounded-lg bg-white text-black border-solid border border-green-600"
+              }
+              style={{
+                flexDirection: "column",
+                alignItems: "center",
+                boxShadow: "0 0 20px rgba(0, 0, 0, 0.1)",
+                width: "160px",
+                height: "70px",
+                cursor: "pointer",
+              }}
+            >
+              <div className="flex items-center mr-8">
+                <div className="w-8 h-8 bg-green rounded-full mr-2">
+                  <img className=" mr-1" src={wallet} />
+                </div>
+                <span className="font-bold">Ví Điểm</span>
+              </div>
+              <span className="order-2 mr-2 font-bold ">
+                {pointWallet?.balance}
+              </span>
+            </div>
           </div>
         </div>
         {/* Promotions */}

@@ -108,13 +108,16 @@ export const listStoreState = selector({
 export const listOrderState = selector({
   key: "listOrder",
   get: async ({ get }) => {
-    const member = get(memberState);
-    if (member !== null) {
-      const listOrder = await orderApi.getListOrder(member?.id ?? "", {
-        page: 1,
-        size: 100,
-      });
-      return listOrder.data.items;
+    const request = get(requestOrderTransactionTriesState);
+    if (request) {
+      const member = get(memberState);
+      if (member !== null) {
+        const listOrder = await orderApi.getListOrder(member?.id ?? "", {
+          page: 1,
+          size: 100,
+        });
+        return listOrder.data.items;
+      }
     }
     return [];
   },
@@ -123,13 +126,20 @@ export const listOrderState = selector({
 export const qrState = selector({
   key: "qrCode",
   get: async ({ get }) => {
-    const member = get(memberState);
-    if (member !== null) {
-      const listOrder = await userApi.generateQrCode(member?.id ?? "");
-      return listOrder.data;
+    const request = get(requestRetriveQRstate);
+    if (request) {
+      const member = get(memberState);
+      if (member !== null) {
+        const listOrder = await userApi.generateQrCode(member?.id ?? "");
+        return listOrder.data;
+      }
     }
     return null;
   },
+});
+export const requestRetriveQRstate = atom({
+  key: "requestRetriveQR",
+  default: 0,
 });
 
 export const getOrderDetailstate = selectorFamily<OrderDetails, string>({
@@ -143,14 +153,23 @@ export const getOrderDetailstate = selectorFamily<OrderDetails, string>({
 export const listTransactionState = selector({
   key: "listTransaction",
   get: async ({ get }) => {
-    const member = get(memberState);
-    const listOrder = await orderApi.getListTransactions(member?.id ?? "", {
-      page: 1,
-      size: 100,
-    });
-    return listOrder.data.items;
+    const request = get(requestOrderTransactionTriesState);
+    if (request) {
+      const member = get(memberState);
+      const listOrder = await orderApi.getListTransactions(member?.id ?? "", {
+        page: 1,
+        size: 100,
+      });
+      return listOrder.data.items;
+    }
+    return [];
   },
 });
+export const requestOrderTransactionTriesState = atom({
+  key: "requestOrderTransactionTries",
+  default: 0,
+});
+
 export const listPromotionState = selector({
   key: "listPromotion",
   get: async ({ get }) => {

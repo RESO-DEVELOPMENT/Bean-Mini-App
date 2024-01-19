@@ -27,7 +27,7 @@ export const CartPreview: FC = () => {
         ...cart,
         storeId: cart.contents.storeId,
         orderType: OrderType.EATIN,
-        paymentType: PaymentType.CASH,
+        paymentType: PaymentType.POINTIFY,
         productList: [],
         totalAmount: 0,
         shippingFee: 0,

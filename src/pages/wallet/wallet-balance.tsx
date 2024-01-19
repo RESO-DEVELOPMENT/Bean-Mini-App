@@ -24,15 +24,15 @@ export const WalletBalance: FC<MemberBalanceProps> = ({ memberInfo }) => {
   );
 
   return (
-    <Box className="bg-white flex  items-center flex-row  m-2 mt-2 ">
-      <Box className="bg-white basis-1/3 items-center flex flex-row border-solid border border-gray text-gray rounded-full p-2 mx-0.5">
+    <Box className="bg-white flex  items-center flex-row  m-3 mt-2 ">
+      <Box className="bg-white items-center flex flex-row border-solid border border-gray text-gray rounded-full p-2 mx-0.5">
         <img className="w-6 h-6 mr-1" src={point} />
         <Text className="font-bold">
-          <DisplayValue value={pointWallet?.balance ?? 0} unit=" Point" />
+          <DisplayValue value={pointWallet?.balance ?? 0} unit=" Bean" />
         </Text>
       </Box>
 
-      <Box className="bg-white basis-1/3 items-center flex flex-row border-solid border border-gray text-gray rounded-full p-2 mx-1">
+      <Box className="bg-white items-center flex flex-row border-solid border border-gray text-gray rounded-full p-2 mx-1">
         <img className="w-6 h-6 mr-1" src={wallet} />
         <Text className="font-bold">
           <DisplayPrice>{monney?.balance ?? 0}</DisplayPrice>
@@ -40,7 +40,7 @@ export const WalletBalance: FC<MemberBalanceProps> = ({ memberInfo }) => {
       </Box>
       <Box
         onClick={() => navigate("/cart")}
-        className="bg-white h-10 w-10 mx-2 border-solid border border-gray text-gray rounded-full p-2"
+        className="bg-white h-10 w-10  border-solid border border-gray text-gray rounded-full p-2"
       >
         <CartIcon></CartIcon>
       </Box>

@@ -32,13 +32,13 @@ export const SwiperItem: FC = () => {
       </div>
       <div className="text-center text-sm">Thanh toán</div>
     </SwiperSlide>,
-    <SwiperSlide key={1} onClick={() => navigate("/qr")}>
-      <div style={containerStyle}>
-        <FaStar className="icon-color" size={iconSize} />
-      </div>
-      <div className="text-center text-sm">Tích Điểm</div>
-    </SwiperSlide>,
-    <SwiperSlide key={2} onClick={() => navigate("/cart")}>
+    // <SwiperSlide key={1} onClick={() => navigate("/qr")}>
+    //   <div style={containerStyle}>
+    //     <FaStar className="icon-color" size={iconSize} />
+    //   </div>
+    //   <div className="text-center text-sm">Tích Điểm</div>
+    // </SwiperSlide>,
+    <SwiperSlide key={2} onClick={() => navigate("/order")}>
       <div style={containerStyle}>
         <FaCartPlus className="icon-color" size={iconSize} />
       </div>

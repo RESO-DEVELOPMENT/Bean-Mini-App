@@ -57,9 +57,13 @@ const WalletScreen: React.FunctionComponent = () => {
           <>
             <Banner />
             <Subscription />
+            <Box className="mx-4 mt-4" style={flexContainerStyle}>
+              <Text.Title size="normal">Chương trình</Text.Title>
+              {/* <Text.Title size="normal">Tất cả</Text.Title> */}
+            </Box>
+            <SwiperEn />
           </>
         )}
-        <Divider />
       </Box>
     </Page>
   );

@@ -12,3 +12,8 @@ export interface Transaction {
   isIncrease: boolean;
   type: string;
 }
+export enum TransactionTypeEnum {
+  PAYMENT = "PAYMENT",
+  GET_POINT = "GET_POINT",
+  TOP_UP = "TOP_UP",
+}

@@ -6,6 +6,7 @@ import React, { FC, useState } from "react";
 import { OrderPreview } from "types/order";
 import { Transaction } from "types/transaction";
 import { displayDate } from "utils/date";
+import { showTransactionStatus, showTransactionType } from "utils/product";
 import { Box, Text } from "zmp-ui";
 
 interface TransactionProps {
@@ -45,7 +46,10 @@ const TransactionCard: FC<TransactionProps> = ({ trans }) => {
       <Box style={cardStyle}>
         <Box>
           <Text value={0}>{displayDate(new Date(trans.createdDate))}</Text>
-          <Text className="font-bold">{trans.type}</Text>
+          <Text className="font-bold">{showTransactionType(trans.type)}</Text>
+          <Text className="font-bold">
+            {showTransactionStatus(trans.status)}
+          </Text>
           <Text className="font-bold">
             <DisplayPrice>{trans.amount}</DisplayPrice>
           </Text>

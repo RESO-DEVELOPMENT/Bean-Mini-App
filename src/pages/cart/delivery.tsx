@@ -52,12 +52,12 @@ export const Delivery: FC = () => {
                       let res = { ...prevCart };
                       res = {
                         ...prevCart,
-                        notes: e.currentTarget.value,
+                        deliveryAddress: e.currentTarget.value,
                       };
                       return res;
                     })
                   }
-                  placeholder="Nhập ghi chú..."
+                  placeholder="Nhận món tại"
                   className="border-none px-0 w-full focus:outline-none"
                   maxRows={4}
                 />

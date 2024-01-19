@@ -5,9 +5,15 @@ import { Cart } from "types/cart";
 import { Product, ProductTypeEnum } from "types/store-menu";
 import { ProductList } from "pages/index/product-list";
 import { useRecoilState } from "recoil";
-import { OrderStatus, OrderType, PaymentType } from "types/order";
+import {
+  OrderStatus,
+  OrderType,
+  PaymentStatus,
+  PaymentType,
+} from "types/order";
 import orderApi from "api/order";
 import { val, value } from "zmp-dom";
+import { TransactionTypeEnum } from "types/transaction";
 
 export function calcFinalPrice(product: Product) {
   let finalPrice = product.sellingPrice;
@@ -58,21 +64,55 @@ export function showPaymentType(paymentType: string) {
     case PaymentType.BANKING:
       return "Ngân hàng";
     case PaymentType.POINTIFY:
-      return "Ví POINTIFY";
+      return "VÍ BEAN";
     default:
-      return "Tiền mặt";
+      return "TIỀN MẶT";
   }
 }
 export function showOrderStatus(status: string) {
   switch (status) {
     case OrderStatus.PENDING:
       return "Đang thực hiện";
-
     case OrderStatus.PAID:
       return "Đã hoàn thành";
     case OrderStatus.CANCELED:
-      return "Đã huỹ";
+      return "Đã huỷ";
     default:
       return "Đang thực hiện";
+  }
+}
+export function showPaymentStatus(status: string) {
+  switch (status) {
+    case PaymentStatus.PENDING:
+      return "Chưa thanh toán";
+    case PaymentStatus.PAID:
+      return "Đã thanh toán";
+    case PaymentStatus.FAIL:
+      return "Thanh toán thất bại";
+    default:
+      return "Chưa thanh toán";
+  }
+}
+
+export function showTransactionType(type: string) {
+  switch (type) {
+    case TransactionTypeEnum.PAYMENT:
+      return "Thanh toán đơn hàng";
+    case TransactionTypeEnum.GET_POINT:
+      return "Tích điểm";
+    case TransactionTypeEnum.TOP_UP:
+      return "Nạp tiền";
+    default:
+      return "Không có thông tin";
+  }
+}
+export function showTransactionStatus(status: string) {
+  switch (status) {
+    case "FAIL":
+      return "Thất bại";
+    case "SUCCESS":
+      return "Thành công";
+    default:
+      return "Không có thông tin";
   }
 }
