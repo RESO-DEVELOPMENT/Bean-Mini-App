@@ -10,7 +10,7 @@ import {
   productsByCategoryState,
   selectedCategoryIdState,
 } from "state";
-import { Box, Header, Page, Tabs, Text, useNavigate } from "zmp-ui";
+import { Box, Header, Page, Tabs, Text } from "zmp-ui";
 import OrderCard from "./card-order";
 import TransactionCard from "./card-transaction";
 import { Card } from "react-bootstrap";
@@ -18,14 +18,19 @@ import { displayDate, displayTime } from "utils/date";
 import { DisplayPrice } from "components/display/price";
 import { showOrderStatus } from "utils/product";
 import { OrderStatus } from "types/order";
-
+import { useNavigate } from "react-router-dom";
 const HistoryPicker: FC = () => {
   const selectedCategory = useRecoilValue(selectedCategoryIdState);
   const orderListData = useRecoilValueLoadable(listOrderState);
   const transactionListData = useRecoilValueLoadable(listTransactionState);
+  const handleResetClick = (orderId) => {
+    // Thêm logic xử lý trước khi navigate nếu cần
+    navigate("/order");
+  };
+
   const navigate = useNavigate();
-  const gotoPage = (id: string) => {
-    navigate("/order-detail", { state: { id } });
+  const handleViewOrderDetails = (orderId) => {
+    navigate("/order-detail", { state: { id: orderId } });
   };
   return (
     <Tabs
@@ -46,7 +51,7 @@ const HistoryPicker: FC = () => {
               {orderListData.contents.map((order, index) => (
                 <Box
                   key={index}
-                  onClick={() => gotoPage(order.id)}
+                  // onClick={() => gotoPage(order.id)}
                   className="my-2 p-2 bg-white"
                   flex
                 >
@@ -88,10 +93,16 @@ const HistoryPicker: FC = () => {
                     </div>
                     <hr className="hr-order" />
                     <div className="flex mt-2 justify-center">
-                      <Text.Header className=" m-1 flex-1 align-middle font-normal text-m text-primary">
+                      <Text.Header
+                        className=" m-1 flex-1 align-middle font-normal text-m text-primary"
+                        onClick={() => handleViewOrderDetails(order.id)}
+                      >
                         Xem chi tiết đơn hàng
                       </Text.Header>
-                      <button className="font-bold bg-primary p-1 pl-6 pr-6 rounded-md text-white text-sm hover:text-sky-200 hover:bg-cyan-800">
+                      <button
+                        className="font-bold bg-primary p-1 pl-6 pr-6 rounded-md text-white text-sm hover:text-sky-200 hover:bg-cyan-800"
+                        onClick={() => handleResetClick(order.id)}
+                      >
                         Đặt lại
                       </button>
                     </div>
