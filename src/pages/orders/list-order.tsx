@@ -28,8 +28,9 @@ const HistoryPicker: FC = () => {
   const selectedCategory = useRecoilValue(selectedCategoryIdState);
   const orderListData = useRecoilValueLoadable(listOrderState);
   const transactionListData = useRecoilValueLoadable(listTransactionState);
-  const retry = useSetRecoilState(requestOrderTransactionTriesState);
   const navigate = useNavigate();
+  const retry = useSetRecoilState(requestOrderTransactionTriesState);
+  
   useEffect(() => {
     retry((r) => r + 1);
   }, []);
