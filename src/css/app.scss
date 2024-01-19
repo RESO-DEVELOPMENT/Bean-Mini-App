@@ -122,3 +122,98 @@ body {
 .custom-header {
   width: 200px; /* Set the desired width here */
 }
+.avatar {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover; /* Đảm bảo hình ảnh được bao phủ đều */
+  margin-top: 30px;
+  margin-left: 70px;
+  background-color: #cccccc; /* Màu xám */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8em;
+  color: white;
+}
+.camera-icon {
+  position: absolute;
+  bottom: 0;
+  right: 20px;
+  background-color: #dcdcdc; /* hoặc màu khác */
+  color: black;
+  border-radius: 50%;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+}
+.avatar-wrapper {
+  position: relative;
+  display: inline-block; /* Để đặt icon lên trên avatar */
+}
+.info-box {
+  background-color: white;
+  padding: 20px;
+  margin: 90px 0;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  top: 10px;
+  justify-content: start;
+  text-align: start;
+}
+h2 {
+  margin: 20px 0;
+  color: #333;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+.info-box p {
+  font-size: 18px;
+}
+.info-box input[type="text"],
+.info-box input[type="email"] {
+  margin-bottom: 10px;
+  padding: 5px;
+  display: block;
+}
+
+.info-box button {
+  padding: 5px 10px;
+  margin-top: 10px;
+}
+.edit-button {
+  padding: 20px;
+  border: 2px solid red;
+  border-radius: 15px;
+  background-color: white;
+  color: red;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: -5px;
+  margin-left: 220px;
+  width: 120px;
+}
+.info-box div {
+  margin-bottom: 15px;
+}
+
+.info-box input,
+.info-box select {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+}
+
+.info-box p {
+  margin-bottom: 10px;
+}
+
+.edit-button {
+  margin-top: 15px;
+}
+.h1 {
+  font-weight: bold;
+  font-size: 20px;
+}
