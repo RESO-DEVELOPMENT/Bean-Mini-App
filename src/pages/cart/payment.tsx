@@ -12,6 +12,7 @@ export const PaymentInfo: FC = () => {
     <Box className="space-y-3 px-4 mb-2">
       <Text.Header>Thông tin thanh toán</Text.Header>
       <ListRenderer
+        noDivider
         items={[
           {
             left: <Text size="small">Tạm tính</Text>,

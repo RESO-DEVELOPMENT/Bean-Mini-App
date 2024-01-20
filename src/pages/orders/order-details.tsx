@@ -10,8 +10,11 @@ import {
 } from "recoil";
 import { getOrderDetailstate } from "state";
 import { DisplayPrice } from "components/display/price";
-import { showPaymentType } from "utils/product";
+import { showOrderType, showPaymentType } from "utils/product";
 import { displayDate, displayTime } from "utils/date";
+import { ListRenderer } from "components/list-renderer";
+import { OrderStatus, OrderType } from "types/order";
+import { showOrderStatus } from "utils/product";
 
 const OrderDetailsPage: FC = () => {
   const location = useLocation();
@@ -21,114 +24,305 @@ const OrderDetailsPage: FC = () => {
   return (
     <Page className="flex flex-col">
       <Header title="Chi tiết đơn hàng" className="pt-12" showBackIcon={true} />
-      <Box className="bg-white mb-2 pr-2 pl-2">
+      <Box>
         {orderDetail.state === "hasValue" && orderDetail.contents !== null ? (
           <>
-            <Card inset>
-              <div className="flex pb-4 pt-4 pr-2 pl-2">
-                <Text.Title className="text-m text-center pl-2">
-                  {orderDetail.contents.storeName}
-                </Text.Title>
-                <Icon icon="zi-chevron-right" />
-              </div>
-              <hr />
-              <div>
-                {orderDetail.contents.productList.map((detail) => (
-                  <Card inset>
-                    <div className="flex p-2">
-                      <div className="flex pr-2">
-                        {/* <img
-                        className="img-bill-orders rounded-md mr-2"
-                        src="https://www.cnet.com/a/img/resize/36e8e8fe542ad9af413eb03f3fbd1d0e2322f0b2/hub/2023/02/03/afedd3ee-671d-4189-bf39-4f312248fb27/gettyimages-1042132904.jpg?auto=webp&fit=crop&height=1200&width=1200"
-                      /> */}
-                        <b className="text-gray font-semibold">1x</b>
-                      </div>
-                      <div className="pl-2">
-                        <Text.Header>{detail.name}</Text.Header>
-                        <Text>
-                          <p>{detail.note}</p>
+            <Box className="space-y-3 px-4 mb-2">
+              <Text.Header>Sản phẩm</Text.Header>
+              {orderDetail.contents.productList.length > 0 ? (
+                <ListRenderer
+                  items={orderDetail.contents.productList}
+                  limit={3}
+                  onClick={(item) => {
+                    // setEditingItem(item);
+                    // open();
+                  }}
+                  renderKey={({ quantity }) => JSON.stringify({ quantity })}
+                  renderLeft={(item) => (
+                    <Text className="text-primary font-medium" size="small">
+                      x{item.quantity}
+                    </Text>
+                  )}
+                  renderRight={(item) => (
+                    <Box flex className="space-x-1">
+                      <Box className="space-y-1 flex-1">
+                        <Text size="small">{item.name}</Text>
+                      </Box>
+                      <Text className="text-gray" size="xSmall">
+                        <DisplayPrice>{item.finalAmount}</DisplayPrice>
+                      </Text>
+                    </Box>
+                  )}
+                />
+              ) : (
+                <Text
+                  className="bg-background rounded-xl py-8 px-4 text-center text-gray"
+                  size="xxSmall"
+                >
+                  Không có sản phẩm trong đơn hàng
+                </Text>
+              )}
+            </Box>
+            <Box className="space-y-3 px-4 mb-2">
+              <Text.Header>Thanh toán</Text.Header>
+              <ListRenderer
+                noDivider
+                items={[
+                  {
+                    left: (
+                      <Box flex className="space-x-1">
+                        <Text size="small">Tạm tính</Text>
+                      </Box>
+                    ),
+                    right: (
+                      <Box flex className="space-x-1">
+                        <Box className="flex-1 space-y-[2px]"></Box>
+                        <Text size="small">
+                          <DisplayPrice>
+                            {orderDetail.state == "hasValue" &&
+                            orderDetail.contents !== null
+                              ? orderDetail.contents.totalAmount
+                              : 0}
+                          </DisplayPrice>
                         </Text>
-                        <b className="text-[14px] font-semibold">
-                          <DisplayPrice>{detail.finalAmount}</DisplayPrice>
-                        </b>
-                      </div>
-                    </div>
-                    <hr />
-                  </Card>
-                ))}
-              </div>
-              <Card inset>
-                <div className="px-2 py-1">
-                  <Text.Header className=" text-[18px]">Thanh Toán</Text.Header>
-                  <div className="flex justify-between   ">
-                    <p>
-                      Tạm tính ({orderDetail.contents.productList.length} phần)
-                    </p>
-                    <p>
-                      <DisplayPrice>
-                        {orderDetail.contents.totalAmount}
-                      </DisplayPrice>
-                    </p>
-                  </div>
-                  {/* <div className="flex justify-between pr-3 pl-3 p-1">
-                  <p>Phí áp dụng</p>
-                  <p>
-                    <DisplayPrice>
-                      {orderDetail.contents.}
-                    </DisplayPrice>
-                  </p>
-                </div> */}
-                  <div className="flex justify-between ">
-                    <p>Giảm giá</p>
-                    <p>
-                      {"-"}
-                      <DisplayPrice>
-                        {orderDetail.contents.discount}
-                      </DisplayPrice>
-                    </p>
-                  </div>
-                </div>
-                <div className="px-2 py-1 flex justify-between text-[18px] font-semibold">
-                  <div className="flex">
-                    <span className="text-[16px]">
-                      Thanh toán{" "}
-                      {showPaymentType(orderDetail.contents.paymentType)}
-                    </span>
-                  </div>
-                  <p className="text-[16px]">
-                    <DisplayPrice>
-                      {orderDetail.contents.finalAmount}
-                    </DisplayPrice>
-                  </p>
-                </div>
-              </Card>
-            </Card>
-            <Box className="bg-white ">
-              <Card inset>
-                <div className="px-2 py-1 ">
-                  <Text.Header className="text-sm pb-1">
-                    Mã đơn: {orderDetail.contents.invoiceId}
-                  </Text.Header>
-                  <Text>
-                    {displayTime(new Date(orderDetail.contents.checkInDate))}{" "}
-                    {displayDate(new Date(orderDetail.contents.checkInDate))}
-                  </Text>
-                </div>
-                <hr />
-                <div className="flex p-2">
-                  <p className="mr-2">
-                    <Icon icon="zi-user-window-solid" />
-                  </p>
-                  <div>
-                    <p className="text-[16px] font-semibold">
-                      {orderDetail.contents.customerInfo.name}{" "}
-                      {orderDetail.contents.customerInfo.phone}
-                    </p>
-                    <p></p>
-                    <p>{orderDetail.contents.customerInfo.address}</p>
-                  </div>
-                </div>
-              </Card>
+                      </Box>
+                    ),
+                  },
+                  {
+                    left: (
+                      <Box className="flex-1 space-y-[1px]">
+                        {orderDetail.state == "hasValue" &&
+                        orderDetail.contents !== null
+                          ? orderDetail.contents.promotionList!.map((p) => (
+                              <Text size="xxSmall">{p.promotionName}</Text>
+                            ))
+                          : ""}
+                      </Box>
+                    ),
+                    right:
+                      orderDetail.state == "hasValue" &&
+                      orderDetail.contents !== null ? (
+                        orderDetail.contents.promotionList!.map((p) =>
+                          p.effectType == "setDiscount" ? (
+                            <Box flex className="space-x-1">
+                              <Box className="flex-1 space-y-[2px]"></Box>
+                              <Text size="xxSmall">
+                                -<DisplayPrice>{p.discountAmount}</DisplayPrice>
+                              </Text>
+                            </Box>
+                          ) : (
+                            <Box flex className="space-x-1">
+                              <Box className="flex-1 space-y-[2px]"></Box>
+                              <Text size="xxSmall">+{p.discountAmount}</Text>
+                            </Box>
+                          )
+                        )
+                      ) : (
+                        <Box />
+                      ),
+                  },
+                  {
+                    left: (
+                      <Box className="flex-1 space-y-[1px]">
+                        <Text.Title size="small">Thanh toán</Text.Title>
+                      </Box>
+                    ),
+                    right: (
+                      <Box flex className="space-x-1">
+                        <Box className="flex-1 space-y-[1px]"></Box>
+                        <Text.Title size="small">
+                          <DisplayPrice>
+                            {orderDetail.state == "hasValue" &&
+                            orderDetail.contents !== null
+                              ? orderDetail.contents.finalAmount
+                              : 0}
+                          </DisplayPrice>
+                        </Text.Title>
+                      </Box>
+                    ),
+                  },
+                  {
+                    left: (
+                      <Box className="flex-1 space-y-[1px]">
+                        <Text.Title size="small">Phương thức</Text.Title>
+                      </Box>
+                    ),
+                    right: (
+                      <Box flex className="space-x-1">
+                        <Box className="flex-1 space-y-[1px]"></Box>
+                        <Text.Title size="small">
+                          {showPaymentType(orderDetail.contents.paymentType)}
+                        </Text.Title>
+                      </Box>
+                    ),
+                  },
+                ]}
+                limit={4}
+                renderLeft={(item) => item.left}
+                renderRight={(item) => item.right}
+              />
+            </Box>
+
+            <Box className="space-y-3 px-4 mb-2">
+              <Text.Header>Thông tin đơn hàng</Text.Header>
+              <ListRenderer
+                noDivider
+                items={[
+                  {
+                    left: (
+                      <Box flex className="space-x-1">
+                        <Text size="small">Mã đơn</Text>
+                      </Box>
+                    ),
+                    right: (
+                      <Box flex className="space-x-1">
+                        <Box className="flex-1 space-y-[2px]"></Box>
+                        <Text size="small">
+                          {orderDetail.state == "hasValue" &&
+                          orderDetail.contents !== null
+                            ? orderDetail.contents.invoiceId
+                            : ""}
+                        </Text>
+                      </Box>
+                    ),
+                  },
+                  {
+                    left: (
+                      <Box className="flex-1 space-y-[1px]">
+                        <Text size="small">Trạng thái</Text>
+                      </Box>
+                    ),
+                    right: (
+                      <Box flex className="space-x-1">
+                        <Box className="flex-1 space-y-[1px]"></Box>
+                        <Text size="small">
+                          {showOrderStatus(orderDetail.contents.orderStatus)}
+                        </Text>
+                      </Box>
+                    ),
+                  },
+                  {
+                    left: (
+                      <Box flex className="space-x-1">
+                        <Text size="small">Nhận món</Text>
+                      </Box>
+                    ),
+                    right: (
+                      <Box flex className="space-x-1">
+                        <Box className="flex-1 space-y-[2px]"></Box>
+                        <Text size="small">
+                          {orderDetail.state == "hasValue" &&
+                          orderDetail.contents !== null
+                            ? showOrderType(orderDetail.contents.orderType)
+                            : ""}
+                        </Text>
+                      </Box>
+                    ),
+                  },
+                  {
+                    left: (
+                      <Box flex className="space-x-1">
+                        <Text size="small">Địa chỉ</Text>
+                      </Box>
+                    ),
+                    right: (
+                      <Box flex className="space-x-1">
+                        <Box className="flex-1 space-y-[2px]"></Box>
+                        <Text size="small">
+                          {orderDetail.state == "hasValue" &&
+                          orderDetail.contents !== null
+                            ? orderDetail.contents.orderType ==
+                              OrderType.DELIVERY
+                              ? orderDetail.contents.customerInfo.address
+                              : orderDetail.contents.storeName
+                            : ""}
+                        </Text>
+                      </Box>
+                    ),
+                  },
+                  {
+                    left: (
+                      <Box flex className="space-x-1">
+                        <Text size="small">Thời gian giao</Text>
+                      </Box>
+                    ),
+                    right: (
+                      <Box flex className="space-x-1">
+                        <Box className="flex-1 space-y-[2px]"></Box>
+                        <Text size="small">
+                          {orderDetail.state == "hasValue" &&
+                          orderDetail.contents !== null
+                            ? orderDetail.contents.customerInfo.deliTime
+                            : ""}
+                        </Text>
+                      </Box>
+                    ),
+                  },
+                  {
+                    left: (
+                      <Box flex className="space-x-1">
+                        <Text size="small">Ngày đặt</Text>
+                      </Box>
+                    ),
+                    right: (
+                      <Box flex className="space-x-1">
+                        <Box className="flex-1 space-y-[2px]"></Box>
+                        <Text size="small">
+                          {orderDetail.state == "hasValue" &&
+                          orderDetail.contents !== null
+                            ? displayTime(
+                                new Date(orderDetail.contents.checkInDate)
+                              ) +
+                              " " +
+                              displayDate(
+                                new Date(orderDetail.contents.checkInDate)
+                              )
+                            : ""}
+                        </Text>
+                      </Box>
+                    ),
+                  },
+
+                  {
+                    left: (
+                      <Box className="flex-1 space-y-[1px]">
+                        <Text size="small">Tên người nhận</Text>
+                      </Box>
+                    ),
+                    right: (
+                      <Box flex className="space-x-1">
+                        <Box className="flex-1 space-y-[1px]"></Box>
+                        <Text size="small">
+                          {orderDetail.contents.customerInfo.name}
+                        </Text>
+                      </Box>
+                    ),
+                  },
+                  {
+                    left: (
+                      <Box className="flex-1 space-y-[1px]">
+                        <Text size="small">SĐT</Text>
+                      </Box>
+                    ),
+                    right: (
+                      <Box flex className="space-x-1">
+                        <Box className="flex-1 space-y-[1px]"></Box>
+                        <Text size="small">
+                          {orderDetail.contents.customerInfo.phone}
+                        </Text>
+                      </Box>
+                    ),
+                  },
+                ]}
+                limit={5}
+                renderLeft={(item) => item.left}
+                renderRight={(item) => item.right}
+              />
+            </Box>
+            <Box className="space-y-3 px-4 my-2">
+              <button className="font-bold bg-red-300 p-3  text-[18px] rounded-md hover:bg-red-400  w-full ">
+                Huỷ đơn
+              </button>
               <button className="font-bold bg-zinc-200 p-3  text-[18px] rounded-md hover:bg-zinc-400 w-full ">
                 Bạn cần hỗ trợ?
               </button>

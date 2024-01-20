@@ -11,7 +11,8 @@ import {
 import { cartState, prepareCartState } from "state";
 import { OrderType, PaymentType } from "types/order";
 import { showPaymentType } from "utils/product";
-import { Box, Button, Text, useSnackbar } from "zmp-ui";
+import { Box, Button, Icon, Text, useSnackbar } from "zmp-ui";
+import { PaymentPicker } from "./payment-picker";
 
 export const CartPreview: FC = () => {
   const [cart, setCart] = useRecoilStateLoadable(cartState);
@@ -64,15 +65,17 @@ export const CartPreview: FC = () => {
         justifyContent="space-between"
         className=" flex-none mb-3 mx-4"
       >
-        <Text.Title
-          className="text-gray text-transform: uppercase;"
-          size="small"
-        >
-          {cartPrepare.state === "hasValue" && cartPrepare.contents !== null
-            ? showPaymentType(cartPrepare.contents.paymentType)
-            : "TIỀN MẶT"}
-        </Text.Title>
-        <Text.Title
+        <Box flex className="space-x-2" onClick={() => navigate("/voucher")}>
+          <Text size="xLarge" className="font-medium text-sm text-primary">
+            {cartPrepare.state === "hasValue" &&
+            cartPrepare.contents !== null &&
+            cartPrepare.contents.promotionCode !== null
+              ? cartPrepare.contents.promotionCode
+              : "KHUYẾN MÃI"}
+          </Text>
+          <Icon className="bottom-0.5" icon="zi-chevron-up" />
+        </Box>
+        {/* <Text.Title
           onClick={() => navigate("/voucher")}
           className="text-primary"
           size="small"
@@ -82,6 +85,16 @@ export const CartPreview: FC = () => {
           cartPrepare.contents.promotionCode !== null
             ? cartPrepare.contents.promotionCode
             : "KHUYẾN MÃI"}
+        </Text.Title> */}
+
+        <Text.Title
+          className="text-gray text-transform: uppercase;"
+          size="small"
+        >
+          <PaymentPicker />
+          {/* {cartPrepare.state === "hasValue" && cartPrepare.contents !== null
+            ? showPaymentType(cartPrepare.contents.paymentType)
+            : "TIỀN MẶT"} */}
         </Text.Title>
       </Box>
       <Button

@@ -93,6 +93,7 @@ export interface CustomerInfo {
   phone: string;
   address: string;
   customerType: string;
+  deliTime: string;
   paymentStatus: string;
   deliStatus: string;
 }

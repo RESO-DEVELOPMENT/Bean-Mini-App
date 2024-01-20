@@ -25,6 +25,7 @@ import orderApi from "api/order";
 import zaloApi from "api/zalo-api";
 import userApi from "api/user";
 import axios from "utils/axios";
+import { Payment } from "types/payment";
 
 export const accessTokenState = selector({
   key: "accessToken",
@@ -323,6 +324,19 @@ export const notificationsState = atom<Notification[]>({
       image: logo,
       title: "Giảm 50% lần đầu mua hàng",
       content: "Nhập WELCOME để được giảm 50% giá trị đơn hàng đầu tiên order",
+    },
+  ],
+});
+export const paymentTypeState = atom<Payment[]>({
+  key: "paymentType",
+  default: [
+    {
+      type: PaymentType.CASH,
+      name: "Tiền mặt",
+    },
+    {
+      type: PaymentType.POINTIFY,
+      name: "Ví Bean",
     },
   ],
 });

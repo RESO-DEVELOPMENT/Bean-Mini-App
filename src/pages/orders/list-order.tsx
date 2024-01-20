@@ -60,11 +60,11 @@ const HistoryPicker: FC = () => {
                 <Box
                   key={index}
                   onClick={() => gotoPage(order.id)}
-                  className="my-2 p-2 bg-white"
+                  className="m-2 p-2 bg-white"
                   flex
                 >
                   <Card>
-                    <div className="flex justify-between time-order  mb-2">
+                    <div className="flex justify-between time-order mb-1 p-2">
                       <Text className="text-s">
                         {displayTime(new Date(order.endDate))}{" "}
                         {displayDate(new Date(order.endDate))}
@@ -108,7 +108,7 @@ const HistoryPicker: FC = () => {
                         Xem chi tiết đơn hàng
                       </Text.Header>
                       <button
-                        className="font-bold bg-primary p-1 pl-6 pr-6 rounded-md text-white text-sm hover:text-sky-200 hover:bg-cyan-800"
+                        className="font-bold bg-primary mr-2 p-1 pl-6 pr-6 rounded-md text-white text-sm hover:text-sky-200 hover:bg-cyan-800"
                         onClick={() => handleResetClick(order.id)}
                       >
                         Đặt lại

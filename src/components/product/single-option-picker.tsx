@@ -9,14 +9,14 @@ export const SingleOptionPicker: FC<{
   onChange: (value: string) => void;
 }> = ({ variant, value, varianName, onChange }) => {
   return (
-    <Box my={8} className="space-y-2">
+    <Box my={4} className="space-y-2">
       <Text.Title size="small">{varianName}</Text.Title>
       <Radio.Group
-        className="flex-1 grid grid-cols-3 justify-between"
+        className="flex-1 grid grid-cols-3  justify-between"
         name={varianName}
         options={variant.map((option) => ({
           value: option.menuProductId,
-          label: option.size,
+          label: option.size + " " + option.sellingPrice + " đ",
         }))}
         value={value}
         onChange={(selectedOption: string) => {

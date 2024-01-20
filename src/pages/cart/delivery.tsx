@@ -19,6 +19,7 @@ export const Delivery: FC = () => {
       <Text.Header>Hình thức nhận hàng</Text.Header>
 
       <ListRenderer
+        noDivider
         items={[
           {
             left: <Icon icon="zi-location" className="my-auto" />,

@@ -1,4 +1,5 @@
 import orderApi from "api/order";
+import { DisplayPrice } from "components/display/price";
 import { Sheet } from "components/fullscreen-sheet";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
@@ -151,7 +152,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
               <Box className="space-y-2">
                 <Text.Title>{product.name}</Text.Title>
                 <Text>
-                  {/* <FinalPrice options={options}>{product}</FinalPrice> */}
+                  <DisplayPrice>{product.sellingPrice}</DisplayPrice>
                 </Text>
                 <Text>
                   <div

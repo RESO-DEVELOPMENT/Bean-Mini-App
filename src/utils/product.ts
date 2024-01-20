@@ -81,6 +81,18 @@ export function showOrderStatus(status: string) {
       return "Đang thực hiện";
   }
 }
+export function showOrderType(type: string) {
+  switch (type) {
+    case OrderType.EATIN:
+      return "Tại quầy";
+    case OrderType.DELIVERY:
+      return "Giao hàng";
+    case OrderType.TAKE_AWAY:
+      return "Mang đi";
+    default:
+      return "Mang đi";
+  }
+}
 export function showPaymentStatus(status: string) {
   switch (status) {
     case PaymentStatus.PENDING:

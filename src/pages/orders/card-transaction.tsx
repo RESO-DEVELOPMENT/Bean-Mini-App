@@ -2,10 +2,11 @@
 
 import { DisplayDay } from "components/display/date";
 import { DisplayPrice } from "components/display/price";
+import { ListRenderer } from "components/list-renderer";
 import React, { FC, useState } from "react";
 import { OrderPreview } from "types/order";
 import { Transaction } from "types/transaction";
-import { displayDate } from "utils/date";
+import { displayDate, displayTime } from "utils/date";
 import { showTransactionStatus, showTransactionType } from "utils/product";
 import { Box, Text } from "zmp-ui";
 
@@ -14,47 +15,59 @@ interface TransactionProps {
 }
 
 const TransactionCard: FC<TransactionProps> = ({ trans }) => {
-  const containerStyle: React.CSSProperties = {
-    position: "relative",
-    backgroundColor: "#ffffff",
-    padding: "2px",
-    borderRadius: "12px",
-    boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-    marginBottom: "6px",
-    marginTop: "10px",
-    marginRight: "10px",
-    marginLeft: "10px",
-  };
-
-  const cardStyle: React.CSSProperties = {
-    position: "relative",
-    padding: "6px",
-    borderRadius: "8px",
-    display: "flex",
-    alignItems: "center",
-  };
-
-  const imageStyle: React.CSSProperties = {
-    maxWidth: "100%",
-    height: "80px",
-    borderRadius: "8px",
-    marginRight: "10px",
-  };
-
   return (
-    <Box style={containerStyle}>
-      <Box style={cardStyle}>
-        <Box>
-          <Text value={0}>{displayDate(new Date(trans.createdDate))}</Text>
-          <Text className="font-bold">{showTransactionType(trans.type)}</Text>
-          <Text className="font-bold">
-            {showTransactionStatus(trans.status)}
-          </Text>
-          <Text className="font-bold">
-            <DisplayPrice>{trans.amount}</DisplayPrice>
-          </Text>
-        </Box>
-      </Box>
+    <Box className="space-y-2 px-2 mt-2">
+      <ListRenderer
+        noDivider
+        items={[
+          {
+            left: (
+              <Box flex className="space-x-1">
+                <Text.Title size="small">
+                  {showTransactionType(trans.type)}
+                </Text.Title>
+              </Box>
+            ),
+            right: (
+              <Box flex className="space-x-1">
+                <Box className="flex-1 space-y-[2px]"></Box>
+                <Text.Title size="small">
+                  {trans.isIncrease ? "+" : "-"} {trans.amount} {trans.currency}
+                </Text.Title>
+              </Box>
+            ),
+          },
+          {
+            left: <Box className="flex-1 space-y-[1px]">Thời gian</Box>,
+            right: (
+              <Box flex className="space-x-1">
+                <Box className="flex-1 space-y-[2px]"></Box>
+                <Text size="xxSmall">
+                  {displayTime(new Date(trans.createdDate)) +
+                    " " +
+                    displayDate(new Date(trans.createdDate))}
+                </Text>
+              </Box>
+            ),
+          },
+          {
+            left: (
+              <Box className="flex-1 space-y-[1px]">
+                <Text size="small">Trạng thái</Text>
+              </Box>
+            ),
+            right: (
+              <Box flex className="space-x-1">
+                <Box className="flex-1 space-y-[1px]"></Box>
+                <Text size="small">{showTransactionStatus(trans.status)} </Text>
+              </Box>
+            ),
+          },
+        ]}
+        limit={4}
+        renderLeft={(item) => item.left}
+        renderRight={(item) => item.right}
+      />
     </Box>
   );
 };
