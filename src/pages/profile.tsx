@@ -3,7 +3,7 @@ import { Box, Header, Icon, Page, Text } from "zmp-ui";
 import subscriptionDecor from "static/subscription-decor.svg";
 import { ListRenderer } from "components/list-renderer";
 import { useToBeImplemented } from "hooks";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 export const Subscription: FC = () => {
   const onClick = useToBeImplemented();
@@ -72,13 +72,18 @@ const Personal: FC = () => {
 };
 
 const Other: FC = () => {
-  const onClick = useToBeImplemented();
-
+  const navigate = useNavigate();
+  const customOnClick = (item) => {
+    if (item.navigate) {
+      navigate(item.navigate);
+    }
+    // You can keep the useToBeImplemented or other logic here for items without navigate property
+  };
   return (
     <Box className="m-4">
       <ListRenderer
         title="Khác"
-        onClick={onClick}
+        onClick={customOnClick}
         items={[
           {
             left: <Icon icon="zi-star" />,
@@ -92,6 +97,7 @@ const Other: FC = () => {
             ),
           },
           {
+            navigate: "/feedback",
             left: <Icon icon="zi-call" />,
             right: (
               <Box flex>

@@ -17,6 +17,7 @@ import VoucherPage from "pages/voucher";
 import QRCodePage from "pages/qr-code";
 import App from "pages/qr-code";
 import InformationPage from "pages/information";
+import FeedbackForm from "pages/feedback";
 
 if (getSystemInfo().platform === "android") {
   const androidSafeTop = Math.round(
@@ -46,7 +47,8 @@ export const Layout: FC = () => {
           <Route path="/order-detail" element={<OrderDetailsPage />}></Route>
           <Route path="/voucher" element={<VoucherPage />}></Route>
           <Route path="/qr" element={<QRCodePage />}></Route>
-          <Route path="/info" element={<InformationPage />}>
+          <Route path="/info" element={<InformationPage />}></Route>
+          <Route path="/feedback" element={<FeedbackForm />}>
             {" "}
           </Route>
         </Routes>
