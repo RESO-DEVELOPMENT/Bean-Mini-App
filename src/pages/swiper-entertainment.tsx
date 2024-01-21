@@ -16,49 +16,13 @@ const container2Style: React.CSSProperties = {
   height: "140px",
   width: "140px",
 };
-const imageInfo = [
-  { path: "docs/dummy/product-square-1.jpg", label: "Siêu Khuyến Mãi" },
-  {
-    path: "docs/dummy/product-square-6.jpg",
-    label: "Giảm 20% cafe deer",
-  },
-  { path: "docs/dummy/product-square-8.jpg", label: "Mừng tết đến xuân về" },
-];
-
-const swiperSlides2 = imageInfo.map((item, index) => (
-  <SwiperSlide key={`slide${index + 1}`}>
-    <div style={container2Style}>
-      <img
-        src={item.path}
-        alt={`Slide ${index + 1}`}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          borderRadius: "10px",
-        }}
-      />
-    </div>
-    <div
-      className="slide-label"
-      style={{ textAlign: "center", marginTop: "10px" }}
-    >
-      {item.label}
-    </div>
-  </SwiperSlide>
-));
 
 export const SwiperEn: FC = () => {
   const blogList = useRecoilValueLoadable(listBlogState);
   const navigate = useNavigate();
   return blogList.state === "hasValue" && blogList.contents !== null ? (
     <Box m={4}>
-      <Swiper
-        spaceBetween={10}
-        slidesPerView={2}
-        onSlideChange={() => console.log("slide change")}
-        onSwiper={(swiper) => console.log(swiper)}
-      >
+      <Swiper spaceBetween={0} slidesPerView={2}>
         {blogList.contents.map((item, index) => (
           <SwiperSlide key={`slide${index + 1}`}>
             <div style={container2Style}>
@@ -73,7 +37,10 @@ export const SwiperEn: FC = () => {
                 }}
               />
             </div>
-            <div className="slide-label mr-1" style={{ textAlign: "center" }}>
+            <div
+              className="slide-label mr-1 text-sm"
+              style={{ textAlign: "center" }}
+            >
               {item.title}
             </div>
           </SwiperSlide>

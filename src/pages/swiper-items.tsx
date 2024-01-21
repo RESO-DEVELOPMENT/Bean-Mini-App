@@ -15,14 +15,15 @@ const containerStyle: React.CSSProperties = {
   alignItems: "center", // Centers content vertically
   position: "relative",
   backgroundColor: "#ffffff",
-  padding: "6px",
+  padding: "10px",
   borderRadius: "10px",
   // boxShadow: "0 0 2px rgba(0, 0, 0, 0.1)",
-  margin: "10px",
+
+  marginLeft: "12px",
   width: "60px",
   height: "60px", // Adjust height as needed
 };
-const iconSize = "38px";
+const iconSize = "50px";
 export const SwiperItem: FC = () => {
   const navigate = useNavigate();
   const swiperSlides1 = [
@@ -48,7 +49,7 @@ export const SwiperItem: FC = () => {
       <div style={containerStyle}>
         <IoTicketOutline className="icon-color" size={iconSize} />
       </div>
-      <div className="text-center text-sm">Voucher</div>
+      <div className="text-center text-sm">Khuyến mãi</div>
     </SwiperSlide>,
 
     <SwiperSlide key={4}>

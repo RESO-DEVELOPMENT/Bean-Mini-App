@@ -13,21 +13,11 @@ import { WelcomeUser } from "./hello";
 import { WalletBalance } from "./wallet-balance";
 const WalletScreen: React.FunctionComponent = () => {
   const member = useRecoilValueLoadable(memberState);
-  const imageStyle: React.CSSProperties = {
-    maxWidth: "100%",
-    height: "60px",
-    borderRadius: "8px",
-    marginRight: "10px",
-  };
 
   const flexContainerStyle: React.CSSProperties = {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-  };
-
-  const blueTextStyle: React.CSSProperties = {
-    color: "#14D9C5",
   };
 
   return (
@@ -48,10 +38,8 @@ const WalletScreen: React.FunctionComponent = () => {
             {/* <Features /> */}
             <Box className="mx-4 mt-8" style={flexContainerStyle}>
               <Text.Title size="normal">Chương trình</Text.Title>
-              {/* <Text.Title size="normal">Tất cả</Text.Title> */}
             </Box>
             <SwiperEn />
-            <Suspense>{/* <Features /> */}</Suspense>
           </>
         ) : (
           <>

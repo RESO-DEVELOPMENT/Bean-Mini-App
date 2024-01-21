@@ -27,8 +27,8 @@ const OrderDetailsPage: FC = () => {
       <Box>
         {orderDetail.state === "hasValue" && orderDetail.contents !== null ? (
           <>
-            <Box className="space-y-3 px-4 mb-2">
-              <Text.Header>Sản phẩm</Text.Header>
+            <Box className="space-y-3 px-4 my-2">
+              <Text.Header>Thanh toán</Text.Header>
               {orderDetail.contents.productList.length > 0 ? (
                 <ListRenderer
                   items={orderDetail.contents.productList}

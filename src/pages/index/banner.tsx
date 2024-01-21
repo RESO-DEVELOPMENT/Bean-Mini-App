@@ -10,9 +10,8 @@ export const Banner: FC = () => {
   const blogList = useRecoilValueLoadable(listBlogState);
 
   return (
-    <Box className="bg-white" pb={4}>
+    <Box className="bg-white" py={4}>
       <Swiper
-        modules={[Pagination]}
         pagination={{
           clickable: true,
         }}
@@ -29,16 +28,6 @@ export const Banner: FC = () => {
               />
             </SwiperSlide>
           ))}
-        {/* {[1, 2, 3, 4, 5]
-          .map((i) => getDummyImage(`banner-${i}.jpg`))
-          .map((banner, i) => (
-            <SwiperSlide key={i} className="px-4">
-              <Box
-                className="w-full rounded-lg aspect-[2/1] bg-cover bg-center bg-skeleton"
-                style={{ backgroundImage: `url(${banner})` }}
-              />
-            </SwiperSlide>
-          ))} */}
       </Swiper>
     </Box>
   );
