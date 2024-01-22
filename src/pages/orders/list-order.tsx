@@ -28,10 +28,11 @@ const HistoryPicker: FC = () => {
   const selectedCategory = useRecoilValue(selectedCategoryIdState);
   const orderListData = useRecoilValueLoadable(listOrderState);
   const transactionListData = useRecoilValueLoadable(listTransactionState);
-  const handleResetClick = (orderId) => {
-    // Thêm logic xử lý trước khi navigate nếu cần
+  const handleResetClick = (event) => {
+    event.stopPropagation();
     navigate("/order");
   };
+
   const navigate = useNavigate();
   const retry = useSetRecoilState(requestOrderTransactionTriesState);
   useEffect(() => {
@@ -109,7 +110,7 @@ const HistoryPicker: FC = () => {
                       </Text.Header>
                       <button
                         className="font-bold bg-primary mr-2 p-1 pl-6 pr-6 rounded-md text-white text-sm hover:text-sky-200 hover:bg-cyan-800"
-                        onClick={() => handleResetClick(order.id)}
+                        onClick={(e) => handleResetClick(e)}
                       >
                         Đặt lại
                       </button>
