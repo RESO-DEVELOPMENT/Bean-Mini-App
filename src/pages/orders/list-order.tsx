@@ -29,7 +29,6 @@ const HistoryPicker: FC = () => {
   const orderListData = useRecoilValueLoadable(listOrderState);
   const transactionListData = useRecoilValueLoadable(listTransactionState);
   const handleResetClick = (orderId) => {
-    // Thêm logic xử lý trước khi navigate nếu cần
     navigate("/order");
   };
   const navigate = useNavigate();

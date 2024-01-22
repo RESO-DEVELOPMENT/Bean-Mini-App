@@ -29,7 +29,7 @@ const FeedbackForm: React.FC = () => {
             <input
               type="email"
               value={email}
-              className="ml-8 mb-6"
+              className="ml-9 mb-6"
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
@@ -37,7 +37,7 @@ const FeedbackForm: React.FC = () => {
             <label>Subject:</label>
             <select
               value={subject}
-              className="ml-4 mb-6 w-48"
+              className="ml-6 mb-6 w-48"
               onChange={(e) => setSubject(e.target.value)}
             >
               <option value="">Choose</option>
@@ -51,7 +51,7 @@ const FeedbackForm: React.FC = () => {
             <textarea
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
-              className="mb-0"
+              className="ml-2"
             ></textarea>
           </div>
           <button
