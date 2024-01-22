@@ -52,7 +52,7 @@ export const SwiperEn: FC = () => {
   const blogList = useRecoilValueLoadable(listBlogState);
   const navigate = useNavigate();
   return blogList.state === "hasValue" && blogList.contents !== null ? (
-    <Box m={4}>
+    <Box m={4} className="ml-1">
       <Swiper
         spaceBetween={10}
         slidesPerView={2}

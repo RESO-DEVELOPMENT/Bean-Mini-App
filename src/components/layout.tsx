@@ -16,6 +16,7 @@ import WalletScreen from "pages/wallet/wallet";
 import VoucherPage from "pages/voucher";
 import QRCodePage from "pages/qr-code";
 import App from "pages/qr-code";
+import DataExchangePage from "pages/exchange-point";
 
 if (getSystemInfo().platform === "android") {
   const androidSafeTop = Math.round(
@@ -34,7 +35,7 @@ export const Layout: FC = () => {
       <ScrollRestoration />
       <Box className="flex-1 flex flex-col overflow-hidden">
         <Routes>
-          <Route path="/order" element={<HomePage />}></Route>
+          <Route path="/order" element={<DataExchangePage />}></Route>
           <Route path="/" element={<WalletScreen />}></Route>
           <Route path="/search" element={<SearchPage />}></Route>
           <Route path="/category" element={<CategoryPage />}></Route>

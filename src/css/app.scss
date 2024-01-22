@@ -122,3 +122,32 @@ body {
 .custom-header {
   width: 200px; /* Set the desired width here */
 }
+.c {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.ca {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  margin: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: box-shadow 0.3s;
+  width: 350px;
+  height: 150px;
+
+  .card-content {
+    margin: 10px;
+  }
+
+  img {
+    width: 120px; // Adjust the size as needed
+    height: auto;
+    border-radius: 4px;
+    margin: 10px;
+  }
+}

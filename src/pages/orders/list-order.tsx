@@ -2,6 +2,7 @@ import { ListRenderer } from "components/list-renderer";
 import { ProductItem } from "components/product/item";
 import React, { FC, Suspense } from "react";
 import { useRecoilValue, useRecoilValueLoadable } from "recoil";
+import HomePage from "pages/index";
 import "./orders.css";
 import {
   categoriesState,
@@ -91,7 +92,11 @@ const HistoryPicker: FC = () => {
                       <Text.Header className=" m-1 flex-1 align-middle font-normal text-m text-primary">
                         Xem chi tiết đơn hàng
                       </Text.Header>
-                      <button className="font-bold bg-primary p-1 pl-6 pr-6 rounded-md text-white text-sm hover:text-sky-200 hover:bg-cyan-800">
+                      <button
+                        className="font-bold bg-primary p-1 pl-6 pr-6 rounded-md text-white text-sm hover:text-sky-200 hover:bg-cyan-800"
+                        // key={index}
+                        // onClick={() => navigate("/order")}
+                      >
                         Đặt lại
                       </button>
                     </div>

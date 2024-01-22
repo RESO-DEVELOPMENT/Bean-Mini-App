@@ -32,12 +32,12 @@ export const SwiperItem: FC = () => {
       </div>
       <div className="text-center text-sm">Thanh toán</div>
     </SwiperSlide>,
-    <SwiperSlide key={1} onClick={() => navigate("/qr")}>
-      <div style={containerStyle}>
-        <FaStar className="icon-color" size={iconSize} />
-      </div>
-      <div className="text-center text-sm">Tích Điểm</div>
-    </SwiperSlide>,
+    // <SwiperSlide key={1} onClick={() => navigate("/qr")}>
+    //   <div style={containerStyle}>
+    //     <FaStar className="icon-color" size={iconSize} />
+    //   </div>
+    //   <div className="text-center text-sm">Tích Điểm</div>
+    // </SwiperSlide>,
     <SwiperSlide key={2} onClick={() => navigate("/cart")}>
       <div style={containerStyle}>
         <FaCartPlus className="icon-color" size={iconSize} />
@@ -59,7 +59,7 @@ export const SwiperItem: FC = () => {
     </SwiperSlide>,
   ];
   return (
-    <Box m={2}>
+    <Box m={2} className="ml-5">
       <Swiper
         spaceBetween={2}
         slidesPerView={4}
