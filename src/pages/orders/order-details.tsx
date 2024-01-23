@@ -28,7 +28,7 @@ const OrderDetailsPage: FC = () => {
         {orderDetail.state === "hasValue" && orderDetail.contents !== null ? (
           <>
             <Box className="space-y-3 px-4 my-2">
-              <Text.Header>Thanh toán</Text.Header>
+              <Text.Header>Đơn hàng</Text.Header>
               {orderDetail.contents.productList.length > 0 ? (
                 <ListRenderer
                   items={orderDetail.contents.productList}
@@ -39,9 +39,18 @@ const OrderDetailsPage: FC = () => {
                   }}
                   renderKey={({ quantity }) => JSON.stringify({ quantity })}
                   renderLeft={(item) => (
-                    <Text className="text-primary font-medium" size="small">
-                      x{item.quantity}
-                    </Text>
+                    <div className="flex justify-between">
+                      <Text
+                        className="text-primary font-medium pr-2"
+                        size="small"
+                      >
+                        x{item.quantity}
+                      </Text>
+                      <img
+                        className="img-bill-orders"
+                        src="https://food.fnr.sndimg.com/content/dam/images/food/fullset/2016/6/12/3/FNM070116_Penne-with-Vodka-Sauce-and-Mini-Meatballs-recipe_s4x3.jpg.rend.hgtvcom.1280.1280.suffix/1465939620872.jpeg"
+                      />
+                    </div>
                   )}
                   renderRight={(item) => (
                     <Box flex className="space-x-1">
@@ -94,7 +103,12 @@ const OrderDetailsPage: FC = () => {
                         {orderDetail.state == "hasValue" &&
                         orderDetail.contents !== null
                           ? orderDetail.contents.promotionList!.map((p) => (
-                              <Text size="xxSmall">{p.promotionName}</Text>
+                              <Text
+                                size="small"
+                                className="pb-4 whitespace-nowrap"
+                              >
+                                {p.promotionName}
+                              </Text>
                             ))
                           : ""}
                       </Box>
@@ -106,14 +120,16 @@ const OrderDetailsPage: FC = () => {
                           p.effectType == "setDiscount" ? (
                             <Box flex className="space-x-1">
                               <Box className="flex-1 space-y-[2px]"></Box>
-                              <Text size="xxSmall">
+                              <Text size="small" className="text-primary pb-4">
                                 -<DisplayPrice>{p.discountAmount}</DisplayPrice>
                               </Text>
                             </Box>
                           ) : (
                             <Box flex className="space-x-1">
                               <Box className="flex-1 space-y-[2px]"></Box>
-                              <Text size="xxSmall">+{p.discountAmount}</Text>
+                              <Text size="small" className="pb-4">
+                                +{p.discountAmount}
+                              </Text>
                             </Box>
                           )
                         )
@@ -122,9 +138,13 @@ const OrderDetailsPage: FC = () => {
                       ),
                   },
                   {
+                    left: <hr className="p-0" />,
+                    right: <hr className="p-0" />,
+                  },
+                  {
                     left: (
                       <Box className="flex-1 space-y-[1px]">
-                        <Text.Title size="small">Thanh toán</Text.Title>
+                        <Text.Title size="small">Tổng thanh toán</Text.Title>
                       </Box>
                     ),
                     right: (
@@ -177,12 +197,12 @@ const OrderDetailsPage: FC = () => {
                     right: (
                       <Box flex className="space-x-1">
                         <Box className="flex-1 space-y-[2px]"></Box>
-                        <Text size="small">
+                        <Text.Title size="small">
                           {orderDetail.state == "hasValue" &&
                           orderDetail.contents !== null
                             ? orderDetail.contents.invoiceId
                             : ""}
-                        </Text>
+                        </Text.Title>
                       </Box>
                     ),
                   },
@@ -222,7 +242,7 @@ const OrderDetailsPage: FC = () => {
                   {
                     left: (
                       <Box flex className="space-x-1">
-                        <Text size="small">Địa chỉ</Text>
+                        <Text size="small">Địa chỉ </Text>
                       </Box>
                     ),
                     right: (
