@@ -46,10 +46,7 @@ const OrderDetailsPage: FC = () => {
                       >
                         x{item.quantity}
                       </Text>
-                      <img
-                        className="img-bill-orders"
-                        src="https://food.fnr.sndimg.com/content/dam/images/food/fullset/2016/6/12/3/FNM070116_Penne-with-Vodka-Sauce-and-Mini-Meatballs-recipe_s4x3.jpg.rend.hgtvcom.1280.1280.suffix/1465939620872.jpeg"
-                      />
+                      <img className="img-bill-orders" src={item.picUrl} />
                     </div>
                   )}
                   renderRight={(item) => (

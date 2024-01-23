@@ -35,6 +35,7 @@ export interface OrderPreview {
   phone: string;
   address: string;
   storeName: string;
+  storePic: string;
 }
 
 export interface OrderDetails {
@@ -65,6 +66,7 @@ export interface PromotionList {
 }
 
 export interface ProductList {
+  picUrl: string;
   productInMenuId: string;
   orderDetailId: string;
   sellingPrice: number;
