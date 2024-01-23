@@ -64,12 +64,15 @@ export const CartPreview: FC = () => {
         justifyContent="space-between"
         className=" flex-none mb-3 mx-4"
       >
-        <Text.Title
-          className="text-gray text-transform: uppercase;"
+       <Text.Title
+          onClick={() => navigate("/voucher")}
+          className="text-primary"
           size="small"
         >
-          {cartPrepare.state === "hasValue" && cartPrepare.contents !== null
-            ? showPaymentType(cartPrepare.contents.paymentType)
+          {cartPrepare.state === "hasValue" &&
+          cartPrepare.contents !== null &&
+          cartPrepare.contents.promotionCode !== null
+            ? cartPrepare.contents.promotionCode
             : "TIỀN MẶT"}
         </Text.Title>
         <Text.Title

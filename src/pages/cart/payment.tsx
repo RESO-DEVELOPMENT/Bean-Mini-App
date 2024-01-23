@@ -36,7 +36,7 @@ export const PaymentInfo: FC = () => {
                 cartPrepare.contents !== null
                   ? cartPrepare.contents.promotionList!.map((p, index) => (
                       <Text
-                        size="small"
+                        size="large"
                         className={`mt-1 ${index !== 0 ? "" : ""}`}
                         style={{ whiteSpace: "nowrap" }}
                       >
@@ -54,14 +54,14 @@ export const PaymentInfo: FC = () => {
                   p.effectType == "setDiscount" ? (
                     <Box flex className="space-x-1">
                       <Box className="flex-1 space-y-[2px]"></Box>
-                      <Text size="normal" className="mt-2">
+                      <Text size="large" className="mt-2">
                         -<DisplayPrice>{p.discountAmount}</DisplayPrice>
                       </Text>
                     </Box>
                   ) : (
                     <Box flex className="space-x-1">
                       <Box className="flex-1 space-y-[2px]"></Box>
-                      <Text size="normal">+{p.discountAmount}</Text>
+                      <Text size="large">+{p.discountAmount}</Text>
                     </Box>
                   )
                 )

@@ -51,7 +51,7 @@ export const SwiperItem: FC = () => {
       <div className="text-center text-sm">Voucher</div>
     </SwiperSlide>,
 
-    <SwiperSlide key={4}>
+    <SwiperSlide key={4} onClick={() => navigate("/point")}>
       <div style={containerStyle}>
         <FaMoneyBillTransfer className="icon-color" size={iconSize} />
       </div>

@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Route, Routes } from "react-router";
+import { Route, Router, Routes } from "react-router";
 import { Box } from "zmp-ui";
 import { Navigation } from "./navigation";
 import HomePage from "pages/index";
@@ -35,7 +35,7 @@ export const Layout: FC = () => {
       <ScrollRestoration />
       <Box className="flex-1 flex flex-col overflow-hidden">
         <Routes>
-          <Route path="/order" element={<DataExchangePage />}></Route>
+          <Route path="/order" element={<HomePage />}></Route>
           <Route path="/" element={<WalletScreen />}></Route>
           <Route path="/search" element={<SearchPage />}></Route>
           <Route path="/category" element={<CategoryPage />}></Route>
@@ -45,6 +45,7 @@ export const Layout: FC = () => {
           <Route path="/history" element={<HistoryPage />}></Route>
           <Route path="/order-detail" element={<OrderDetailsPage />}></Route>
           <Route path="/voucher" element={<VoucherPage />}></Route>
+          <Route path="/point" element={<DataExchangePage />}></Route>
           <Route path="/qr" element={<QRCodePage />}>
             {" "}
           </Route>
