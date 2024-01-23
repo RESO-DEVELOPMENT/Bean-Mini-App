@@ -33,7 +33,7 @@ const VoucherPage = () => {
                     <VoucherCard
                       key={promotion.promotionId}
                       promotion={promotion}
-                      onClick={() =>
+                      onClick={() => {
                         setCart((prevCart) => {
                           let res = { ...prevCart };
                           res = {
@@ -41,8 +41,9 @@ const VoucherPage = () => {
                             promotionCode: promotion.promotionCode,
                           };
                           return prepareCart(res);
-                        })
-                      }
+                        }),
+                          navigate("/cart");
+                      }}
                       isUsed={cart.promotionCode === promotion.promotionCode}
                       onCancle={() =>
                         setCart((prevCart) => {

@@ -187,7 +187,7 @@ const HistoryPicker: FC = () => {
               }}
             >
               {transactionListData.contents.map((order) => (
-                <TransactionCard trans={order} />
+                <TransactionCard key={order.id} trans={order} />
               ))}
             </div>
           ) : (

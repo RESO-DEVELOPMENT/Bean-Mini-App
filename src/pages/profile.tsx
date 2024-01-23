@@ -119,8 +119,8 @@ const Other: FC = () => {
 const ProfilePage: FC = () => {
   return (
     <Page>
-      <Header showBackIcon={false} title="&nbsp;" />
-      <Subscription />
+      <Header showBackIcon={false} title="Tài khoản" />
+      {/* <Subscription /> */}
       <Personal />
       <Other />
     </Page>

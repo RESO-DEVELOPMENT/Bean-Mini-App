@@ -20,11 +20,17 @@ const container2Style: React.CSSProperties = {
 export const SwiperEn: FC = () => {
   const blogList = useRecoilValueLoadable(listBlogState);
   const navigate = useNavigate();
+  const gotoPage = (id: string) => {
+    navigate("/blog", { state: { id } });
+  };
   return blogList.state === "hasValue" && blogList.contents !== null ? (
     <Box m={4}>
       <Swiper spaceBetween={0} slidesPerView={2}>
         {blogList.contents.map((item, index) => (
-          <SwiperSlide key={`slide${index + 1}`}>
+          <SwiperSlide
+            key={`slide${index + 1}`}
+            onClick={() => gotoPage(item.id)}
+          >
             <div style={container2Style}>
               <img
                 src={item.image}

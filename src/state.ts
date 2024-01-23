@@ -26,6 +26,7 @@ import zaloApi from "api/zalo-api";
 import userApi from "api/user";
 import axios from "utils/axios";
 import { Payment } from "types/payment";
+import { BlogDetails } from "types/blog";
 
 export const accessTokenState = selector({
   key: "accessToken",
@@ -190,6 +191,13 @@ export const listBlogState = selector({
       brandCode: "BEANAPP",
     });
     return listBlog.data.items;
+  },
+});
+export const getBlogDetailState = selectorFamily<BlogDetails, string>({
+  key: "blogDetails",
+  get: (blogId) => async () => {
+    const order = await blogApi.getBlogDetails(blogId);
+    return order.data;
   },
 });
 
