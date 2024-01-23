@@ -1,4 +1,5 @@
 import { useVirtualKeyboardVisible } from "hooks";
+import FloatingActionButton from "pages/FloatingActionButton";
 import React, { FC, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { MenuItem } from "types/menu";
@@ -35,34 +36,49 @@ export const NO_BOTTOM_NAVIGATION_PAGES = ["/search", "/category"];
 
 export const Navigation: FC = () => {
   const [activeTab, setActiveTab] = useState<TabKeys>("/");
-  const keyboardVisible = useVirtualKeyboardVisible();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const noBottomNav = useMemo(() => {
-    return NO_BOTTOM_NAVIGATION_PAGES.includes(location.pathname);
-  }, [location]);
+  const noBottomNav = useMemo(
+    () => NO_BOTTOM_NAVIGATION_PAGES.includes(location.pathname),
+    [location]
+  );
 
-  if (noBottomNav || keyboardVisible) {
-    return <></>;
+  const handleFabClick = () => {
+    console.log("FAB Clicked");
+    // Define the action for FAB click, e.g., navigate to a specific route
+  };
+  const shouldShowFAB = useMemo(() => {
+    return location.pathname === "/" || location.pathname === "/order";
+  }, [location.pathname]);
+
+  if (noBottomNav) {
+    return null;
   }
 
   return (
-    <BottomNavigation
-      id="footer"
-      activeKey={activeTab}
-      onChange={(key: TabKeys) => setActiveTab(key)}
-      className="z-50"
-    >
-      {Object.keys(tabs).map((path: TabKeys) => (
-        <BottomNavigation.Item
-          key={path}
-          label={tabs[path].label}
-          icon={tabs[path].icon}
-          activeIcon={tabs[path].activeIcon}
-          onClick={() => navigate(path)}
-        />
-      ))}
-    </BottomNavigation>
+    <>
+      <BottomNavigation
+        id="footer"
+        activeKey={activeTab}
+        onChange={(key: TabKeys) => setActiveTab(key)}
+        className="z-50"
+      >
+        {Object.entries(tabs).map(([path, { label, icon, activeIcon }]) => (
+          <BottomNavigation.Item
+            key={path}
+            label={label}
+            icon={icon}
+            activeIcon={activeIcon}
+            onClick={() => navigate(path)}
+          />
+        ))}
+      </BottomNavigation>
+      {shouldShowFAB && (
+        <FloatingActionButton onClick={handleFabClick} icon={<CartIcon />} />
+      )}
+    </>
   );
 };
+
+export default Navigation;

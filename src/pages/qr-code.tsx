@@ -77,14 +77,16 @@ const QRCodePage: React.FC = () => {
           </div>
           <div className="flex items-center justify-between  py-2 rounded-lg bg-white my-2 text-black">
             <div className="flex items-center">
-              <Text.Title className="text-base">Tài Khoản / Điểm</Text.Title>
+              <Text.Title className="text-base ml-3">
+                Tài Khoản / Điểm
+              </Text.Title>
               {/* <IoEyeSharp className="ml-4" size={iconSize} /> */}
             </div>
             {/* <div className="flex items-center">
               <Text className="text-primary text-sm">Xem tất cả</Text>
             </div> */}
           </div>
-          <div className="flex items-baseline space-x-3 m-1">
+          <div className="flex items-baseline space-x-3 ml-10">
             <div
               className={
                 "flex-2 items-center justify-between p-3 rounded-lg bg-white text-black border-solid border border-primary"
