@@ -30,7 +30,8 @@ const HistoryPicker: FC = () => {
   const transactionListData = useRecoilValueLoadable(listTransactionState);
   const handleResetClick = (event) => {
     event.stopPropagation();
-    navigate("/order");
+    // const handleResetClick = (orderId) => {
+    //   navigate("/order");
   };
 
   const navigate = useNavigate();
