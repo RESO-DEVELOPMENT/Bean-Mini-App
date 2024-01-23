@@ -15,12 +15,19 @@ import { displayDate, displayTime } from "utils/date";
 import { ListRenderer } from "components/list-renderer";
 import { OrderStatus, OrderType } from "types/order";
 import { showOrderStatus } from "utils/product";
+import { useNavigate } from "react-router-dom";
 
 const OrderDetailsPage: FC = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const id = location.state?.id;
   const orderDetail = useRecoilValueLoadable(getOrderDetailstate(id));
   console.log("orderDetail", orderDetail);
+
+  const handleSupportClick = () => {
+    navigate("/feedback");
+  };
+
   return (
     <Page className="flex flex-col">
       <Header title="Chi tiết đơn hàng" className="pt-12" showBackIcon={true} />
@@ -343,7 +350,10 @@ const OrderDetailsPage: FC = () => {
               <button className="font-bold bg-red-300 p-3  text-[18px] rounded-md hover:bg-red-400  w-full ">
                 Huỷ đơn
               </button>
-              <button className="font-bold bg-zinc-200 p-3  text-[18px] rounded-md hover:bg-zinc-400 w-full ">
+              <button
+                onClick={handleSupportClick}
+                className="font-bold bg-zinc-200 p-3  text-[18px] rounded-md hover:bg-zinc-400 w-full "
+              >
                 Bạn cần hỗ trợ?
               </button>
             </Box>
