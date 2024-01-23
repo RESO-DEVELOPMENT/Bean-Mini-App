@@ -41,7 +41,7 @@ export function ListRenderer<T>({
             <Box className="flex-1 min-w-0 relative">
               {renderRight(item)}
               {!noDivider && i < list.length - 1 && (
-                <hr className="absolute left-0 -right-4 -bottom-4 border-divider border-t-[0.5px]"></hr>
+                <hr className="absolute left-0 -right-1 -bottom-4 border-divider border-t-[0.5px] "></hr>
               )}
             </Box>
           </div>
