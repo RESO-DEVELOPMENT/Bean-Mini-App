@@ -7,7 +7,7 @@
     "leftButton": "none",
     "statusBar": "transparent",
     "selfControlLoading": false,
-    "hideAndroidBottomNavigationBar": false,
+    "hideAndroidBottomNavigationBar": true,
     "hideIOSSafeAreaBottom": true,
     "actionBarHidden": true,
     "textAlign": "center"
@@ -27,6 +27,6 @@
     "primaryColor": "#04bfad",
     "prefixCurrencySymbol": false,
     "currencySymbol": "đ",
-    "headerLogo": ""
+    "headerLogo": "https://logo-zp.zdn.vn/app/ffb12dc71082f9dca093_2_1.jpg"
   }
 }
