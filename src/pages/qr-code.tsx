@@ -86,22 +86,22 @@ const QRCodePage: React.FC = () => {
               <Text className="text-primary text-sm">Xem tất cả</Text>
             </div> */}
           </div>
-          <div className="flex items-baseline space-x-3 ml-10">
+          <div className="flex items-baseline space-x-2 ">
             <div
               className={
-                "flex-2 items-center justify-between p-3 rounded-lg bg-white text-black border-solid border border-primary"
+                "flex-2 items-center justify-between p-3 w-40 rounded-lg bg-white text-black border-solid border border-primary"
               }
             >
-              <div className="flex items-center mr-8">
+              <div className="flex items-center ">
                 <span className="text-sm">Ví Bean </span>
               </div>
-              <span className="order-2 mr-2 font-bold ">
+              <span className="order-2 font-bold ">
                 <DisplayPrice>{monney?.balance ?? 0}</DisplayPrice>
               </span>
             </div>
             <div
               className={
-                "flex-2 items-center justify-between p-3 rounded-lg bg-white text-black border-solid border border-primary"
+                "flex-2 items-center justify-between p-3 w-40 rounded-lg bg-white text-black border-solid border border-primary"
               }
             >
               <div className="flex items-center mr-8">
