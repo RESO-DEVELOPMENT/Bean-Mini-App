@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Icon } from "zmp-ui";
 
 const InformationPage = () => {
+  const navigate = useNavigate();
   const { avatarUrl, name, birthDate, gender, email } = useParams();
   const [isEditingAll, setIsEditingAll] = useState(false);
   const [editableInfo, setEditableInfo] = useState({
     name: "Tên của bạn",
-    birthDate: "Ngày sinh",
+    birthDate: "dd/mm/yyyy",
     gender: "Giới tính",
     email: "email@example.com",
   });
@@ -18,24 +19,32 @@ const InformationPage = () => {
 
   const handleSaveAllClick = () => {
     setIsEditingAll(false);
-    // Xử lý lưu  thông tin đã chỉnh sửa
-    // Đây là nơi bạn sẽ gọi API để cập nhật thông tin
   };
 
   const handleChange = (field, value) => {
     setEditableInfo({ ...editableInfo, [field]: value });
   };
   const formatDate = (dateString) => {
+    if (dateString === "dd/mm/yyyy" || !dateString.includes("-")) {
+      return dateString;
+    }
     const [year, month, day] = dateString.split("-");
-    return `${day}-${month}-${year}`;
+    return `${day}/${month}/${year}`;
   };
 
-  const handleCameraClick = () => {
-    // Hành động khi nhấn nút, ví dụ: mở hộp thoại tải lên hình ảnh
+  const handleCameraClick = () => {};
+  const handleBackClick = () => {
+    navigate(-1);
   };
-
   return (
-    <div className="flex-1" style={{ background: "#14D9C5" }}>
+    <div
+      className="flex-1 scrollable-container"
+      style={{ background: "#14D9C5" }}
+    >
+      <button className="back-button" onClick={handleBackClick}>
+        <Icon icon="zi-chevron-left-header" />
+        Back
+      </button>
       <div className="info-box">
         <div className="avatar-wrapper">
           <img className="avatar" src={avatarUrl} alt="Avatar" />
@@ -54,9 +63,15 @@ const InformationPage = () => {
             />
             <input
               type="date"
-              value={editableInfo.birthDate}
+              value={
+                isEditingAll && editableInfo.birthDate !== "dd/mm/yyyy"
+                  ? editableInfo.birthDate
+                  : ""
+              }
+              placeholder="dd/mm/yyyy"
               onChange={(e) => handleChange("birthDate", e.target.value)}
             />
+
             <select
               value={editableInfo.gender}
               onChange={(e) => handleChange("gender", e.target.value)}
