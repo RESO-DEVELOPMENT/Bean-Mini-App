@@ -55,7 +55,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
         product.type === ProductTypeEnum.PARENT &&
         p.parentProductId === product.id
     )
-    .sort((a, b) => b.displayOrder - a.displayOrder);
+    .sort((a, b) => a.sellingPrice - b.sellingPrice);
   const [visible, setVisible] = useState(false);
   // const [options, setOptions] = useState<SelectedOptions>(
   //   selected ? selected.options : getDefaultOptions(product)
