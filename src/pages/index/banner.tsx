@@ -2,10 +2,14 @@ import React, { FC } from "react";
 import { useNavigate } from "react-router";
 import { useRecoilValueLoadable, useResetRecoilState } from "recoil";
 import { listBlogState } from "state";
-import { Pagination } from "swiper";
+// import { Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { getDummyImage } from "utils/product";
 import { Box } from "zmp-ui";
+import { Autoplay, Pagination, Navigation, EffectCards } from "swiper";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 export const Banner: FC = () => {
   const blogList = useRecoilValueLoadable(listBlogState);
@@ -14,14 +18,16 @@ export const Banner: FC = () => {
     navigate("/blog", { state: { id } });
   };
   return (
-    <Box className="bg-white" py={4}>
+    <Box className="bg-white m-0" py={4}>
       <Swiper
-        pagination={{
-          clickable: true,
+        effect={"cards"}
+        grabCursor={true}
+        modules={[EffectCards, Autoplay, Pagination, Navigation]}
+        centeredSlides={true}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
         }}
-        autoplay
-        loop
-        cssMode
       >
         {blogList.state === "hasValue" &&
           blogList.contents.map((blog, i) => (
