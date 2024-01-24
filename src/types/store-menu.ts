@@ -46,6 +46,7 @@ export interface Category {
   code: string;
   name: string;
   type: string;
+  childCategoryIds: string[];
   displayOrder: number;
   description?: string;
   picUrl?: string;
@@ -67,6 +68,7 @@ export enum ProductSizeEnum {
 
 export enum CategoryType {
   NORMAL = "Normal",
+  CHILD = "Child",
   EXTRA = "Extra",
 }
 export enum CategoryStatus {
