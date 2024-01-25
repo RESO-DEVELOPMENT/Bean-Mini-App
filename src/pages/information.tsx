@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Icon } from "zmp-ui";
@@ -42,12 +43,33 @@ const InformationPage = () => {
           <button className="camera-icon" onClick={handleCameraClick}>
             <Icon icon="zi-camera" />
           </button>
-        </div>
-        <h2>Thông tin về bạn</h2>
+=======
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useRecoilValueLoadable } from "recoil";
+import { userState } from "state";
+import logo from "static/logo.png";
 
-        {isEditingAll ? (
-          <div>
+const InformationPage = () => {
+  const navigate = useNavigate();
+  const user = useRecoilValueLoadable(userState);
+
+  return (
+    <div className="flex-1 scrollable-container">
+      <div className="information-page">
+        <div className="avatar-container">
+          <img
+            src={user.contents.avatar || logo}
+            alt="User Avatar"
+            className="avatar"
+          />
+>>>>>>> Stashed changes
+        </div>
+        <div className="user-details">
+          <div className="user-detail-row">
+            <div className="label text-l ">Tên</div>
             <input
+<<<<<<< Updated upstream
               type="text"
               value={editableInfo.name}
               onChange={(e) => handleChange("name", e.target.value)}
@@ -69,35 +91,24 @@ const InformationPage = () => {
               type="email"
               value={editableInfo.email}
               onChange={(e) => handleChange("email", e.target.value)}
+=======
+              className="input-field font-bold"
+              value={user.contents.name}
+              readOnly
+              disabled
+>>>>>>> Stashed changes
             />
           </div>
-        ) : (
-          <div>
-            <p>
-              <strong>Tên:</strong> {editableInfo.name}
-            </p>
-            <p>
-              <strong>Ngày sinh:</strong> {formatDate(editableInfo.birthDate)}
-            </p>
-            <p>
-              <strong>Giới tính:</strong> {editableInfo.gender}
-            </p>
-            <p>
-              <strong>Email:</strong>{" "}
-              <a href={`mailto:${editableInfo.email}`}>{editableInfo.email}</a>
-            </p>
+          <div className="user-detail-row">
+            <div className="label text-l ">Số điện thoại:</div>
+            <input
+              className="input-field font-bold"
+              value={user.contents.phone || "Số điện thoại không có"}
+              readOnly
+              disabled
+            />
           </div>
-        )}
-
-        {isEditingAll ? (
-          <button className="edit-button" onClick={handleSaveAllClick}>
-            Lưu{" "}
-          </button>
-        ) : (
-          <button className="edit-button" onClick={handleEditAllClick}>
-            Chỉnh Sửa{" "}
-          </button>
-        )}
+        </div>
       </div>
     </div>
   );
