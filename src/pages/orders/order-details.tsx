@@ -1,7 +1,7 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { Card } from "zmp-framework/react";
 import { Box, Header, Icon, Page, Text } from "zmp-ui";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   useRecoilState,
   useRecoilStateLoadable,
@@ -17,10 +17,25 @@ import { OrderStatus, OrderType } from "types/order";
 import { showOrderStatus } from "utils/product";
 
 const OrderDetailsPage: FC = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const id = location.state?.id;
   const orderDetail = useRecoilValueLoadable(getOrderDetailstate(id));
-  console.log("orderDetail", orderDetail);
+  const [showCancellationOptions, setShowCancellationOptions] = useState(false);
+  const [cancellationReason, setCancellationReason] = useState("");
+
+  const cancellationReasons = [
+    "Thay đổi suy nghĩ",
+    "Không lấy hàng được",
+    "Đơn hàng bị trùng",
+    "Đặt nhầm địa chỉ",
+  ];
+  const handleCancelOrder = () => {
+    console.log("Order cancelled for reason:", cancellationReason);
+    navigate("/");
+    setShowCancellationOptions(false);
+    setCancellationReason("");
+  };
   return (
     <Page className="flex flex-col">
       <Header title="Chi tiết đơn hàng" className="pt-12" showBackIcon={true} />
@@ -320,10 +335,48 @@ const OrderDetailsPage: FC = () => {
               />
             </Box>
             <Box className="space-y-3 px-4 my-2">
-              <button className="font-bold bg-red-300 p-3  text-[18px] rounded-md hover:bg-red-400  w-full ">
-                Huỷ đơn
-              </button>
-              <button className="font-bold bg-zinc-200 p-3  text-[18px] rounded-md hover:bg-zinc-400 w-full ">
+              {orderDetail.state === "hasValue" &&
+                orderDetail.contents !== null &&
+                orderDetail.contents.orderStatus === OrderStatus.PENDING && (
+                  <>
+                    {showCancellationOptions ? (
+                      <>
+                        <select
+                          className="p-2 w-full border rounded-md mb-2"
+                          value={cancellationReason}
+                          onChange={(e) =>
+                            setCancellationReason(e.target.value)
+                          }
+                        >
+                          <option value="">
+                            Select a reason for cancellation
+                          </option>
+                          {cancellationReasons.map((reason) => (
+                            <option key={reason} value={reason}>
+                              {reason}
+                            </option>
+                          ))}
+                        </select>
+
+                        <button
+                          className="font-bold bg-red-500 p-3 text-[18px] rounded-md hover:bg-red-600 w-full"
+                          onClick={handleCancelOrder}
+                          disabled={!cancellationReason}
+                        >
+                          Confirm Cancellation
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        className="font-bold bg-red-300 p-3 text-[18px] rounded-md hover:bg-red-400 w-full"
+                        onClick={() => setShowCancellationOptions(true)}
+                      >
+                        Huỷ đơn
+                      </button>
+                    )}
+                  </>
+                )}
+              <button className="font-bold bg-zinc-200 p-3 text-[18px] rounded-md hover:bg-zinc-400 w-full">
                 Bạn cần hỗ trợ?
               </button>
             </Box>
