@@ -37,6 +37,7 @@
     "react-qr-code": "^2.0.12",
     "react-router-dom": "^6.8.2",
     "react-scrollbars-custom": "^4.1.1",
+    "react-toastify": "^10.0.4",
     "recoil": "^0.7.7",
     "styled-components": "^6.1.8",
     "swiper": "^9.1.0",

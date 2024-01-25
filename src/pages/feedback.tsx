@@ -1,17 +1,28 @@
 import React, { useState } from "react";
-
+import { Icon } from "zmp-ui";
+import { useParams, useNavigate } from "react-router-dom";
 const FeedbackForm: React.FC = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [feedback, setFeedback] = useState("");
-
+  const handleBackClick = () => {
+    navigate(-1);
+  };
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
   };
 
   return (
-    <div style={{ background: "#14D9C5", minHeight: "200vh", padding: "20px" }}>
+    <div
+      className="flex-1 scrollable-container"
+      style={{ background: "#14D9C5", minHeight: "200vh", padding: "20px" }}
+    >
+      <button className="back-button" onClick={handleBackClick}>
+        <Icon icon="zi-chevron-left-header" />
+        Back
+      </button>
       <div className="container ">
         <h1 className="text-2xl ml-6">Contact and Feedback</h1>
         <form onSubmit={handleSubmit} className="mt-10">

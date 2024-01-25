@@ -251,3 +251,13 @@ textarea:focus {
   background-color: white;
   box-shadow: 0 0 8px 0 #9ec3ff;
 }
+.scrollable-container {
+  max-height: 100vh; /* Adjust this value as needed */
+  overflow-y: auto;
+}
+.back-button {
+  position: absolute; /* Or fixed, depending on your layout */
+  top: 30px;
+  left: 10px;
+  /* Add more styles here (e.g., padding, background color, etc.) */
+}
