@@ -126,141 +126,66 @@ body {
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  object-fit: cover; /* Đảm bảo hình ảnh được bao phủ đều */
-  margin-top: 30px;
-  margin-left: 70px;
-  background-color: #cccccc; /* Màu xám */
+  margin-top: 100px;
+  margin-left: 90px;
+}
+.user-details {
+  margin-top: 80px;
+}
+.user-detail-row {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 0.8em;
-  color: white;
-}
-.camera-icon {
-  position: absolute;
-  bottom: 0;
-  right: 20px;
-  background-color: #dcdcdc; /* hoặc màu khác */
-  color: black;
-  border-radius: 50%;
-  border: none;
-  padding: 5px;
-  cursor: pointer;
-}
-.avatar-wrapper {
-  position: relative;
-  display: inline-block; /* Để đặt icon lên trên avatar */
-}
-.info-box {
-  background-color: white;
-  padding: 20px;
-  margin: 90px 0;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  top: 10px;
-  justify-content: start;
-  text-align: start;
-}
-h2 {
-  margin: 20px 0;
-  color: #333;
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-}
-.info-box p {
-  font-size: 18px;
-}
-.info-box input[type="text"],
-.info-box input[type="email"] {
-  margin-bottom: 10px;
-  padding: 5px;
-  display: block;
+  margin-bottom: 20px;
 }
 
-.info-box button {
-  padding: 5px 10px;
-  margin-top: 10px;
-}
-.edit-button {
-  padding: 20px;
-  border: 2px solid red;
-  border-radius: 15px;
-  background-color: white;
-  color: red;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: -5px;
-  margin-left: 220px;
+.label {
+  background-color: #cccccc;
+  padding: 10px;
   width: 120px;
 }
-.info-box div {
-  margin-bottom: 15px;
-}
 
-.info-box input,
-.info-box select {
-  width: 100%;
-  padding: 8px 10px;
-  margin-bottom: 10px;
-}
-
-.info-box p {
-  margin-bottom: 10px;
-}
-
-.edit-button {
-  margin-top: 15px;
-}
-.h1 {
-  font-weight: bold;
-  font-size: 20px;
-<<<<<<< Updated upstream
-}
-/* Các cài đặt nền và font */
-.container {
-  max-width: 800px;
-  height: auto;
-  margin-top: 100px;
-  padding: 20px;
-  background: white;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  color: black;
-  font-family: "Inter", sans-serif;
-}
-
-/* Các hiệu ứng trên các phần tử form */
-input[type="text"],
-input[type="email"],
-select,
-textarea {
-  border: 2px solid #ddd;
-  border-radius: 5px;
-  padding: 14px;
-  background-color: rgba(255, 255, 255, 0.8);
-  transition: all 0.3s ease;
-  width: 200px;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-select:focus,
-textarea:focus {
-  border-color: #9ec3ff;
+.input-field {
+  flex-grow: 1;
+  border: 1px solid #dddddd;
+  padding: 10px;
   background-color: white;
-  box-shadow: 0 0 8px 0 #9ec3ff;
 }
-.scrollable-container {
-  max-height: 100vh; /* Adjust this value as needed */
-  overflow-y: auto;
+.address-popup {
+  background-color: white;
+  padding: 5px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  margin-top: 100px;
 }
-.back-button {
-  position: absolute; /* Or fixed, depending on your layout */
-  top: 30px;
-  left: 10px;
-  /* Add more styles here (e.g., padding, background color, etc.) */
-=======
->>>>>>> Stashed changes
+
+.address-popup input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.address-popup button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.address-popup button:first-of-type {
+  background-color: #4caf50;
+  color: white;
+}
+
+.address-popup button:last-of-type {
+  background-color: #f44336;
+  color: white;
 }
