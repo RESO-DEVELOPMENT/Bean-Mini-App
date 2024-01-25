@@ -18,7 +18,7 @@ export const Banner: FC = () => {
     navigate("/blog", { state: { id } });
   };
   return (
-    <Box className="bg-white m-0" py={4}>
+    <Box style={{ overflowX: "hidden" }} py={4}>
       <Swiper
         effect={"cards"}
         grabCursor={true}
