@@ -22,15 +22,13 @@ const TransactionCard: FC<TransactionProps> = ({ trans }) => {
         items={[
           {
             left: (
-              <Box flex className="space-x-1">
-                <Text.Title size="small">
-                  {showTransactionType(trans.type)}
-                </Text.Title>
-              </Box>
+              <Text.Title size="small">
+                {showTransactionType(trans.type)}
+              </Text.Title>
             ),
             right: (
-              <Box flex className="space-x-1">
-                <Box className="flex-1 space-y-[2px]"></Box>
+              <Box flex>
+                <Box className="flex-1"></Box>
                 <Text.Title size="small">
                   {trans.isIncrease ? "+" : "-"} {trans.amount} {trans.currency}
                 </Text.Title>
@@ -38,10 +36,10 @@ const TransactionCard: FC<TransactionProps> = ({ trans }) => {
             ),
           },
           {
-            left: <Box className="flex-1 space-y-[1px]">Thời gian</Box>,
+            left: <Text size="small">Thời gian</Text>,
             right: (
-              <Box flex className="space-x-1">
-                <Box className="flex-1 space-y-[2px]"></Box>
+              <Box flex>
+                <Box className="flex-1 "></Box>
                 <Text size="xxSmall">
                   {displayTime(new Date(trans.createdDate)) +
                     " " +
@@ -51,14 +49,10 @@ const TransactionCard: FC<TransactionProps> = ({ trans }) => {
             ),
           },
           {
-            left: (
-              <Box className="flex-1 space-y-[1px]">
-                <Text size="small">Trạng thái</Text>
-              </Box>
-            ),
+            left: <Text size="small">Trạng thái</Text>,
             right: (
-              <Box flex className="space-x-1">
-                <Box className="flex-1 space-y-[1px]"></Box>
+              <Box flex>
+                <Box className="flex-1"></Box>
                 <Text size="small">{showTransactionStatus(trans.status)} </Text>
               </Box>
             ),

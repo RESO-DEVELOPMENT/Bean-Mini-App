@@ -17,15 +17,15 @@ export const Categories: FC = () => {
   };
 
   return (
-    <Box className="bg-white grid grid-cols-4 gap-4 p-4">
+    <Box className="bg-white grid grid-cols-3 gap-4 p-4">
       {categories.map((category, i) => (
         <div
           key={i}
           onClick={() => gotoCategory(category.id)}
           className="flex flex-col space-y-1 items-center"
         >
-          <img className="w-12 h-12" src={category.picUrl} />
-          <Text size="xxSmall" className="text-gray  text-center">
+          <img className="w-20 h-20" src={category.picUrl} />
+          <Text size="small" className="text-gray  text-center">
             {category.name}
           </Text>
         </div>

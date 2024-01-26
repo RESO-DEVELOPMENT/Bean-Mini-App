@@ -9,7 +9,7 @@ export const QuantityPicker: FC<{
     <Box flex className="border border-[#e9ebed] rounded-full p-[6px]">
       <Button
         disabled={value < 1}
-        onClick={() => onChange(value - 1)}
+        onClick={() => onChange(value == 1 ? value : value - 1)}
         variant="secondary"
         type="neutral"
         icon={

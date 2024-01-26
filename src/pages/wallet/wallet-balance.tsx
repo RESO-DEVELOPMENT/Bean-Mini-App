@@ -24,8 +24,8 @@ export const WalletBalance: FC<MemberBalanceProps> = ({ memberInfo }) => {
   );
 
   return (
-    <Box className="bg-white flex  items-center flex-row  m-2 mt-4 ">
-      <Box
+    <Box className="bg-white flex   items-center flex-row  m-2 mt-4 ">
+      {/* <Box
         className="bg-white basis-1/2 items-center flex flex-row border-solid border border-gray text-gray rounded-full p-2 ml-0.2"
         style={{ whiteSpace: "nowrap" }}
       >
@@ -33,24 +33,27 @@ export const WalletBalance: FC<MemberBalanceProps> = ({ memberInfo }) => {
         <Text className="font-bold">
           <DisplayValue value={pointWallet?.balance ?? 0} unit=" Bean" />
         </Text>
-      </Box>
+      </Box> */}
 
-      <Box className="bg-white basis-1/2 items-center flex flex-row border-solid border border-gray text-gray rounded-full p-2 ml-2">
-        <img className="w-6 h-6 mr-0.5" src={wallet} />
-        <Text className="font-bold">
-          <DisplayPrice>{monney?.balance ?? 0}</DisplayPrice>
+      <Box className="bg-white items-center flex flex-row border-solid border border-gray text-gray rounded-full p-2 ml-2">
+        <img className="w-6 h-6 m-0.5" src={wallet} />
+        <Text size="small">
+          <DisplayValue
+            value={monney?.balance ?? 0}
+            unit={" " + monney?.walletType.currency}
+          />
         </Text>
       </Box>
-      <Box
+      {/* <Box
         onClick={() => navigate("/cart")}
         className="bg-white h-10 w-10 mx-2 border-solid border border-gray text-gray rounded-full p-2 ml-2"
       >
         <CartIcon></CartIcon>
-      </Box>
+      </Box> */}
 
       <Box
         onClick={() => navigate("/notification")}
-        className="bg-white  border-solid border border-gray text-gray rounded-full p-2 ml-1"
+        className="bg-white  border-solid border border-gray  text-gray rounded-full  p-2 ml-10"
       >
         <Icon icon="zi-notif" />
       </Box>

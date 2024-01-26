@@ -92,7 +92,7 @@ const HistoryPicker: FC = () => {
                       </div>
                       <div>
                         <Text.Header className="text-md leading-6 m-2">
-                          {order.invoiceId}
+                          {order.storeName}
                         </Text.Header>
                         <Text className="text-[17px]">
                           <b className="font-semibold  m-2">

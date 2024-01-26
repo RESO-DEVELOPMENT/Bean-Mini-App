@@ -12,6 +12,7 @@ import {
 } from "recoil";
 import { qrState, memberState, requestRetriveQRstate } from "state";
 import { DisplayPrice } from "components/display/price";
+import { DisplayValue } from "components/display/value";
 
 const QRCodePage: React.FC = () => {
   const [countdown, setCountdown] = useState(120);
@@ -96,7 +97,10 @@ const QRCodePage: React.FC = () => {
                 <span className="text-sm">Ví Bean </span>
               </div>
               <span className="order-2 font-bold ">
-                <DisplayPrice>{monney?.balance ?? 0}</DisplayPrice>
+                <DisplayValue
+                  value={monney?.balance ?? 0}
+                  unit={" " + monney?.walletType.currency}
+                />
               </span>
             </div>
             <div
