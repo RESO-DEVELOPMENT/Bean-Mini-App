@@ -97,7 +97,7 @@ const Other: FC = () => {
             ),
           },
           {
-            navigate: "/feedback",
+            // navigate: "/feedback",
             left: <Icon icon="zi-call" />,
             right: (
               <Box flex>

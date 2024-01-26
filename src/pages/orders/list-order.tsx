@@ -1,6 +1,7 @@
 import { ListRenderer } from "components/list-renderer";
 import { ProductItem } from "components/product/item";
 import React, { FC, Suspense, useEffect } from "react";
+import FeedbackForm from "pages/feedbackform";
 import {
   useRecoilValue,
   useRecoilValueLoadable,
@@ -28,18 +29,34 @@ const HistoryPicker: FC = () => {
   const selectedCategory = useRecoilValue(selectedCategoryIdState);
   const orderListData = useRecoilValueLoadable(listOrderState);
   const transactionListData = useRecoilValueLoadable(listTransactionState);
+  const retry = useSetRecoilState(requestOrderTransactionTriesState);
+
+  useEffect(() => {
+    retry((r) => r + 1);
+  }, []);
   const handleResetClick = (event) => {
     event.stopPropagation();
     navigate("/order");
   };
 
   const navigate = useNavigate();
-  const retry = useSetRecoilState(requestOrderTransactionTriesState);
+
   useEffect(() => {
     retry((r) => r + 1);
   }, []);
   const gotoPage = (id: string) => {
     navigate("/order-detail", { state: { id } });
+  };
+  const handleFeedbackSubmit = (
+    orderId: string,
+    rating: number,
+    feedback: string
+  ) => {
+    // Implement submission logic here
+    console.log(
+      `Feedback for order ${orderId}: ${rating} stars, Comment: ${feedback}`
+    );
+    // Example: Call an API to submit the feedback
   };
   return (
     <Tabs
@@ -98,6 +115,12 @@ const HistoryPicker: FC = () => {
                             <DisplayPrice>{order.finalAmount}</DisplayPrice>
                           </b>
                         </Text>
+                        <div className="ml-28 ">
+                          <FeedbackForm
+                            orderId={order.id}
+                            onSubmitFeedback={handleFeedbackSubmit}
+                          />
+                        </div>
                       </div>
                     </div>
                     <hr className="hr-order" />

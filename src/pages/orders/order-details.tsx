@@ -348,8 +348,8 @@ const OrderDetailsPage: FC = () => {
                             setCancellationReason(e.target.value)
                           }
                         >
-                          <option value="">
-                            Select a reason for cancellation
+                          <option value="" className="font-bold">
+                            Lí do hủy đơn
                           </option>
                           {cancellationReasons.map((reason) => (
                             <option key={reason} value={reason}>
@@ -363,7 +363,7 @@ const OrderDetailsPage: FC = () => {
                           onClick={handleCancelOrder}
                           disabled={!cancellationReason}
                         >
-                          Confirm Cancellation
+                          Chấp nhận hủy đơn
                         </button>
                       </>
                     ) : (
