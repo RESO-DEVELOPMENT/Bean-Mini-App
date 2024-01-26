@@ -1,19 +1,43 @@
-import { ElasticTextarea } from "components/elastic-textarea";
-import { ListRenderer } from "components/list-renderer";
-import React, { FC, Suspense } from "react";
-import {
-  useRecoilState,
-  useRecoilStateLoadable,
-  useSetRecoilState,
-} from "recoil";
+import React, { useState, FC } from "react";
+import { useRecoilState } from "recoil";
 import { cartState } from "state";
-import { Cart } from "types/cart";
 import { Box, Icon, Text } from "zmp-ui";
-import { RequestStorePickerLocation, StorePicker } from "./store-picker";
+import { ListRenderer } from "components/list-renderer";
+import { StorePicker } from "./store-picker";
 import { TimePicker } from "./time-picker";
+
+// Popup component for delivery address input
+const AddressPopup = ({ onClose, onConfirm }) => {
+  const [address, setAddress] = useState("");
+
+  return (
+    <div className="address-popup">
+      {" "}
+      {/* Add your styling here */}
+      <input
+        type="text"
+        value={address}
+        onChange={(e) => setAddress(e.target.value)}
+        placeholder="Nhập địa chỉ"
+      />
+      <button onClick={() => onConfirm(address)}>Xác nhận</button>
+      <button onClick={onClose}>Đóng</button>
+    </div>
+  );
+};
 
 export const Delivery: FC = () => {
   const [cart, setCart] = useRecoilState(cartState);
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handleAddressChange = (address) => {
+    setCart((prevCart) => ({
+      ...prevCart,
+      deliveryAddress: address,
+    }));
+    setShowPopup(false);
+  };
+
   return (
     <Box className="space-y-2 px-4">
       <Text.Header>Hình thức nhận hàng</Text.Header>
@@ -23,9 +47,9 @@ export const Delivery: FC = () => {
           {
             left: <Icon icon="zi-location" className="my-auto" />,
             right: (
-              <Suspense fallback={<RequestStorePickerLocation />}>
+              <React.Suspense fallback={<div>Loading...</div>}>
                 <StorePicker />
-              </Suspense>
+              </React.Suspense>
             ),
           },
           {
@@ -46,21 +70,18 @@ export const Delivery: FC = () => {
             left: <Icon icon="zi-note" className="my-auto" />,
             right: (
               <Box flex>
-                <ElasticTextarea
-                  onChange={(e) =>
-                    setCart((prevCart) => {
-                      let res = { ...prevCart };
-                      res = {
-                        ...prevCart,
-                        deliveryAddress: e.currentTarget.value,
-                      };
-                      return res;
-                    })
-                  }
-                  placeholder="Nhận món tại"
-                  className="border-none px-0 w-full focus:outline-none"
-                  maxRows={4}
-                />
+                <div
+                  onClick={() => setShowPopup(true)}
+                  className="address-field"
+                >
+                  {cart.deliveryAddress || "Nhận món tại"}
+                </div>
+                {showPopup && (
+                  <AddressPopup
+                    onConfirm={handleAddressChange}
+                    onClose={() => setShowPopup(false)}
+                  />
+                )}
               </Box>
             ),
           },
@@ -72,3 +93,5 @@ export const Delivery: FC = () => {
     </Box>
   );
 };
+
+export default Delivery;
