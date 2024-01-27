@@ -36,7 +36,7 @@ const VoucherCard: FC<VoucherCardProps> = ({
   const cardStyle: React.CSSProperties = {
     position: "relative",
     padding: "6px",
-    height: "100px",
+    height: "140px",
     borderRadius: "8px",
     display: "flex",
     alignItems: "normal",
@@ -44,7 +44,7 @@ const VoucherCard: FC<VoucherCardProps> = ({
 
   const imageStyle: React.CSSProperties = {
     maxWidth: "100%",
-    height: "80px",
+    height: "120px",
     borderRadius: "8px",
     marginRight: "10px",
   };

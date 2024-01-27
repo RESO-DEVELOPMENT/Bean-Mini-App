@@ -73,36 +73,42 @@ const VoucherPage = () => {
                   flex: 1,
                 }}
               >
-                {promotionListData.contents
-                  .filter((e) => e.promotionType === 2)
-                  .map((promotion) => (
-                    <VoucherCard
-                      key={promotion.promotionId}
-                      promotion={promotion}
-                      onClick={() =>
-                        setCart((prevCart) => {
-                          let res = { ...prevCart };
-                          res = {
-                            ...prevCart,
-                            promotionCode: promotion.promotionCode,
-                          };
-                          return prepareCart(res);
-                        })
-                      }
-                      isUsed={cart.promotionCode === promotion.promotionCode}
-                      onCancle={() =>
-                        setCart((prevCart) => {
-                          let res = { ...prevCart };
-                          res = {
-                            ...prevCart,
-                            promotionCode: null,
-                          };
-
-                          return prepareCart(res);
-                        })
-                      }
-                    />
-                  ))}
+                {promotionListData.contents.filter((e) => e.promotionType === 2)
+                  .length > 0 ? (
+                  promotionListData.contents
+                    .filter((e) => e.promotionType === 2)
+                    .map((promotion) => (
+                      <VoucherCard
+                        key={promotion.promotionId}
+                        promotion={promotion}
+                        onClick={() =>
+                          setCart((prevCart) => {
+                            let res = { ...prevCart };
+                            res = {
+                              ...prevCart,
+                              promotionCode: promotion.promotionCode,
+                            };
+                            return prepareCart(res);
+                          })
+                        }
+                        isUsed={cart.promotionCode === promotion.promotionCode}
+                        onCancle={() =>
+                          setCart((prevCart) => {
+                            let res = { ...prevCart };
+                            res = {
+                              ...prevCart,
+                              promotionCode: null,
+                            };
+                            return prepareCart(res);
+                          })
+                        }
+                      />
+                    ))
+                ) : (
+                  <div className="mt-28 ml-20 text-gray ">
+                    Bạn chưa có mã voucher nào cả
+                  </div>
+                )}
               </div>
             ) : (
               <Box />
