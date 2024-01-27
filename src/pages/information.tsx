@@ -22,11 +22,11 @@ const InformationPage = () => {
           />
         </div>
         <div className="user-details">
-          <div className="user-detail-row">
+          {/* <div className="user-detail-row">
             <div className="label text-l ">Tên</div>
             <input
               type="text"
-              value={editableInfo.name}
+              value={user.contents.name}
               onChange={(e) => handleChange("name", e.target.value)}
             />
             <input
@@ -57,7 +57,7 @@ const InformationPage = () => {
               readOnly
               disabled
             />
-          </div>
+          </div> */}
           <div className="user-detail-row">
             <div className="label text-l ">Số điện thoại:</div>
             <input
