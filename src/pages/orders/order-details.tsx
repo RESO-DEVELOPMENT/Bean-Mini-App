@@ -348,9 +348,10 @@ const OrderDetailsPage: FC = () => {
               />
             </Box>
             <Box className="space-y-3 px-4 my-2">
+              {/* Tạm thời để nút HUỶ ĐƠN là undefined. */}
               {orderDetail.state === "hasValue" &&
                 orderDetail.contents !== null &&
-                orderDetail.contents.orderStatus === OrderStatus.PENDING && (
+                orderDetail.contents.orderStatus === "undefined" && (
                   <>
                     {showCancellationOptions ? (
                       <>

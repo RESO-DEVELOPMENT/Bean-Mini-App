@@ -30,6 +30,7 @@ const HistoryPicker: FC = () => {
   const transactionListData = useRecoilValueLoadable(listTransactionState);
   const handleResetClick = (event) => {
     event.stopPropagation();
+    navigate("/order");
     // const handleResetClick = (orderId) => {
     //   navigate("/order");
   };
@@ -109,12 +110,14 @@ const HistoryPicker: FC = () => {
                       >
                         Xem chi tiết đơn hàng
                       </Text.Header>
-                      <button
-                        className="font-bold bg-primary mr-2 p-1 pl-6 pr-6 rounded-md text-white text-sm hover:text-sky-200 hover:bg-cyan-800"
-                        onClick={(e) => handleResetClick(e)}
-                      >
-                        Đặt lại
-                      </button>
+                      {order.status !== OrderStatus.PENDING && (
+                        <button
+                          className="font-bold bg-primary mr-2 p-1 pl-6 pr-6 rounded-md text-white text-sm hover:text-sky-200 hover:bg-cyan-800"
+                          onClick={handleResetClick}
+                        >
+                          Đặt lại
+                        </button>
+                      )}
                     </div>
                   </Card>
                 </Box>
