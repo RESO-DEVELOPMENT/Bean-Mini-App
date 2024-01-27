@@ -16,7 +16,6 @@ const InformationPage = () => {
       let { token } = data;
     },
     fail: (error) => {
-      // Xử lý khi gọi api thất bại
       console.log(error);
     },
   });
@@ -33,7 +32,7 @@ const InformationPage = () => {
         </div>
         <div className="user-details">
           <div className="user-detail-row">
-            <div className="label text-l">Tên</div>
+            <label htmlFor="name">Họ và tên</label>
             <input
               className="input-field font-bold"
               value={user.contents.name}
@@ -42,7 +41,7 @@ const InformationPage = () => {
             />
           </div>
           <div className="user-detail-row">
-            <div className="label text-l">Số điện thoại:</div>
+            <label htmlFor="phone">Số điện thoại</label>
             <input
               className="input-field font-bold"
               value={phoneNumber || "Số điện thoại không có"}
