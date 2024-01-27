@@ -47,13 +47,7 @@ export const Layout: FC = () => {
           <Route path="/order-detail" element={<OrderDetailsPage />}></Route>
           <Route path="/voucher" element={<VoucherPage />}></Route>
           <Route path="/qr" element={<QRCodePage />}></Route>
-          <Route path="/info" element={<InformationPage />}></Route>
-          <Route
-            path="/feedback"
-            element={
-              <FeedbackForm orderId={undefined} onSubmitFeedback={undefined} />
-            }
-          >
+          <Route path="/info" element={<InformationPage />}>
             {" "}
           </Route>
         </Routes>

@@ -115,12 +115,12 @@ const HistoryPicker: FC = () => {
                             <DisplayPrice>{order.finalAmount}</DisplayPrice>
                           </b>
                         </Text>
-                        <div className="ml-28 ">
+                        {/* <div className="ml-28 ">
                           <FeedbackForm
                             orderId={order.id}
                             onSubmitFeedback={handleFeedbackSubmit}
                           />
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                     <hr className="hr-order" />
