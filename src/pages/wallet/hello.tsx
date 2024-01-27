@@ -19,14 +19,16 @@ export const WelcomeUser: FC = () => {
               src={user.contents.avatar || logo}
             />
             <Box>
-              <Text size="xSmall">Welcome</Text>
-              {user.state === "hasValue" ? (
-                <Text.Title className="text-primary">
-                  {user.contents.name}!
-                </Text.Title>
-              ) : (
-                <Text>...</Text>
-              )}
+              <Text.Title className="text-primary flex">
+                <Text.Title className="mr-1.5 font-bold">Chào</Text.Title>
+                {user.state === "hasValue" ? (
+                  <Text.Title className="font-bold">
+                    {user.contents.name}
+                  </Text.Title>
+                ) : (
+                  <Text.Title className="font-bold">...</Text.Title>
+                )}
+              </Text.Title>
             </Box>
           </Box>
         ) as unknown as string
