@@ -65,7 +65,14 @@ const QRCodePage: React.FC = () => {
         <div className="bg-white p-4 rounded-lg  text-black">
           <div className="text-center">Đưa mã này cho nhân viên </div>
           <div className="flex justify-center my-8">
-            <QRCode value={qrCode.contents ?? 0} size={200} />
+            <QRCode
+              value={
+                qrCode.state === "hasValue" && qrCode.contents !== null
+                  ? qrCode.contents
+                  : ""
+              }
+              size={200}
+            />
           </div>
           <div className="text-center text-sm mt-2">
             Tự động cập nhật sau {countdown}s.{" "}
