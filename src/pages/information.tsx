@@ -37,7 +37,6 @@ const InformationPage = () => {
               className="input-field font-bold"
               value={user.contents.name}
               readOnly
-              disabled
             />
           </div>
           <div className="user-detail-row">
@@ -46,7 +45,6 @@ const InformationPage = () => {
               className="input-field font-bold"
               value={phoneNumber || "Số điện thoại không có"}
               readOnly
-              disabled
             />
           </div>
         </div>
