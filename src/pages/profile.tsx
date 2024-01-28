@@ -73,11 +73,14 @@ const Personal: FC = () => {
 
 const Other: FC = () => {
   const navigate = useNavigate();
+  const toBeImplemented = useToBeImplemented();
+
   const customOnClick = (item) => {
     if (item.navigate) {
       navigate(item.navigate);
+    } else {
+      toBeImplemented();
     }
-    // You can keep the useToBeImplemented or other logic here for items without navigate property
   };
   return (
     <Box className="m-4">
@@ -97,7 +100,7 @@ const Other: FC = () => {
             ),
           },
           {
-            navigate: "/feedback",
+            // navigate: "/feedback",
             left: <Icon icon="zi-call" />,
             right: (
               <Box flex>
