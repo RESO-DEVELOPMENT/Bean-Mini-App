@@ -64,17 +64,14 @@ export const CartItems: FC = () => {
             <Box flex className="space-x-1">
               <Box className="space-y-1 flex-1">
                 <Text size="small">{item.name}</Text>
-                <Text className="text-gray" size="xSmall">
-                  {/* <FinalPrice options={item.options}>
-                        {item.product}
-                      </FinalPrice> */}
-                  <DisplayPrice>{item.finalAmount}</DisplayPrice>
-                </Text>
-                {/* <Text className="text-gray" size="xxxSmall">
-                      <DisplaySelectedOptions options={item.options}>
-                        {item.product}
-                      </DisplaySelectedOptions>
-                    </Text> */}
+                <div className="flex">
+                  <Text className="text-primary font-medium pr-2" size="small">
+                    x{item.quantity}
+                  </Text>
+                  <Text className="text-gray" size="xSmall">
+                    <DisplayPrice>{item.finalAmount}</DisplayPrice>
+                  </Text>
+                </div>
               </Box>
               <Text className="text-primary font-medium" size="small">
                 x{item.quantity}
