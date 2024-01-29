@@ -16,6 +16,8 @@ import { ListRenderer } from "components/list-renderer";
 import { OrderStatus, OrderType } from "types/order";
 import { showOrderStatus } from "utils/product";
 import { openPhone } from "zmp-sdk/apis";
+import { openChat } from "zmp-sdk";
+import { openSupportChat } from "utils/config";
 
 const OrderDetailsPage: FC = () => {
   const navigate = useNavigate();
@@ -38,30 +40,6 @@ const OrderDetailsPage: FC = () => {
     setCancellationReason("");
   };
 
-  const openCallScreen = async () => {
-    try {
-      await openPhone({
-        phoneNumber: "+84123456789",
-      });
-    } catch (error) {
-      // xử lý khi gọi api thất bại
-      console.log(error);
-    }
-  };
-
-  const handleSupportClick = () => {
-    openPhone({
-      phoneNumber: "+84984135344",
-      success: () => {
-        // Handle success scenario
-        console.log("oke nè");
-      },
-      fail: (error) => {
-        // Handle failure scenario
-        console.log(error);
-      },
-    });
-  };
   return (
     <Page className="flex flex-col">
       <Header title="Chi tiết đơn hàng" className="pt-12" showBackIcon={true} />
@@ -418,7 +396,7 @@ const OrderDetailsPage: FC = () => {
                 )}
               <button
                 className="font-bold bg-zinc-200 p-3 text-[18px] rounded-md hover:bg-zinc-400 w-full"
-                onClick={handleSupportClick}
+                onClick={openSupportChat}
               >
                 Bạn cần hỗ trợ?
               </button>

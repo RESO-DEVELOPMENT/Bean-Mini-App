@@ -5,7 +5,7 @@ import {
   useRecoilState,
   useRecoilValue,
 } from "recoil";
-import { getLocation, getPhoneNumber, getUserInfo } from "zmp-sdk";
+import { getLocation, getPhoneNumber, getUserInfo, openPhone } from "zmp-sdk";
 import logo from "static/logo.png";
 import {
   Category,
@@ -35,6 +35,19 @@ export const accessTokenState = selector({
       success: (accessToken) => {
         return accessToken;
       },
+      fail: (error) => {
+        // xử lý khi gọi api thất bại
+        console.log(error);
+      },
+    }),
+});
+
+export const openPhoneState = selector({
+  key: "openPhone",
+  get: () =>
+    openPhone({
+      phoneNumber: "+84123456789",
+      success: () => {},
       fail: (error) => {
         // xử lý khi gọi api thất bại
         console.log(error);

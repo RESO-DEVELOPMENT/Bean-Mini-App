@@ -4,6 +4,7 @@ import subscriptionDecor from "static/subscription-decor.svg";
 import { ListRenderer } from "components/list-renderer";
 import { useToBeImplemented } from "hooks";
 import { useNavigate } from "react-router-dom";
+import { openSupportChat } from "utils/config";
 
 export const Subscription: FC = () => {
   const onClick = useToBeImplemented();
@@ -72,26 +73,15 @@ const Personal: FC = () => {
 };
 
 const Other: FC = () => {
-  const navigate = useNavigate();
-  const toBeImplemented = useToBeImplemented();
-
-  const customOnClick = (item) => {
-    if (item.navigate) {
-      navigate(item.navigate);
-    } else {
-      toBeImplemented();
-    }
-  };
   return (
     <Box className="m-4">
       <ListRenderer
         title="Khác"
-        onClick={customOnClick}
         items={[
           {
             left: <Icon icon="zi-star" />,
             right: (
-              <Box flex>
+              <Box onClick={openSupportChat} flex>
                 <Text.Header className="flex-1 items-center font-normal">
                   Đánh giá đơn hàng
                 </Text.Header>
@@ -103,7 +93,7 @@ const Other: FC = () => {
             // navigate: "/feedback",
             left: <Icon icon="zi-call" />,
             right: (
-              <Box flex>
+              <Box onClick={openSupportChat} flex>
                 <Text.Header className="flex-1 items-center font-normal">
                   Liên hệ và góp ý
                 </Text.Header>
