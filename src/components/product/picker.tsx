@@ -159,7 +159,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
                     className="w-32 h-32 object-cover"
                   />
                 </div>
-                <Box className="flex">
+                <Box className="flex justify-between">
                   <Text>
                     <div
                       dangerouslySetInnerHTML={{
@@ -167,7 +167,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
                       }}
                     ></div>
                   </Text>
-                  <Text className="ml-40 font-bold">
+                  <Text className="font-bold">
                     <DisplayPrice>{product.sellingPrice}</DisplayPrice>
                   </Text>
                 </Box>
