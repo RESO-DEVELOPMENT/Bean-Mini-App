@@ -10,8 +10,8 @@ const AddressPopup = ({ onConfirm, onClose }) => {
   const [address, setAddress] = useState("");
 
   return (
-    <div className="address-popup">
-      <div className="close-button mb-2 ml-72" onClick={onClose}>
+    <div className="bg-white p-4 rounded-lg shadow fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/3 z-10 mt-10 w-9/12">
+      <div className="close-button mb-2 ml-56 cursor-pointer" onClick={onClose}>
         <Icon icon="zi-close" />
       </div>
       <input
@@ -19,8 +19,12 @@ const AddressPopup = ({ onConfirm, onClose }) => {
         value={address}
         onChange={(e) => setAddress(e.target.value)}
         placeholder="Nhập địa chỉ"
+        className="w-full p-2 mb-2 border rounded"
       />
-      <button className="font-bold text-l" onClick={() => onConfirm(address)}>
+      <button
+        className="w-full p-3 bg-teal-400 text-white rounded-full mt-2 mb-2 cursor-pointer font-bold text-l"
+        onClick={() => onConfirm(address)}
+      >
         Xác nhận
       </button>
     </div>
@@ -41,7 +45,12 @@ export const Delivery: FC = () => {
 
   return (
     <>
-      {showPopup && <div className="overlay"></div>}
+      {showPopup && (
+        <div
+          className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-10"
+          onClick={() => setShowPopup(false)}
+        ></div>
+      )}
       <Box className="space-y-2 px-4">
         <Text.Header>Hình thức nhận hàng</Text.Header>
 
