@@ -2,9 +2,10 @@ import React, { FC, Suspense } from "react";
 import { Section } from "components/section";
 import { useRecoilValue } from "recoil";
 import { productsState } from "state";
-import { Box } from "zmp-ui";
+import { Box, Text } from "zmp-ui";
 import { ProductItem } from "components/product/item";
 import { ProductItemSkeleton } from "components/skeletons";
+import { ListRenderer } from "components/list-renderer";
 
 export const ProductListContent: FC = () => {
   const products = useRecoilValue(productsState);
@@ -19,6 +20,10 @@ export const ProductListContent: FC = () => {
             onQuantityChange={0}
           />
         ))}
+
+        <Text className="text-primary font-medium pr-2" size="small">
+          x{item.quantity}
+        </Text>
       </Box>
     </Section>
   );

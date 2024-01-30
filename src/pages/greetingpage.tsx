@@ -17,7 +17,9 @@ const GreetingPage: FC = () => {
           <Text size="large" className="mt-5">
             Xin chào
           </Text>
-          <Text size="medium">Tặng bạn voucher 50%</Text>
+          <Text className="mt-4" size="normal">
+            Tặng bạn voucher 50% cho mọi mặt hàng
+          </Text>
         </Box>
       </Box>
     </Page>

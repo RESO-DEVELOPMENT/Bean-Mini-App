@@ -14,7 +14,12 @@ const NotificationList: FC = () => {
   };
 
   return (
-    <Box className="bg-background mt-14">
+    <Box className="bg-background ">
+      <Box className="px-32 py-6 bg-primary">
+        <Text.Header className="text-white mt-12 bold-and-large">
+          Thông Báo
+        </Text.Header>
+      </Box>
       <ListRenderer
         noDivider
         items={notifications}

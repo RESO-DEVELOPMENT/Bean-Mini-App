@@ -204,3 +204,9 @@ body {
   background-color: rgba(0, 0, 0, 0.3);
   z-index: 999;
 }
+.bold-and-large {
+  // @extend .text-white;
+  display: block;
+  font-weight: bold;
+  font-size: 1.5em;
+}
