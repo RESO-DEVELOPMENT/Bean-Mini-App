@@ -149,18 +149,28 @@ export const ProductPicker: FC<ProductPickerProps> = ({
         <Sheet visible={visible} onClose={() => setVisible(false)} autoHeight>
           {product && (
             <Box className="space-y-6 mt-2" p={4}>
-              <Box className="space-y-2">
+              <Box className="space-y-4 ml">
                 <Text.Title>{product.name}</Text.Title>
-                <Text>
-                  <DisplayPrice>{product.sellingPrice}</DisplayPrice>
-                </Text>
-                <Text>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: product.description ?? "",
-                    }}
-                  ></div>
-                </Text>
+                <div className="flex justify-center items-center">
+                  {" "}
+                  <img
+                    src={product.picUrl}
+                    alt={product.name}
+                    className="w-32 h-32 object-cover"
+                  />
+                </div>
+                <Box className="flex">
+                  <Text>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: product.description ?? "",
+                      }}
+                    ></div>
+                  </Text>
+                  <Text className="ml-40 font-bold">
+                    <DisplayPrice>{product.sellingPrice}</DisplayPrice>
+                  </Text>
+                </Box>
               </Box>
               <Box className="space-y-5">
                 {
