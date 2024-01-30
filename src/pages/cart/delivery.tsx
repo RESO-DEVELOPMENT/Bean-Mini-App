@@ -5,24 +5,27 @@ import { Box, Icon, Text } from "zmp-ui";
 import { ListRenderer } from "components/list-renderer";
 import { StorePicker } from "./store-picker";
 import { TimePicker } from "./time-picker";
+import { ListItem } from "components/list-item";
 
 // Popup component for delivery address input
 const AddressPopup = ({ onClose, onConfirm }) => {
   const [address, setAddress] = useState("");
 
   return (
-    <div className="address-popup">
-      {" "}
-      {/* Add your styling here */}
+    <Box className="address-popup">
       <input
         type="text"
         value={address}
         onChange={(e) => setAddress(e.target.value)}
         placeholder="Nhập địa chỉ"
       />
-      <button onClick={() => onConfirm(address)}>Xác nhận</button>
-      <button onClick={onClose}>Đóng</button>
-    </div>
+      <Box flex className="space-x-2">
+        <button className="bg-primary" onClick={() => onConfirm(address)}>
+          Xác nhận
+        </button>
+        <button onClick={onClose}>Đóng</button>
+      </Box>
+    </Box>
   );
 };
 
@@ -69,13 +72,18 @@ export const Delivery: FC = () => {
           {
             left: <Icon icon="zi-note" className="my-auto" />,
             right: (
-              <Box flex>
-                <div
+              <Box>
+                <ListItem
+                  onClick={() => setShowPopup(true)}
+                  title={cart.deliveryAddress}
+                  subtitle="Nhận món tại"
+                />
+                {/* <div
                   onClick={() => setShowPopup(true)}
                   className="address-field"
                 >
                   {cart.deliveryAddress || "Nhận món tại"}
-                </div>
+                </div> */}
                 {showPopup && (
                   <AddressPopup
                     onConfirm={handleAddressChange}
