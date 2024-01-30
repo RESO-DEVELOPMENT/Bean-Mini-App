@@ -106,7 +106,7 @@ const VoucherPage = () => {
                     ))
                 ) : (
                   <div className="mt-28 ml-20 text-gray ">
-                    Bạn chưa có mã voucher nào cả
+                    HIện tại, bạn chưa có mã voucher
                   </div>
                 )}
               </div>
