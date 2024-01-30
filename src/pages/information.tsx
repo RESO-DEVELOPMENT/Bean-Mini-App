@@ -15,11 +15,11 @@ const InformationPage = () => {
   };
   return (
     <div className="flex-1 scrollable-container">
-      <div className="mt-10 mr-24 mb-8">
+      <div className="mt-40 ml-24 mb-8">
         <img
           src={user.contents.avatar || logo}
           alt="User Avatar"
-          className="avatar"
+          className="w-50 h-40 object-cover"
         />
       </div>
       <ListRenderer
