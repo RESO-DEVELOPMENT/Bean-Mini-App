@@ -58,28 +58,30 @@ const OrderDetailsPage: FC = () => {
                   }}
                   renderKey={({ quantity }) => JSON.stringify({ quantity })}
                   renderLeft={(item) => (
-                    <div className="flex justify-between">
+                    <div
+                      key={item.orderDetailId}
+                      className="flex justify-between"
+                    >
                       <img className="img-bill-orders" src={item.picUrl} />
                     </div>
                   )}
                   renderRight={(item) => (
-                    <Box flex className="space-x-1">
+                    <Box key={item.orderDetailId} flex className="space-x-1">
                       <Box className="space-y-1 flex-1">
                         <Text size="small">{item.name}</Text>
                         <div className="flex">
-                          <Text
-                            className="text-primary font-medium pr-2"
-                            size="small"
-                          >
-                            x{item.quantity}
-                          </Text>
                           <Text className="text-gray" size="xSmall">
                             <DisplayPrice>{item.finalAmount}</DisplayPrice>
                           </Text>
                         </div>
                       </Box>
 
-                      <Icon icon="zi-delete" className="mt-2 text-red-500" />
+                      <Text
+                        className="text-primary font-medium pr-2"
+                        size="small"
+                      >
+                        x{item.quantity}
+                      </Text>
                     </Box>
                   )}
                 />
@@ -400,7 +402,11 @@ const OrderDetailsPage: FC = () => {
                 )}
               <button
                 className="font-bold bg-zinc-200 p-3 text-[18px] rounded-md hover:bg-zinc-400 w-full"
-                onClick={openSupportChat}
+                onClick={() =>
+                  openSupportChat(
+                    `Tôi cần hỗ trợ đơn hàng ${orderDetail.contents.invoiceId}`
+                  )
+                }
               >
                 Bạn cần hỗ trợ?
               </button>

@@ -81,9 +81,12 @@ const Other: FC = () => {
           {
             left: <Icon icon="zi-star" />,
             right: (
-              <Box onClick={openSupportChat} flex>
+              <Box
+                onClick={() => openSupportChat(`Tôi muốn góp ý về ứng dụng `)}
+                flex
+              >
                 <Text.Header className="flex-1 items-center font-normal">
-                  Đánh giá đơn hàng
+                  Đánh giá ứng dụng
                 </Text.Header>
                 <Icon icon="zi-chevron-right" />
               </Box>
@@ -93,7 +96,7 @@ const Other: FC = () => {
             // navigate: "/feedback",
             left: <Icon icon="zi-call" />,
             right: (
-              <Box onClick={openSupportChat} flex>
+              <Box onClick={() => openSupportChat(`Tôi muốn góp ý `)} flex>
                 <Text.Header className="flex-1 items-center font-normal">
                   Liên hệ và góp ý
                 </Text.Header>

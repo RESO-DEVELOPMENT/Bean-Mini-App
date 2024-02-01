@@ -11,9 +11,9 @@ const AddressPopup = ({ onConfirm, onClose }) => {
 
   return (
     <div className="bg-white p-4 rounded-lg shadow fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/3 z-10 mt-10 w-9/12">
-      <div className="close-button mb-2 ml-56 cursor-pointer" onClick={onClose}>
+      {/* <div className="close-button mb-2 ml-56 cursor-pointer" onClick={onClose}>
         <Icon icon="zi-close" />
-      </div>
+      </div> */}
       <input
         type="text"
         value={address}
@@ -82,19 +82,26 @@ export const Delivery: FC = () => {
             {
               left: <Icon icon="zi-note" className="my-auto" />,
               right: (
-                <Box flex>
-                  <div
+                <Box flex className="space-x-2">
+                  <Box
                     onClick={() => setShowPopup(true)}
-                    className="address-field"
+                    className="flex-1 space-y-[2px] "
                   >
-                    {cart.deliveryAddress || "Nhận món tại"}
-                  </div>
-                  {showPopup && (
-                    <AddressPopup
-                      onConfirm={handleAddressChange}
-                      onClose={() => setShowPopup(false)}
-                    />
-                  )}
+                    <Text className="text-primary">
+                      {cart.deliveryAddress || "Nhận món tại"}
+                    </Text>
+
+                    {showPopup && (
+                      <AddressPopup
+                        onConfirm={handleAddressChange}
+                        onClose={() => setShowPopup(false)}
+                      />
+                    )}
+                    <Text size="xSmall" className="text-gray">
+                      Nhận món tại
+                    </Text>
+                  </Box>
+                  <Icon icon="zi-chevron-right" />
                 </Box>
               ),
             },

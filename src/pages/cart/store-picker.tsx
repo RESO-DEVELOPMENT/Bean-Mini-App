@@ -3,8 +3,11 @@ import { ListItem } from "components/list-item";
 import React, { FC, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import {
+  useRecoilState,
+  useRecoilStateLoadable,
   useRecoilValue,
   useRecoilValueLoadable,
+  useResetRecoilState,
   useSetRecoilState,
 } from "recoil";
 import {
@@ -17,25 +20,26 @@ import {
 } from "state";
 import { TStore } from "types/store";
 import { displayDistance } from "utils/location";
+import { setStorage } from "zmp-sdk";
 
 export const StorePicker: FC = () => {
   const retry = useSetRecoilState(requestLocationTriesState);
   const [visible, setVisible] = useState(false);
   const nearbyStores = useRecoilValueLoadable(nearbyStoresState);
   const setSelectedStoreIndex = useSetRecoilState(selectedStoreIndexState);
-  const selectedStore = useRecoilValue(selectedStoreState);
+  const selectedStore = useRecoilValueLoadable(selectedStoreState);
   const setCart = useSetRecoilState(cartState);
   const member = useRecoilValue(memberState);
-  if (!selectedStore) {
-    return <RequestStorePickerLocation />;
-  }
+  // if (selectedStore.state != "hasValue") {
+  //   return <RequestStorePickerLocation />;
+  // }
   useEffect(
     () => {
       setCart((prevCart) => {
         let res = { ...prevCart };
         res = {
           ...prevCart,
-          storeId: selectedStore.id,
+          storeId: selectedStore?.contents.id,
           customerId: member?.id ?? undefined,
         };
         return res;
@@ -51,8 +55,8 @@ export const StorePicker: FC = () => {
         onClick={() => {
           setVisible(true);
         }}
-        title={selectedStore.name}
-        subtitle={selectedStore.address}
+        title={selectedStore.contents.name}
+        subtitle={selectedStore.contents.address}
       />
       {nearbyStores.state === "hasValue" &&
         createPortal(
@@ -66,9 +70,22 @@ export const StorePicker: FC = () => {
                   text: store.distance
                     ? `${store.name} - ${displayDistance(store.distance)}`
                     : store.name,
-                  highLight: store.id === selectedStore?.id,
+                  highLight: store.id === selectedStore?.contents.id,
                   onClick: () => {
                     setSelectedStoreIndex(i);
+                    setStorage({
+                      data: {
+                        storeIndex: i,
+                      },
+                      success: (data) => {
+                        // xử lý khi gọi api thành công
+                        console.log("set ok", data);
+                      },
+                      fail: (error) => {
+                        // xử lý khi gọi api thất bại
+                        console.log("set error", error);
+                      },
+                    });
                     setVisible(false);
                   },
                 })

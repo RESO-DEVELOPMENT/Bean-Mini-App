@@ -50,13 +50,13 @@ export const WalletBalance: FC<MemberBalanceProps> = ({ memberInfo }) => {
         <CartIcon></CartIcon>
       </Box> */}
 
-      <Box
+      {/* <Box
         onClick={() => navigate("/notification")}
         className="bg-white  border-solid border border-slate-300 text-slate-700 rounded-full p-2 relative"
       >
         <Icon icon="zi-notif" />
         <span className="absolute top-0 right-0 block h-3 w-3 rounded-full bg-red-600"></span>
-      </Box>
+      </Box> */}
     </Box>
     // <Box className="bg-white flex  items-center flex-row  m-2 ">
     //   <Box className="bg-white basis-1/3 items-center flex flex-row border-solid border border-gray text-gray rounded-full p-2 mx-0.5">

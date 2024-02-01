@@ -5,11 +5,11 @@ export function getConfig<T>(getter: (config: typeof appConfig) => T) {
   return getter(appConfig);
 }
 
-export const openSupportChat = async () => {
+export const openSupportChat = async (message: string) => {
   openChat({
     type: "oa",
-    id: "1968989846992650935",
-    message: "Tôi cần hỗ trợ",
+    id: "66966497448427332",
+    message: message,
     success: () => {},
     fail: (err) => {},
   });

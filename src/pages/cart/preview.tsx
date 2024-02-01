@@ -45,11 +45,12 @@ export const CartPreview: FC = () => {
         text: "đặt hàng thành công",
       });
       navigate("/order-detail", { state: { id: res.data } });
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      console.log(" log eror", error);
       snackbar.openSnackbar({
         type: "error",
-        text: `đặt hàng thất bại `,
+
+        text: "Đặt hàng thất bại, " + error.Error,
       });
     }
   };

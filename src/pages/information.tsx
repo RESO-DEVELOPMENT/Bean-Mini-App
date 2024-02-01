@@ -2,19 +2,20 @@ import { ListRenderer } from "components/list-renderer";
 import React, { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValueLoadable } from "recoil";
-import { userState } from "state";
+import { memberState, userState } from "state";
 import logo from "static/logo.png";
 import { Box, Text } from "zmp-react";
 
 const InformationPage = () => {
   const navigate = useNavigate();
   const user = useRecoilValueLoadable(userState);
+  const member = useRecoilValueLoadable(memberState);
 
   const handleBackClick = () => {
     navigate(-1);
   };
-  return (
-    <div className="flex-1 scrollable-container">
+  return member.state === "hasValue" && member.contents !== null ? (
+    <div className="flex-1  p-3">
       <div className="mt-40 ml-24 mb-8">
         <img
           src={user.contents.avatar || logo}
@@ -32,11 +33,7 @@ const InformationPage = () => {
             ),
             right: (
               <Box flex className="ml-36">
-                <input
-                  type="text "
-                  className="font-bold"
-                  value={user.contents.name}
-                />
+                {member.contents.fullName}
               </Box>
             ),
           },
@@ -48,11 +45,7 @@ const InformationPage = () => {
             ),
             right: (
               <Box flex className="ml-20">
-                <input
-                  type="text"
-                  className="font-bold"
-                  value={user.contents.phone}
-                />
+                {member.contents.phoneNumber}
               </Box>
             ),
           },
@@ -61,6 +54,8 @@ const InformationPage = () => {
         renderRight={(item) => item.right}
       ></ListRenderer>
     </div>
+  ) : (
+    <Box />
   );
 };
 

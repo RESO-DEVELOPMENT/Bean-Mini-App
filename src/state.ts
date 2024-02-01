@@ -5,7 +5,14 @@ import {
   useRecoilState,
   useRecoilValue,
 } from "recoil";
-import { getLocation, getPhoneNumber, getUserInfo, openPhone } from "zmp-sdk";
+import {
+  getLocation,
+  getPhoneNumber,
+  getStorage,
+  getUserInfo,
+  openPhone,
+  setStorage,
+} from "zmp-sdk";
 import logo from "static/logo.png";
 import {
   Category,
@@ -35,19 +42,6 @@ export const accessTokenState = selector({
       success: (accessToken) => {
         return accessToken;
       },
-      fail: (error) => {
-        // xử lý khi gọi api thất bại
-        console.log(error);
-      },
-    }),
-});
-
-export const openPhoneState = selector({
-  key: "openPhone",
-  get: () =>
-    openPhone({
-      phoneNumber: "+84123456789",
-      success: () => {},
       fail: (error) => {
         // xử lý khi gọi api thất bại
         console.log(error);
@@ -450,14 +444,30 @@ export const nearbyStoresState = selector({
   },
 });
 
-export const selectedStoreIndexState = atom({
+function getDefaultCounterValue(): number {
+  let idx = 0;
+  getStorage({
+    keys: ["storeIndex"],
+    success: (data) => {
+      const { storeIndex } = data;
+      console.log("store index", storeIndex);
+      idx = storeIndex;
+    },
+    fail: (error) => {
+      console.log(error);
+    },
+  });
+  return idx;
+}
+
+export const selectedStoreIndexState = atom<number>({
   key: "selectedStoreIndex",
-  default: 0,
+  default: getDefaultCounterValue(),
 });
 
 export const selectedStoreState = selector({
   key: "selectedStore",
-  get: ({ get }) => {
+  get: async ({ get }) => {
     const index = get(selectedStoreIndexState);
     const stores = get(listStoreState);
     return stores[index];
@@ -479,53 +489,53 @@ export const requestPhoneTriesState = atom({
   default: 0,
 });
 
-export const locationState = selector<
-  { latitude: string; longitude: string } | false
->({
-  key: "location",
-  get: async ({ get }) => {
-    const requested = get(requestLocationTriesState);
-    if (requested) {
-      const accessToken = await getAccessToken();
-      const { latitude, longitude, token } = await getLocation({
-        success: async (data) => {
-          let { token } = data;
-          console.log("token", token);
-          if (token !== undefined) {
-            console.log("accessToken", accessToken);
-            await zaloApi.getUserLocation(token, accessToken).then((value) => {
-              console.log("location", value.data.data);
-              return {
-                latitude: value.data.data.latitude,
-                longitude: value.data.data.longitude,
-              };
-            });
-          }
-        },
-        fail: console.warn,
-      });
-      if (latitude && longitude) {
-        return { latitude, longitude };
-      }
-      if (token) {
-        console.warn(
-          "Sử dụng token này để truy xuất vị trí chính xác của người dùng",
-          token
-        );
-        console.warn(
-          "Chi tiết tham khảo: ",
-          "https://mini.zalo.me/blog/thong-bao-thay-doi-luong-truy-xuat-thong-tin-nguoi-dung-tren-zalo-mini-app"
-        );
-        console.warn("Giả lập vị trí mặc định: VNG Campus");
-        return {
-          latitude: "10.7287",
-          longitude: "106.7317",
-        };
-      }
-    }
-    return false;
-  },
-});
+// export const locationState = selector<
+//   { latitude: string; longitude: string } | false
+// >({
+//   key: "location",
+//   get: async ({ get }) => {
+//     const requested = get(requestLocationTriesState);
+//     if (requested) {
+//       const accessToken = await getAccessToken();
+//       const { latitude, longitude, token } = await getLocation({
+//         success: async (data) => {
+//           let { token } = data;
+//           console.log("token", token);
+//           if (token !== undefined) {
+//             console.log("accessToken", accessToken);
+//             await zaloApi.getUserLocation(token, accessToken).then((value) => {
+//               console.log("location", value.data.data);
+//               return {
+//                 latitude: value.data.data.latitude,
+//                 longitude: value.data.data.longitude,
+//               };
+//             });
+//           }
+//         },
+//         fail: console.warn,
+//       });
+//       if (latitude && longitude) {
+//         return { latitude, longitude };
+//       }
+//       if (token) {
+//         console.warn(
+//           "Sử dụng token này để truy xuất vị trí chính xác của người dùng",
+//           token
+//         );
+//         console.warn(
+//           "Chi tiết tham khảo: ",
+//           "https://mini.zalo.me/blog/thong-bao-thay-doi-luong-truy-xuat-thong-tin-nguoi-dung-tren-zalo-mini-app"
+//         );
+//         console.warn("Giả lập vị trí mặc định: VNG Campus");
+//         return {
+//           latitude: "10.7287",
+//           longitude: "106.7317",
+//         };
+//       }
+//     }
+//     return false;
+//   },
+// });
 
 export const phoneState = selector<string | undefined>({
   key: "phone",

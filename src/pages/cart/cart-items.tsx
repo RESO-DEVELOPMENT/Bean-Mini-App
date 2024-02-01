@@ -1,14 +1,28 @@
 import { DisplayPrice } from "components/display/price";
 import { ListRenderer } from "components/list-renderer";
 import React, { FC, useState } from "react";
-import { useRecoilStateLoadable, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilStateLoadable, useRecoilValue } from "recoil";
 import { cartState } from "state";
 import { Cart, ProductList } from "types/cart";
-import { Box, Text } from "zmp-ui";
+import { prepareCart } from "utils/product";
+import { Box, Icon, Text } from "zmp-ui";
 
 export const CartItems: FC = () => {
   const [editingItem, setEditingItem] = useState<ProductList | undefined>();
-  const cart = useRecoilValue(cartState);
+  const [cart, setCart] = useRecoilState(cartState);
+
+  const clearCartItem = (item: ProductList) => {
+    setCart((prevCart) => {
+      let res = { ...prevCart };
+
+      res = {
+        ...prevCart,
+        productList: prevCart.productList.filter((x) => x.code !== item.code),
+      };
+      return prepareCart(res);
+    });
+  };
+
   return (
     <Box className="py-3 px-4">
       {cart.productList.length > 0 ? (
@@ -56,7 +70,7 @@ export const CartItems: FC = () => {
             setEditingItem(item);
             open();
           }}
-          renderKey={({ quantity }) => JSON.stringify({ quantity })}
+          renderKey={(item) => JSON.stringify(item.code)}
           renderLeft={(item) => (
             <img className="w-10 h-10 rounded-lg" src={item.picUrl} />
           )}
@@ -73,9 +87,9 @@ export const CartItems: FC = () => {
                   </Text>
                 </div>
               </Box>
-              <Text className="text-primary font-medium" size="small">
-                x{item.quantity}
-              </Text>
+              <Box onClick={() => clearCartItem(item)}>
+                <Icon icon="zi-delete" className="mt-2 text-red-500" />
+              </Box>
             </Box>
           )}
         />
