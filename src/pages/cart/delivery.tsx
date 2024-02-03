@@ -1,56 +1,56 @@
 import React, { useState, FC } from "react";
 import { useRecoilState } from "recoil";
 import { cartState } from "state";
-import { Box, Icon, Text } from "zmp-ui";
+import { Box, Icon, Text, Modal, Input } from "zmp-ui";
 import { ListRenderer } from "components/list-renderer";
 import { StorePicker } from "./store-picker";
 import { TimePicker } from "./time-picker";
 
-const AddressPopup = ({ onConfirm, onClose }) => {
-  const [address, setAddress] = useState("");
-
+const AddressPopup = ({ onConfirm, address, setAddress }) => {
+  const handleClose = () => {
+    onConfirm(address);
+  };
   return (
-    <div className="bg-white p-4 rounded-lg shadow fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/3 z-10 mt-10 w-9/12">
-      {/* <div className="close-button mb-2 ml-56 cursor-pointer" onClick={onClose}>
-        <Icon icon="zi-close" />
-      </div> */}
-      <input
-        type="text"
-        value={address}
-        onChange={(e) => setAddress(e.target.value)}
-        placeholder="Nhập địa chỉ"
-        className="w-full p-2 mb-2 border rounded"
-      />
-      <button
-        className="w-full p-3 bg-teal-400 text-white rounded-full mt-2 mb-2 cursor-pointer font-bold text-l"
-        onClick={() => onConfirm(address)}
-      >
-        Xác nhận
-      </button>
-    </div>
+    <Modal
+      visible={true}
+      title="Nhận món tại"
+      onClose={handleClose}
+      actions={[
+        {
+          text: "Xác nhận",
+          onClick: () => onConfirm(address),
+          highLight: true,
+        },
+      ]}
+    >
+      <Box p={4}>
+        <Input
+          type="text"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          placeholder="Nhập địa chỉ"
+          className="w-full p-2 mb-2 border  rounded"
+        />
+      </Box>
+    </Modal>
   );
 };
 
 export const Delivery: FC = () => {
   const [cart, setCart] = useRecoilState(cartState);
   const [showPopup, setShowPopup] = useState(false);
+  const [address, setAddress] = useState(cart.deliveryAddress || "");
 
-  const handleAddressChange = (address) => {
+  const handleAddressChange = (newAddress) => {
     setCart((prevCart) => ({
       ...prevCart,
-      deliveryAddress: address,
+      deliveryAddress: newAddress,
     }));
     setShowPopup(false);
   };
 
   return (
     <>
-      {showPopup && (
-        <div
-          className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-10"
-          onClick={() => setShowPopup(false)}
-        ></div>
-      )}
       <Box className="space-y-2 px-4">
         <Text.Header>Hình thức nhận hàng</Text.Header>
 
@@ -82,26 +82,13 @@ export const Delivery: FC = () => {
             {
               left: <Icon icon="zi-note" className="my-auto" />,
               right: (
-                <Box flex className="space-x-2">
-                  <Box
+                <Box flex>
+                  <div
                     onClick={() => setShowPopup(true)}
-                    className="flex-1 space-y-[2px] "
+                    className="cursor-pointer"
                   >
-                    <Text className="text-primary">
-                      {cart.deliveryAddress || "Nhận món tại"}
-                    </Text>
-
-                    {showPopup && (
-                      <AddressPopup
-                        onConfirm={handleAddressChange}
-                        onClose={() => setShowPopup(false)}
-                      />
-                    )}
-                    <Text size="xSmall" className="text-gray">
-                      Nhận món tại
-                    </Text>
-                  </Box>
-                  <Icon icon="zi-chevron-right" />
+                    {cart.deliveryAddress || "Nhập món tại"}
+                  </div>
                 </Box>
               ),
             },
@@ -111,6 +98,13 @@ export const Delivery: FC = () => {
           renderRight={(item) => item.right}
         />
       </Box>
+      {showPopup && (
+        <AddressPopup
+          onConfirm={handleAddressChange}
+          address={address}
+          setAddress={setAddress}
+        />
+      )}
     </>
   );
 };
