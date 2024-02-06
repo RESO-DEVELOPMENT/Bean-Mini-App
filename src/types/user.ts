@@ -52,5 +52,5 @@ export interface MembershipCard {
 export interface MembershipCardType {
   id: string;
   name: string;
-  cardImage: string;
+  cardImg: string;
 }
