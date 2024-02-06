@@ -21,18 +21,13 @@ import {
 import { TStore } from "types/store";
 import { displayDistance } from "utils/location";
 import { setStorage } from "zmp-sdk";
-
 export const StorePicker: FC = () => {
-  const retry = useSetRecoilState(requestLocationTriesState);
   const [visible, setVisible] = useState(false);
   const nearbyStores = useRecoilValueLoadable(nearbyStoresState);
   const setSelectedStoreIndex = useSetRecoilState(selectedStoreIndexState);
   const selectedStore = useRecoilValueLoadable(selectedStoreState);
   const setCart = useSetRecoilState(cartState);
   const member = useRecoilValue(memberState);
-  // if (selectedStore.state != "hasValue") {
-  //   return <RequestStorePickerLocation />;
-  // }
   useEffect(
     () => {
       setCart((prevCart) => {
@@ -55,8 +50,8 @@ export const StorePicker: FC = () => {
         onClick={() => {
           setVisible(true);
         }}
-        title={selectedStore.contents.name}
-        subtitle={selectedStore.contents.address}
+        title={selectedStore.contents?.name ?? ""}
+        subtitle={selectedStore.contents?.address ?? ""}
       />
       {nearbyStores.state === "hasValue" &&
         createPortal(

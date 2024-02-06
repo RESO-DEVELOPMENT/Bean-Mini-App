@@ -444,25 +444,9 @@ export const nearbyStoresState = selector({
   },
 });
 
-function getDefaultCounterValue(): number {
-  let idx = 0;
-  getStorage({
-    keys: ["storeIndex"],
-    success: (data) => {
-      const { storeIndex } = data;
-      console.log("store index", storeIndex);
-      idx = storeIndex;
-    },
-    fail: (error) => {
-      console.log(error);
-    },
-  });
-  return idx;
-}
-
 export const selectedStoreIndexState = atom<number>({
   key: "selectedStoreIndex",
-  default: getDefaultCounterValue(),
+  default: 0,
 });
 
 export const selectedStoreState = selector({

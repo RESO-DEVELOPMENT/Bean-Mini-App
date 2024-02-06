@@ -1,23 +1,22 @@
+import { DisplayPrice } from "components/display/price";
 import React, { FC } from "react";
 import { Product } from "types/store-menu";
 import { Box, Radio, Text } from "zmp-ui";
 
-const formatPrice = (price) => {
-  return new Intl.NumberFormat("vi-VN").format(price);
-};
-
 export const SingleOptionPicker: FC<{
   variant: Product[];
   value: string;
+  defaultValue: string;
   varianName: string;
   onChange: (value: string) => void;
-}> = ({ variant, value, varianName, onChange }) => {
+}> = ({ variant, value, defaultValue, varianName, onChange }) => {
   return (
     <Box my={4} className="space-y-2">
       <Text.Title size="small">{varianName}</Text.Title>
       <Radio.Group
-        className="flex flex-col space-y-4"
+        className="flex flex-col space-y-3"
         name={varianName}
+        defaultValue={defaultValue}
         value={value}
         onChange={(selectedOption: string) => {
           onChange(selectedOption);
@@ -29,7 +28,26 @@ export const SingleOptionPicker: FC<{
             value={option.menuProductId}
             className={value === option.menuProductId ? "font-bold" : ""}
           >
-            {option.size + " " + formatPrice(option.sellingPrice) + " đ"}
+            <Box className="grid justify-between m-1">
+              <Text
+                className={
+                  value === option.menuProductId
+                    ? "font-bold relative"
+                    : "relative"
+                }
+              >
+                Size {option.size}
+              </Text>
+              <Text
+                className={
+                  value === option.menuProductId
+                    ? "font-bold absolute right-0"
+                    : "absolute right-0"
+                }
+              >
+                <DisplayPrice>{option.sellingPrice}</DisplayPrice>
+              </Text>
+            </Box>
           </Radio>
         ))}
       </Radio.Group>
