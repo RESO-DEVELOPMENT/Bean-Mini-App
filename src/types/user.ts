@@ -54,3 +54,20 @@ export interface MembershipCardType {
   name: string;
   cardImg: string;
 }
+
+
+export interface UserLogin {
+  status: number
+  message: string
+  data: Data
+}
+
+export interface Data {
+  userId: string
+  username: string
+  fullName: string
+  token: string
+  brandCode: string
+  brandId: string
+  roleName: string
+}

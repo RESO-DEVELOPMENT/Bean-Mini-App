@@ -18,9 +18,11 @@ import {
   selectedStoreIndexState,
   selectedStoreState,
 } from "state";
+import { OrderType, PaymentType } from "types/order";
 import { TStore } from "types/store";
 import { displayDistance } from "utils/location";
 import { setStorage } from "zmp-sdk";
+import { useSnackbar } from "zmp-ui";
 export const StorePicker: FC = () => {
   const [visible, setVisible] = useState(false);
   const nearbyStores = useRecoilValueLoadable(nearbyStoresState);
@@ -28,6 +30,7 @@ export const StorePicker: FC = () => {
   const selectedStore = useRecoilValueLoadable(selectedStoreState);
   const setCart = useSetRecoilState(cartState);
   const member = useRecoilValue(memberState);
+  const snackbar = useSnackbar();
   useEffect(
     () => {
       setCart((prevCart) => {
@@ -49,6 +52,13 @@ export const StorePicker: FC = () => {
       <ListItem
         onClick={() => {
           setVisible(true);
+          snackbar.openSnackbar({
+            duration: 3000,
+            position: "top",
+            type: "warning",
+
+            text: "Khi đổi cửa hàng, các sản phẩm từ cửa hàng cũ sẽ bị xoá",
+          });
         }}
         title={selectedStore.contents?.name ?? ""}
         subtitle={selectedStore.contents?.address ?? ""}
@@ -80,6 +90,24 @@ export const StorePicker: FC = () => {
                         // xử lý khi gọi api thất bại
                         console.log("set error", error);
                       },
+                    });
+                    setCart((prevCart) => {
+                      let res = { ...prevCart };
+                      res = {
+                        ...prevCart,
+                        productList: [],
+                        orderType: OrderType.EATIN,
+                        paymentType: PaymentType.POINTIFY,
+                        totalAmount: 0,
+                        shippingFee: 0,
+                        bonusPoint: 0,
+                        discountAmount: 0,
+                        finalAmount: 0,
+                        promotionList: [],
+                        totalQuantity: 0,
+                      };
+
+                      return res;
                     });
                     setVisible(false);
                   },

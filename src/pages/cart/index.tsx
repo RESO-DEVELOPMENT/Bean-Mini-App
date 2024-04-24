@@ -21,6 +21,7 @@ const CartPage: FC = () => {
         <>
           <CartItems />
           <PaymentInfo />
+
           <Delivery />
           <Divider size={12} />
           <TermsAndPolicies />

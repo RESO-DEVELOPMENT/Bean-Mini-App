@@ -1,11 +1,10 @@
-import React, { useState, FunctionComponent } from "react";
+import React, { } from "react";
 import { FC } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.min.css";
 import { Box } from "zmp-ui";
-import { IoTicket, IoTicketOutline } from "react-icons/io5";
-import { FaMoneyBillTransfer } from "react-icons/fa6";
-import { FaStar, FaCartPlus } from "react-icons/fa";
+import { IoTicketOutline } from "react-icons/io5";
+import { FaCartPlus } from "react-icons/fa";
 import { MdPayments } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
@@ -31,7 +30,7 @@ export const SwiperItem: FC = () => {
       <div style={containerStyle}>
         <MdPayments className="icon-color" size={iconSize} />
       </div>
-      <div className="text-center text-sm">Thanh toán</div>
+      <div className="text-center text-sm">Tích điểm</div>
     </SwiperSlide>,
     // <SwiperSlide key={1} onClick={() => navigate("/qr")}>
     //   <div style={containerStyle}>
@@ -52,12 +51,12 @@ export const SwiperItem: FC = () => {
       <div className="text-center text-sm">Khuyến mãi</div>
     </SwiperSlide>,
 
-    <SwiperSlide key={4}>
-      <div style={containerStyle}>
-        <FaMoneyBillTransfer className="icon-color" size={iconSize} />
-      </div>
-      <div className="text-center text-sm">Đổi Điểm</div>
-    </SwiperSlide>,
+    // <SwiperSlide key={4}>
+    //   <div style={containerStyle}>
+    //     <FaMoneyBillTransfer className="icon-color" size={iconSize} />
+    //   </div>
+    //   <div className="text-center text-sm">Đổi Điểm</div>
+    // </SwiperSlide>,
   ];
   return (
     <Box m={2}>

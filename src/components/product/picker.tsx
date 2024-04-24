@@ -7,10 +7,6 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import {
   cartState,
   childrenProductState,
-  memberState,
-  phoneState,
-  selectedStoreState,
-  userState,
 } from "state";
 import { ProductList } from "types/cart";
 import { Product, ProductTypeEnum } from "types/store-menu";
@@ -24,23 +20,6 @@ export interface ProductPickerProps {
   isUpdate: false;
   children: (methods: { open: () => void; close: () => void }) => ReactNode;
 }
-
-// function getDefaultOptions(product?: Product) {
-//   if (product && product.type === ProductTypeEnum.PARENT) {
-//     const product;
-
-//     childProducts.filter(a);
-//     return product.variants.reduce(
-//       (options, variant) =>
-//         Object.assign(options, {
-//           [variant.key]: variant.default,
-//         }),
-//       {}
-//     );
-//   }
-//   return {};
-// }
-
 export const ProductPicker: FC<ProductPickerProps> = ({
   children,
   isUpdate,
@@ -62,40 +41,24 @@ export const ProductPicker: FC<ProductPickerProps> = ({
   const [menuProductId, setMenuProductId] = useState(
     childProducts ? null : product?.menuProductId
   );
-  let existed = cart.productList.find((item) =>
-    product.type == ProductTypeEnum.SINGLE
-      ? item.productInMenuId === product.menuProductId
-      : item.productInMenuId ===
-        currentChild.find((a) => a.menuProductId === menuProductId)
-          ?.menuProductId
-  );
 
-  console.log("exist hay ko", existed);
-  const [quantity, setQuantity] = useState(existed?.quantity ?? 1);
+  const [quantity, setQuantity] = useState(1);
   useEffect(() => {
-    setQuantity(existed?.quantity ?? 1);
-  }, [existed]);
+    setMenuProductId(
+      product.type == ProductTypeEnum.SINGLE
+        ? product.menuProductId
+        : currentChild != null && currentChild != undefined
+          ? currentChild[0].menuProductId
+          : null
+    );
+    setQuantity(1);
+  }, []);
 
   const addToCart = async () => {
     if (product) {
       setCart((prevCart) => {
         let res = { ...prevCart };
-        if (existed) {
-          console.log("curent cart", res.productList);
-          let listProductCart = prevCart.productList.filter(
-            (e) => existed?.productInMenuId !== e.productInMenuId
-          );
-          listProductCart.push({
-            ...existed,
-            quantity: quantity,
-            totalAmount: existed.totalAmount * quantity,
-          });
-
-          res = {
-            ...prevCart,
-            productList: listProductCart,
-          };
-          console.log("cart res", res);
+        if (false) {
         } else {
           const productToAdd =
             product.type == ProductTypeEnum.SINGLE
@@ -164,11 +127,11 @@ export const ProductPicker: FC<ProductPickerProps> = ({
               </Box>
               <Box className="space-y-5">
                 {
-                  currentChild && (
+                  currentChild != null && currentChild != [] && (
                     <SingleOptionPicker
                       key={product.menuProductId}
                       variant={currentChild}
-                      defaultValue={existed ? existed.productInMenuId : ""}
+                      defaultValue={""}
                       varianName={"Kích cỡ"}
                       value={menuProductId ?? ""}
                       onChange={(selectedOption) =>
@@ -215,9 +178,10 @@ export const ProductPicker: FC<ProductPickerProps> = ({
                     onClick={addToCart}
                   >
                     {quantity > 0
-                      ? existed
-                        ? "Cập nhật giỏ hàng"
-                        : "Thêm vào giỏ hàng"
+                      ? //  existed
+                      //   ? "Cập nhật giỏ hàng"
+                      //   :
+                      "Thêm vào giỏ hàng"
                       : "Xoá"}
                   </Button>
                 ) : (

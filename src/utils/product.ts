@@ -1,4 +1,4 @@
-import { createOrder } from "zmp-sdk";
+import { createOrder, EventName, events, Payment } from "zmp-sdk";
 import { Option } from "types/product";
 import { getConfig } from "./config";
 import { Cart } from "types/cart";
@@ -24,16 +24,16 @@ export function calcFinalPrice(product: Product) {
 export function getDummyImage(filename: string) {
   return `https://zalo-miniapp.github.io/zaui-coffee/dummy/${filename}`;
 }
-
-const pay = (amount: number, description?: string) =>
-  createOrder({
-    desc:
-      description ??
-      `Thanh toán cho ${getConfig((config) => config.app.title)}`,
+export const pay = (cart: Cart) =>
+  Payment.createOrder({
+    desc: `Thanh toán cho ${getConfig((config) => config.app.title)}`,
     item: [],
-    amount: amount,
+    amount: cart.finalAmount,
     success: (data) => {
       console.log("Payment success: ", data);
+      events.on(EventName.OpenApp, async (data) => {
+        const params = data?.path;
+      });
     },
     fail: (err) => {
       console.log("Payment error: ", err);
@@ -61,15 +61,31 @@ export function showPaymentType(paymentType: string) {
   switch (paymentType) {
     case PaymentType.CASH:
       return "TIỀN MẶT";
-    case PaymentType.BANKING:
-      return "Ngân hàng";
     case PaymentType.POINTIFY:
-      return "VÍ BEAN";
+      return "Điểm BEAN";
     default:
       return "TIỀN MẶT";
   }
 }
 export function showOrderStatus(status: string) {
+  switch (status) {
+    case OrderStatus.NEW:
+      return "Chờ xác nhận";
+    case OrderStatus.PENDING:
+      return "Đang thực hiện";
+    case OrderStatus.PAID:
+      return "Đã hoàn thành";
+    case OrderStatus.CANCELED:
+      return "Đã huỷ";
+    case OrderStatus.DELIVERING:
+      return "Đang giao";
+    case OrderStatus.DELIVERED:
+      return "Giao thành công";
+    default:
+      return "Đang thực hiện";
+  }
+}
+export function showDeliStatus(status: string) {
   switch (status) {
     case OrderStatus.PENDING:
       return "Đang thực hiện";
@@ -77,6 +93,10 @@ export function showOrderStatus(status: string) {
       return "Đã hoàn thành";
     case OrderStatus.CANCELED:
       return "Đã huỷ";
+    case OrderStatus.DELIVERING:
+      return "Đang giao";
+    case OrderStatus.DELIVERED:
+      return "Giao thành công";
     default:
       return "Đang thực hiện";
   }

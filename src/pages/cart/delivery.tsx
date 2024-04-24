@@ -1,10 +1,11 @@
 import React, { useState, FC } from "react";
-import { useRecoilState } from "recoil";
-import { cartState } from "state";
+import { useRecoilState, useRecoilValueLoadable } from "recoil";
+import { cartState, selectedStoreState } from "state";
 import { Box, Icon, Text, Modal, Input } from "zmp-ui";
 import { ListRenderer } from "components/list-renderer";
 import { StorePicker } from "./store-picker";
 import { TimePicker } from "./time-picker";
+import { LocationPicker } from "./location-picker";
 
 const AddressPopup = ({ onConfirm, address, setAddress }) => {
   const handleClose = () => {
@@ -13,7 +14,7 @@ const AddressPopup = ({ onConfirm, address, setAddress }) => {
   return (
     <Modal
       visible={true}
-      title="Nhận món tại"
+      title="Ghi chú"
       onClose={handleClose}
       actions={[
         {
@@ -23,28 +24,27 @@ const AddressPopup = ({ onConfirm, address, setAddress }) => {
         },
       ]}
     >
-      <Box p={4}>
-        <Input
-          type="text"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          placeholder="Nhập địa chỉ"
-          className="w-full p-2 mb-2 border  rounded"
-        />
-      </Box>
+      <Input
+        type="text"
+        value={address}
+        onChange={(e) => setAddress(e.target.value)}
+        placeholder="Nhập ghi chú"
+        className="w-full border rounded"
+      />
     </Modal>
   );
 };
 
 export const Delivery: FC = () => {
   const [cart, setCart] = useRecoilState(cartState);
+  const store = useRecoilValueLoadable(selectedStoreState);
   const [showPopup, setShowPopup] = useState(false);
-  const [address, setAddress] = useState(cart.deliveryAddress || "");
+  const [notes, setNotes] = useState(cart.notes || "");
 
-  const handleAddressChange = (newAddress) => {
+  const handleNotesChange = (notes) => {
     setCart((prevCart) => ({
       ...prevCart,
-      deliveryAddress: newAddress,
+      notes: notes,
     }));
     setShowPopup(false);
   };
@@ -52,43 +52,57 @@ export const Delivery: FC = () => {
   return (
     <>
       <Box className="space-y-2 px-4">
-        <Text.Header>Hình thức nhận hàng</Text.Header>
-
+        <Text.Header>Thông tin đơn hàng</Text.Header>
         <ListRenderer
           noDivider
           items={[
             {
-              left: <Icon icon="zi-location" className="my-auto" />,
+              left: <Icon icon="zi-home" className="my-auto" />,
               right: (
                 <React.Suspense fallback={<div>Loading...</div>}>
-                  <StorePicker />
+                  <Box>
+                    <Text size="small" className="text-primary">
+                      {store.contents.name || "Cửa hàng"}
+                    </Text>
+                    <Text size="xSmall" className="text-gray">
+                      {"Cửa hàng"}
+                    </Text>
+                  </Box>
                 </React.Suspense>
               ),
             },
             {
-              left: <Icon icon="zi-clock-1" className="my-auto" />,
+              left: <Icon icon="zi-location" className="my-auto" />,
               right: (
-                <Box flex className="space-x-2">
-                  <Box className="flex-1 space-y-[2px]">
-                    <TimePicker />
-                    <Text size="xSmall" className="text-gray">
-                      Thời gian nhận hàng
-                    </Text>
-                  </Box>
-                  <Icon icon="zi-chevron-right" />
-                </Box>
+                <React.Suspense fallback={<div>Loading...</div>}>
+                  <LocationPicker />
+                </React.Suspense>
               ),
             },
+            // {
+            //   left: <Icon icon="zi-clock-1" className="my-auto" />,
+            //   right: (
+            //     <Box flex className="space-x-2">
+            //       <Box className="flex-1 space-y-[2px]">
+            //         <TimePicker />
+            //         <Text size="xSmall" className="text-gray">
+            //           Thời gian nhận hàng
+            //         </Text>
+            //       </Box>
+            //       <Icon icon="zi-chevron-right" />
+            //     </Box>
+            //   ),
+            // },
             {
               left: <Icon icon="zi-note" className="my-auto" />,
               right: (
-                <Box flex>
-                  <div
-                    onClick={() => setShowPopup(true)}
-                    className="cursor-pointer"
-                  >
-                    {cart.deliveryAddress || "Nhập món tại"}
-                  </div>
+                <Box onClick={() => setShowPopup(true)}>
+                  <Text size="small" className="text-primary overflow-y-auto">
+                    {cart.notes || "Nhập ghi chú đơn hàng.."}
+                  </Text>
+                  <Text size="xSmall" className="text-gray">
+                    {"Ghi chú"}
+                  </Text>
                 </Box>
               ),
             },
@@ -100,9 +114,9 @@ export const Delivery: FC = () => {
       </Box>
       {showPopup && (
         <AddressPopup
-          onConfirm={handleAddressChange}
-          address={address}
-          setAddress={setAddress}
+          onConfirm={handleNotesChange}
+          address={notes}
+          setAddress={setNotes}
         />
       )}
     </>

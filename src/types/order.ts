@@ -5,9 +5,12 @@ export enum OrderType {
 }
 
 export enum OrderStatus {
+  NEW = "NEW",
   PENDING = "PENDING",
   CANCELED = "CANCELED",
   PAID = "PAID",
+  DELIVERING = "DELIVERING",
+  DELIVERED = "DELIVERED",
 }
 export enum PaymentType {
   CASH = "CASH",

@@ -13,19 +13,13 @@ import {
 import { qrState, memberState, requestRetriveQRstate } from "state";
 import { DisplayPrice } from "components/display/price";
 import { DisplayValue } from "components/display/value";
+import { Subscription } from "./profile";
 
 const QRCodePage: React.FC = () => {
   const [countdown, setCountdown] = useState(120);
-  const [selectedIndex, setSelectedIndex] = useState(-1);
-  const iconSize = "20px";
   const qrCode = useRecoilValueLoadable(qrState);
-  const member = useRecoilValue(memberState);
-  const pointWallet = member?.level.memberWallet.find(
-    (e) => e.walletType.name === "POINT"
-  );
-  const monney = member?.level.memberWallet.find(
-    (e) => e.walletType.name === "MONEY"
-  );
+  const member = useRecoilValueLoadable(memberState);
+
   const [retry, setRetry] = useRecoilState(requestRetriveQRstate);
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -34,95 +28,58 @@ const QRCodePage: React.FC = () => {
       }
     }, 1000);
     if (retry == 0 || countdown == 0) {
-      setRetry((r) => r + 1);
-      setCountdown(120);
+      handleUpdateClick();
     }
     return () => {
       clearInterval(intervalId);
     };
   }, [countdown]);
-
+  useEffect(() => {
+    handleUpdateClick();
+  }, []);
   const handleUpdateClick = () => {
     setRetry((r) => r + 1);
     setCountdown(120);
   };
 
-  const handleClick = (index) => {
-    setSelectedIndex(index);
-  };
-
   return (
     <div className="flex flex-col w-full h-full bg-primary">
-      <div className="px-4 py-12">
+      <div className="px-4 py-20">
         {/* Header */}
         <div className="flex justify-center items-center">
           {/* <Icon className="mt-8" icon="zi-arrow-left" /> */}
           <span className="text-xl text-white font-bold m-4">
-            QR Thanh toán
+            Mã Thành Viên
           </span>
           {/* <Icon className="mt-8 color-white" icon="zi-more-horiz-solid" /> */}
         </div>
         <div className="bg-white p-4 rounded-lg  text-black">
-          <div className="text-center">Đưa mã này cho nhân viên </div>
-          <div className="flex justify-center my-8">
-            <QRCode
-              value={
-                qrCode.state === "hasValue" && qrCode.contents !== null
-                  ? qrCode.contents
-                  : ""
-              }
-              size={200}
-            />
-          </div>
-          <div className="text-center text-sm mt-2">
-            Tự động cập nhật sau {countdown}s.{" "}
-            <button
-              onClick={handleUpdateClick}
-              className="text-green-600 underline"
-            >
-              Cập nhật
-            </button>
-          </div>
-          <div className="flex items-center justify-between  py-2 rounded-lg bg-white my-2 text-black">
-            <div className="flex items-center">
-              <Text.Title className="text-base ml-3">
-                Tài Khoản / Điểm
-              </Text.Title>
-              {/* <IoEyeSharp className="ml-4" size={iconSize} /> */}
-            </div>
-            {/* <div className="flex items-center">
-              <Text className="text-primary text-sm">Xem tất cả</Text>
-            </div> */}
-          </div>
-          <div className="flex items-baseline space-x-2 ">
-            <div
-              className={
-                "flex-2 items-center justify-between p-3 w-40 rounded-lg bg-white text-black border-solid border border-primary"
-              }
-            >
-              <div className="flex items-center ">
-                <span className="text-sm">Ví Bean </span>
-              </div>
-              <span className="order-2 font-bold ">
-                <DisplayValue
-                  value={monney?.balance ?? 0}
-                  unit={" " + monney?.walletType.currency}
+          {member.state === "hasValue" && member.contents !== null ? (
+            <>
+              <div className="text-center">Đưa mã này vào thiết bị quét mã</div>
+              <div className="flex justify-center my-8">
+                <QRCode
+                  value={
+                    member.state === "hasValue" && qrCode.contents !== null
+                      ? qrCode.contents
+                      : ""
+                  }
+                  size={220}
                 />
-              </span>
-            </div>
-            <div
-              className={
-                "flex-2 items-center justify-between p-3 w-40 rounded-lg bg-white text-black border-solid border border-primary"
-              }
-            >
-              <div className="flex items-center mr-8">
-                <span className="text-sm">Ví Điểm</span>
               </div>
-              <span className="order-2 mr-2 font-bold ">
-                {pointWallet?.balance}
-              </span>
-            </div>
-          </div>
+              <div className="text-center text-sm my-4">
+                Tự động cập nhật sau {countdown}s.{" "}
+                <button
+                  onClick={handleUpdateClick}
+                  className="text-green-600 underline"
+                >
+                  Cập nhật
+                </button>
+              </div>
+            </>
+          ) : (
+            <Subscription />
+          )}
         </div>
       </div>
     </div>

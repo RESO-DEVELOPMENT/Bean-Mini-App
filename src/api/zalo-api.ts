@@ -35,15 +35,6 @@ const getUserPhone = async (code: string, accessToken: string) => {
 };
 
 const getUserLocation = async (code: string, accessToken: string) => {
-  // const api = axios({
-  //   method: "post",
-  //   headers: {
-  //     access_token: accessToken,
-  //     secret_key: "SICH83B5BLqUOxHU53Tx",
-  //     code: code,
-  //   },
-  //   url: "https://graph.zalo.me/v2.0/me/info",
-  // });
   return axios.get<BaseZaloApiResponse<LocationResponse>>(
     "https://graph.zalo.me/v2.0/me/info",
     {

@@ -14,11 +14,6 @@ export const TimePicker: FC = () => {
   const availableDates = useMemo(() => {
     const days: Date[] = [];
     const today = new Date();
-    // for (let i = 0; i < 5; i++) {
-    //   const nextDay = new Date(today);
-    //   nextDay.setDate(today.getDate() + i);
-    //   days.push(nextDay);
-    // }
     days.push(today);
     return days;
   }, []);

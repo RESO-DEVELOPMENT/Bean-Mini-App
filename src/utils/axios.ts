@@ -3,7 +3,10 @@ import axios, { AxiosRequestConfig } from "axios";
 // Custom Axios Type
 export enum AxiosClientFactoryEnum {
   ADMIN = "admin",
-  ZALOAPI = "zaloApi",
+  LOGIN = "login",
+  PAYMENT = "payment",
+  REPORT = "report",
+  PROMOTION = "promotion",
 }
 
 // ----------------------------------------------------------------------
@@ -33,18 +36,17 @@ export const parseParams = (params: any) => {
   return options ? options.slice(0, -1) : options;
 };
 
-const admin = `https://admin.reso.vn/api/v1/`;
-// const admin = `https://localhost:7131/api/v1/`;
-const zaloApi = `https://graph.zalo.me/v2.0/`;
-
+const admin = "https://admin.reso.vn/api/v1/";
+const account = `${process.env.REACT_APP_WEB_ADMIN_URL}`;
+const paymentService = `${process.env.REACT_APP_PAYMENT_SERVICE_URL}`;
+const report = `${process.env.REACT_APP_REPORT_BASE_URL}`;
+const promotion = "https://api-pointify.reso.vn/api";
 const requestWebAdmin = axios.create({
   baseURL: admin,
   paramsSerializer: parseParams,
 });
-
 requestWebAdmin.interceptors.request.use((options) => {
   const { method } = options;
-
   if (method === "put" || method === "post") {
     Object.assign(options.headers, {
       "Content-Type": "application/json;charset=UTF-8",
@@ -59,16 +61,14 @@ requestWebAdmin.interceptors.response.use(
   (error) =>
     Promise.reject((error.response && error.response.data) || "Có lỗi xảy ra")
 );
-
-const requestZaloApi = axios.create({
-  baseURL: zaloApi,
+const requestPaymentServices = axios.create({
+  baseURL: paymentService,
   paramsSerializer: parseParams,
 });
-
-requestZaloApi.interceptors.request.use((options) => {
+requestPaymentServices.interceptors.request.use((options) => {
   const { method } = options;
 
-  if (method === "put" || method === "post" || method === "patch") {
+  if (method === "put" || method === "post") {
     Object.assign(options.headers, {
       "Content-Type": "application/json;charset=UTF-8",
     });
@@ -77,12 +77,79 @@ requestZaloApi.interceptors.request.use((options) => {
   return options;
 });
 
-requestZaloApi.interceptors.response.use(
+requestPaymentServices.interceptors.response.use(
   (response) => response,
   (error) =>
-    Promise.reject(
-      (error.response && error.response.data) || "Có lỗi xảy ra " + `${error}`
-    )
+    Promise.reject((error.response && error.response.data) || "Có lỗi xảy ra")
+);
+
+const requestLogin = axios.create({
+  baseURL: account,
+  paramsSerializer: parseParams,
+});
+
+const requestPromotion = axios.create({
+  baseURL: promotion,
+  paramsSerializer: parseParams,
+});
+
+requestPromotion.interceptors.request.use((options) => {
+  const { method } = options;
+
+  if (method === "put" || method === "post") {
+    Object.assign(options.headers, {
+      "Content-Type": "application/json;charset=UTF-8",
+    });
+  }
+
+  return options;
+});
+
+requestPromotion.interceptors.response.use(
+  (response) => response,
+  (error) =>
+    Promise.reject((error.response && error.response.data) || "Có lỗi xảy ra")
+);
+
+requestLogin.interceptors.request.use((options) => {
+  const { method } = options;
+
+  if (method === "put" || method === "post") {
+    Object.assign(options.headers, {
+      "Content-Type": "application/json;charset=UTF-8",
+    });
+  }
+
+  return options;
+});
+
+requestLogin.interceptors.response.use(
+  (response) => response,
+  (error) =>
+    Promise.reject((error.response && error.response.data) || "Có lỗi xảy ra")
+);
+
+const requestReport = axios.create({
+  baseURL: report,
+  paramsSerializer: parseParams,
+});
+
+requestReport.interceptors.request.use((options) => {
+  const { method } = options;
+
+  if (method === "put" || method === "post") {
+    Object.assign(options.headers, {
+      "Content-Type": "application/json;charset=UTF-8",
+    });
+  }
+
+  return options;
+});
+
+requestReport.interceptors.response.use(
+  (response) => response,
+  (error) =>
+    Promise.reject((error.response && error.response.data) || "Có lỗi xảy ra")
 );
 
 // ----------------------------------------------------------------------
@@ -90,7 +157,7 @@ class AxiosClientFactory {
   /**
    * Use to get instance of AxiosClientFactory
    * @param type AxiosClientFactoryEnum
-   * @param config AxiosRequestConfig
+   * @param _config AxiosRequestConfig
    * @returns AxiosInstance
    *
    * @example
@@ -106,13 +173,19 @@ class AxiosClientFactory {
    */
   getAxiosClient(
     type?: AxiosClientFactoryEnum,
-    config: AxiosRequestConfig = {}
+    _config: AxiosRequestConfig = {}
   ) {
     switch (type) {
       case "admin":
         return requestWebAdmin;
-      case "zaloApi":
-        return requestZaloApi;
+      case "login":
+        return requestLogin;
+      case "report":
+        return requestReport;
+      case "payment":
+        return requestPaymentServices;
+      case "promotion":
+        return requestPromotion;
       default:
         return requestWebAdmin;
     }
@@ -120,12 +193,16 @@ class AxiosClientFactory {
 }
 
 const axiosClientFactory = new AxiosClientFactory();
-/**
- * Singleton Pattern for Axios Request
- */
-const axiosInstances = {
+export const axiosInstances = {
+  login: axiosClientFactory.getAxiosClient(AxiosClientFactoryEnum.LOGIN),
   webAdmin: axiosClientFactory.getAxiosClient(AxiosClientFactoryEnum.ADMIN),
-  zaloApi: axiosClientFactory.getAxiosClient(AxiosClientFactoryEnum.ZALOAPI),
+  paymentService: axiosClientFactory.getAxiosClient(
+    AxiosClientFactoryEnum.PAYMENT
+  ),
+  report: axiosClientFactory.getAxiosClient(AxiosClientFactoryEnum.REPORT),
+  promotion: axiosClientFactory.getAxiosClient(
+    AxiosClientFactoryEnum.PROMOTION
+  ),
 };
 
 export default axiosInstances.webAdmin;

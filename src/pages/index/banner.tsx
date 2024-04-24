@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { useNavigate } from "react-router";
 import { useRecoilValueLoadable, useResetRecoilState } from "recoil";
 import { listBlogState, memberState } from "state";
@@ -11,14 +11,17 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import Barcode from "react-barcode";
+import QRCode from "react-qr-code";
 
 export const Banner: FC = () => {
   // const blogList = useRecoilValueLoadable(listBlogState);
 
   const member = useRecoilValueLoadable(memberState);
+
+  const [visible, setVisible] = useState(true);
   const navigate = useNavigate();
-  const gotoPage = (id: string) => {
-    navigate("/blog", { state: { id } });
+  const gotoPage = () => {
+    navigate("/qr");
   };
   return (
     <Box style={{ overflowX: "hidden" }} py={4}>
@@ -37,7 +40,7 @@ export const Banner: FC = () => {
             <SwiperSlide
               key={i}
               className="px-4"
-              // onClick={() => gotoPage(card.id)}
+              onClick={() => navigate("/qr")}
             >
               <Box
                 className="w-full rounded-xl aspect-[16/9] bg-cover bg-center bg-skeleton"
@@ -45,25 +48,9 @@ export const Banner: FC = () => {
                   backgroundImage: `url(${card.membershipCardType.cardImg})`,
                 }}
               >
-                <Text size="xLarge" className="p-2 text-white font-bold">
-                  {card.membershipCardCode}
-                </Text>
-                <Text size="xLarge" className="px-2 text-white font-bold">
+                <Text size="xLarge" className="p-4 text-white font-bold">
                   {card.membershipCardType.name}
                 </Text>
-                {/* <Barcode
-                  displayValue={false}
-                  marginLeft={12}
-                  textPosition="bottom"
-                  marginBottom={12}
-                  textAlign="center"
-                  lineColor="#04bfad"
-                  height={48}
-                  margin={12}
-                  width={2}
-                  background="white"
-                  value={card.membershipCardCode}
-                /> */}
               </Box>
             </SwiperSlide>
           ))}

@@ -17,7 +17,7 @@ const tabs: Record<string, MenuItem> = {
     icon: <Icon icon="zi-more-grid" />,
   },
   "/qr": {
-    label: "Thanh toán",
+    label: "Mã QR",
     icon: <Icon icon="zi-qrline" />,
   },
   "/history": {
@@ -50,7 +50,7 @@ export const Navigation: FC = () => {
     // Define the action for FAB click, e.g., navigate to a specific route
   };
   const shouldShowFAB = useMemo(() => {
-    return location.pathname === "/" || location.pathname === "/order";
+    return location.pathname === "/order";
   }, [location.pathname]);
 
   if (noBottomNav) {

@@ -19,7 +19,6 @@ const VoucherCard: FC<VoucherCardProps> = ({
   onCancle,
   isUsed,
 }) => {
-  const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const containerStyle: React.CSSProperties = {
     position: "relative",

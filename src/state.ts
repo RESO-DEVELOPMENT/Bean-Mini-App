@@ -43,7 +43,6 @@ export const accessTokenState = selector({
         return accessToken;
       },
       fail: (error) => {
-        // xử lý khi gọi api thất bại
         console.log(error);
       },
     }),
@@ -62,7 +61,6 @@ export const phoneTokenState = selector({
         }
       },
       fail: (error) => {
-        // Xử lý khi gọi api thất bại
         console.log(error);
         return null;
       },
@@ -77,15 +75,39 @@ export const userState = selector({
 export const memberState = selector({
   key: "member",
   get: async ({ get }) => {
-    const user = get(userState);
-    const phone = get(phoneState);
-    if (phone !== undefined && user != null) {
-      var response = await userApi.userLogin(phone, user.name);
-      if (response.status == 200) {
-        axios.defaults.headers.common.Authorization = `Bearer ${response.data.accessToken}`;
-        var member = await userApi.getUserInfo(response.data.userId ?? "");
-        return member.data;
+    const requested = get(requestPhoneTriesState);
+    if (requested) {
+      const accessToken = await getAccessToken();
+      const user = get(userState);
+      let phone = "0337076898";
+      const { token } = await getPhoneNumber({
+        fail: (err) => {
+          console.log("Lỗi đăng nhập: ", err);
+        },
+      });
+      if (token !== undefined && user != null) {
+        console.log("token", token);
+        console.log("accessToken", accessToken);
+        var response = await userApi.userLogin(accessToken, token, user.name);
+        if (response.status == 200) {
+          axios.defaults.headers.common.Authorization = `Bearer ${response.data.data.token}`;
+          setStorage({
+            data: {
+              token: response.data.data.token,
+              userId: response.data.data.userId,
+            },
+            success: (data) => {
+              console.log("set ok", data);
+            },
+            fail: (error) => {
+              console.log("set error", error);
+            },
+          });
+          var member = await userApi.getUserInfo(response.data.data.userId ?? "");
+          return member.data;
+        }
       }
+      return null;
     }
     return null;
   },
@@ -322,14 +344,14 @@ export const productsByCategoryState = selectorFamily<Product[], string>({
   key: "productsByCategory",
   get:
     (categoryId) =>
-    ({ get }) => {
-      const allProducts = get(productsState);
-      return allProducts.filter(
-        (product) =>
-          product.categoryId.includes(categoryId) &&
-          (product.type === "SINGLE" || product.type === "PARENT")
-      );
-    },
+      ({ get }) => {
+        const allProducts = get(productsState);
+        return allProducts.filter(
+          (product) =>
+            product.categoryId.includes(categoryId) &&
+            (product.type === "SINGLE" || product.type === "PARENT")
+        );
+      },
 });
 
 export const cartState = atom<Cart>({
@@ -337,7 +359,7 @@ export const cartState = atom<Cart>({
   default: {
     storeId: "",
     orderType: OrderType.EATIN,
-    paymentType: PaymentType.CASH,
+    paymentType: PaymentType.POINTIFY,
     productList: [],
     totalAmount: 0,
     shippingFee: 0,
@@ -385,12 +407,12 @@ export const paymentTypeState = atom<Payment[]>({
   key: "paymentType",
   default: [
     {
-      type: PaymentType.CASH,
-      name: "Tiền mặt",
+      type: PaymentType.POINTIFY,
+      name: "Điểm Bean",
     },
     {
-      type: PaymentType.POINTIFY,
-      name: "Ví Bean",
+      type: PaymentType.CASH,
+      name: "Tiền mặt",
     },
   ],
 });
@@ -418,28 +440,7 @@ export const resultState = selector<Product[]>({
 export const nearbyStoresState = selector({
   key: "nearbyStores",
   get: ({ get }) => {
-    // Get the current location from the locationState atom
-    // const location = get(locationState);
-    // Get the list of stores from the storesState atom
     const stores = get(listStoreState);
-
-    // if (location) {
-    //   const storesWithDistance = stores.map((store: TStore) => ({
-    //     ...store,
-    //     distance: calculateDistance(
-    //       location.latitude,
-    //       location.longitude,
-    //       store.lat,
-    //       store.long
-    //     ),
-    //   }));
-    //   // Sort the stores by distance from the current location
-    //   const nearbyStores = storesWithDistance.sort(
-    //     (a, b) => a.distance - b.distance
-    //   );
-
-    //   return nearbyStores;
-    // }
     return stores;
   },
 });
@@ -447,6 +448,10 @@ export const nearbyStoresState = selector({
 export const selectedStoreIndexState = atom<number>({
   key: "selectedStoreIndex",
   default: 0,
+});
+export const selectLocationState = atom<string>({
+  key: "selectLocationState",
+  default: "",
 });
 
 export const selectedStoreState = selector({
@@ -473,61 +478,17 @@ export const requestPhoneTriesState = atom({
   default: 0,
 });
 
-// export const locationState = selector<
-//   { latitude: string; longitude: string } | false
-// >({
-//   key: "location",
-//   get: async ({ get }) => {
-//     const requested = get(requestLocationTriesState);
-//     if (requested) {
-//       const accessToken = await getAccessToken();
-//       const { latitude, longitude, token } = await getLocation({
-//         success: async (data) => {
-//           let { token } = data;
-//           console.log("token", token);
-//           if (token !== undefined) {
-//             console.log("accessToken", accessToken);
-//             await zaloApi.getUserLocation(token, accessToken).then((value) => {
-//               console.log("location", value.data.data);
-//               return {
-//                 latitude: value.data.data.latitude,
-//                 longitude: value.data.data.longitude,
-//               };
-//             });
-//           }
-//         },
-//         fail: console.warn,
-//       });
-//       if (latitude && longitude) {
-//         return { latitude, longitude };
-//       }
-//       if (token) {
-//         console.warn(
-//           "Sử dụng token này để truy xuất vị trí chính xác của người dùng",
-//           token
-//         );
-//         console.warn(
-//           "Chi tiết tham khảo: ",
-//           "https://mini.zalo.me/blog/thong-bao-thay-doi-luong-truy-xuat-thong-tin-nguoi-dung-tren-zalo-mini-app"
-//         );
-//         console.warn("Giả lập vị trí mặc định: VNG Campus");
-//         return {
-//           latitude: "10.7287",
-//           longitude: "106.7317",
-//         };
-//       }
-//     }
-//     return false;
-//   },
-// });
-
 export const phoneState = selector<string | undefined>({
   key: "phone",
   get: async ({ get }) => {
     const accessToken = await getAccessToken();
     let phone = "0337076898";
     if (true) {
-      const { token } = await getPhoneNumber({ fail: console.warn });
+      const { token } = await getPhoneNumber({
+        fail: (err) => {
+          console.log("Lỗi đăng nhập: ", err);
+        },
+      });
       if (token !== undefined) {
         console.log("token", token);
         console.log("accessToken", accessToken);

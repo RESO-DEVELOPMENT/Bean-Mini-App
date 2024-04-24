@@ -1,13 +1,7 @@
 import React, { FC, useState } from "react";
-import { Card } from "zmp-framework/react";
-import { Box, Header, Icon, Page, Text } from "zmp-ui";
+import { Box, Header, Page, Text } from "zmp-ui";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  useRecoilState,
-  useRecoilStateLoadable,
-  useRecoilValue,
-  useRecoilValueLoadable,
-} from "recoil";
+import { useRecoilValueLoadable } from "recoil";
 import { getOrderDetailstate } from "state";
 import { DisplayPrice } from "components/display/price";
 import { showOrderType, showPaymentType } from "utils/product";
@@ -15,8 +9,6 @@ import { displayDate, displayTime } from "utils/date";
 import { ListRenderer } from "components/list-renderer";
 import { OrderStatus, OrderType } from "types/order";
 import { showOrderStatus } from "utils/product";
-import { openPhone } from "zmp-sdk/apis";
-import { openChat } from "zmp-sdk";
 import { openSupportChat } from "utils/config";
 
 const OrderDetailsPage: FC = () => {
@@ -224,21 +216,21 @@ const OrderDetailsPage: FC = () => {
                       </Box>
                     ),
                   },
-                  {
-                    left: (
-                      <Box className="flex-1 space-y-[1px]">
-                        <Text size="small">Trạng thái</Text>
-                      </Box>
-                    ),
-                    right: (
-                      <Box flex className="space-x-1">
-                        <Box className="flex-1 space-y-[1px]"></Box>
-                        <Text size="small">
-                          {showOrderStatus(orderDetail.contents.orderStatus)}
-                        </Text>
-                      </Box>
-                    ),
-                  },
+                  // {
+                  //   left: (
+                  //     <Box className="flex-1 space-y-[1px]">
+                  //       <Text size="small">Trạng thái</Text>
+                  //     </Box>
+                  //   ),
+                  //   right: (
+                  //     <Box flex className="space-x-1">
+                  //       <Box className="flex-1 space-y-[1px]"></Box>
+                  //       <Text size="small">
+                  //         {showOrderStatus(orderDetail.contents.orderStatus)}
+                  //       </Text>
+                  //     </Box>
+                  //   ),
+                  // },
                   {
                     left: (
                       <Box flex className="space-x-1">
@@ -357,6 +349,147 @@ const OrderDetailsPage: FC = () => {
                 renderRight={(item) => item.right}
               />
             </Box>
+            {/* <Box className="space-y-3 px-4 mb-2">
+              <Text.Header>Trạng thái đơn hàng</Text.Header>
+              <ListRenderer
+                noDivider
+                items={[
+                  {
+                    left: (
+                      <Box flex className="space-x-1">
+                        <Text size="small">
+                          {showOrderStatus(OrderStatus.NEW)}
+                        </Text>
+                      </Box>
+                    ),
+                    right: (
+                      <Box flex className="space-x-1">
+                        <Box className="flex-1 "></Box>
+                        <Text size="small">
+                          {orderDetail.state == "hasValue" &&
+                            orderDetail.contents !== null
+                            ? displayDate(
+                              new Date(orderDetail.contents.checkInDate)
+                            ) +
+                            " " +
+                            displayTime(
+                              new Date(orderDetail.contents.checkInDate)
+                            )
+                            : ""}
+                        </Text>
+                      </Box>
+                    ),
+                  },
+                  {
+                    left: (
+                      <Box flex className="space-x-1">
+                        <Text size="small">
+                          {showOrderStatus(OrderStatus.PENDING)}
+                        </Text>
+                      </Box>
+                    ),
+                    right: (
+                      <Box flex className="space-x-1">
+                        <Box className="flex-1 "></Box>
+                        <Text size="small">
+                          {orderDetail.state == "hasValue" &&
+                            orderDetail.contents !== null
+                            ? (orderDetail.contents.customerInfo.deliStatus == OrderStatus.PENDING ? (displayDate(
+                              new Date(orderDetail.contents.checkInDate)
+                            ) +
+                              " " +
+                              displayTime(
+                                new Date(orderDetail.contents.checkInDate)
+                              ))
+                              : "") : ""}
+                        </Text>
+                      </Box>
+                    ),
+                  },
+                  {
+                    left: (
+                      <Box flex className="space-x-1">
+                        <Text size="small">
+                          {showOrderStatus(OrderStatus.PAID)}
+                        </Text>
+                      </Box>
+                    ),
+                    right: (
+                      <Box flex className="space-x-1">
+                        <Box className="flex-1 "></Box>
+                        <Text size="small">
+                          {orderDetail.state == "hasValue" &&
+                            orderDetail.contents !== null
+                            ? (orderDetail.contents.customerInfo.deliStatus == OrderStatus.PAID ? (displayDate(
+                              new Date(orderDetail.contents.checkInDate)
+                            ) +
+                              " " +
+                              displayTime(
+                                new Date(orderDetail.contents.checkInDate)
+                              ))
+                              : "") : ""}
+                        </Text>
+                      </Box>
+                    ),
+                  },
+                  {
+                    left: (
+                      <Box flex className="space-x-1">
+                        <Text size="small">
+                          {showOrderStatus(OrderStatus.DELIVERING)}
+                        </Text>
+                      </Box>
+                    ),
+                    right: (
+                      <Box flex className="space-x-1">
+                        <Box className="flex-1 "></Box>
+                        <Text size="small">
+                          {orderDetail.state == "hasValue" &&
+                            orderDetail.contents !== null
+                            ? (orderDetail.contents.customerInfo.deliStatus == OrderStatus.DELIVERING ? (displayDate(
+                              new Date(orderDetail.contents.customerInfo.deliTime)
+                            ) +
+                              " " +
+                              displayTime(
+                                new Date(orderDetail.contents.customerInfo.deliTime)
+                              ))
+                              : "") : ""}
+                        </Text>
+                      </Box>
+                    ),
+                  },
+                  {
+                    left: (
+                      <Box flex className="space-x-1">
+                        <Text size="small">
+                          {showOrderStatus(OrderStatus.DELIVERED)}
+                        </Text>
+                      </Box>
+                    ),
+                    right: (
+                      <Box flex className="space-x-1">
+                        <Box className="flex-1 "></Box>
+                        <Text size="small">
+                          {orderDetail.state == "hasValue" &&
+                            orderDetail.contents !== null
+                            ? (orderDetail.contents.customerInfo.deliStatus == OrderStatus.DELIVERED ? (displayDate(
+                              new Date(orderDetail.contents.customerInfo.deliTime)
+                            ) +
+                              " " +
+                              displayTime(
+                                new Date(orderDetail.contents.customerInfo.deliTime)
+                              ))
+                              : "") : ""}
+                        </Text>
+                      </Box>
+                    ),
+                  },
+                ]}
+                limit={4}
+                renderLeft={(item) => item.left}
+                renderRight={(item) => item.right}
+              />
+            </Box> */}
             <Box className="space-y-3 px-4 my-2">
               {/* Tạm thời để nút HUỶ ĐƠN là undefined. */}
               {orderDetail.state === "hasValue" &&

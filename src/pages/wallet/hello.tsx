@@ -42,12 +42,9 @@ export const WelcomeUser: FC<MemberBalanceProps> = ({ memberInfo }) => {
                 )}
               </Text>
               <Box className="flex" alignItems="center">
-                <img className="w-5 h-5 mr-1.5" src={wallet} />
-                <Text size="small" className="font-bold text-primary">
-                  <DisplayValue
-                    value={monney?.balance ?? 0}
-                    unit={" " + monney?.walletType.currency}
-                  />
+                <Text size="normal" className="font-bold text-primary flex">
+                  <DisplayValue value={monney?.balance ?? 0} />
+                  <img className="w-5 h-5 ml-1.5" src={wallet} />
                 </Text>
               </Box>
             </Box>
