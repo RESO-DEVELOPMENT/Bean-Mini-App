@@ -77,36 +77,47 @@ export const memberState = selector({
   get: async ({ get }) => {
     const requested = get(requestPhoneTriesState);
     if (requested) {
-      const accessToken = await getAccessToken();
+      // const accessToken = await getAccessToken();
+      // const user = get(userState);
+      // let phone = "0337076898";
+      // const { token } = await getPhoneNumber({
+      //   fail: (err) => {
+      //     console.log("Lỗi đăng nhập: ", err);
+      //   },
+      // });
       const user = get(userState);
-      let phone = "0337076898";
-      const { token } = await getPhoneNumber({
-        fail: (err) => {
-          console.log("Lỗi đăng nhập: ", err);
-        },
-      });
-      if (token !== undefined && user != null) {
-        console.log("token", token);
-        console.log("accessToken", accessToken);
-        var response = await userApi.userLogin(accessToken, token, user.name);
+      const phone = get(phoneState);
+      if (phone !== undefined && user != null) {
+        var response = await userApi.userLogin(phone, user.name);
         if (response.status == 200) {
-          axios.defaults.headers.common.Authorization = `Bearer ${response.data.data.token}`;
-          setStorage({
-            data: {
-              token: response.data.data.token,
-              userId: response.data.data.userId,
-            },
-            success: (data) => {
-              console.log("set ok", data);
-            },
-            fail: (error) => {
-              console.log("set error", error);
-            },
-          });
-          var member = await userApi.getUserInfo(response.data.data.userId ?? "");
+          axios.defaults.headers.common.Authorization = `Bearer ${response.data.accessToken}`;
+          var member = await userApi.getUserInfo(response.data.userId ?? "");
           return member.data;
         }
       }
+
+      // if (token !== undefined && user != null) {
+      //   console.log("token", token);
+      //   console.log("accessToken", accessToken);
+      //   var response = await userApi.userLogin(accessToken, token, user.name);
+      //   if (response.status == 200) {
+      //     axios.defaults.headers.common.Authorization = `Bearer ${response.data.data.token}`;
+      //     setStorage({
+      //       data: {
+      //         token: response.data.data.token,
+      //         userId: response.data.data.userId,
+      //       },
+      //       success: (data) => {
+      //         console.log("set ok", data);
+      //       },
+      //       fail: (error) => {
+      //         console.log("set error", error);
+      //       },
+      //     });
+      //     var member = await userApi.getUserInfo(response.data.data.userId ?? "");
+      //     return member.data;
+      //   }
+      // }
       return null;
     }
     return null;
