@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { useNavigate } from "react-router";
 import { useRecoilValueLoadable, useResetRecoilState } from "recoil";
-import { listBlogState, memberState } from "state";
+import { listBlogState, listMembershipCardState, memberState } from "state";
 // import { Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { getDummyImage } from "utils/product";
@@ -16,8 +16,7 @@ import QRCode from "react-qr-code";
 export const Banner: FC = () => {
   // const blogList = useRecoilValueLoadable(listBlogState);
 
-  const member = useRecoilValueLoadable(memberState);
-
+  const membershipCards = useRecoilValueLoadable(listMembershipCardState);
   const [visible, setVisible] = useState(true);
   const navigate = useNavigate();
   const gotoPage = () => {
@@ -35,8 +34,8 @@ export const Banner: FC = () => {
           disableOnInteraction: false,
         }}
       >
-        {member.state === "hasValue" &&
-          member.contents?.level.membershipCard.map((card, i) => (
+        {membershipCards.state === "hasValue" &&
+          membershipCards.contents?.map((card, i) => (
             <SwiperSlide
               key={i}
               className="px-4"

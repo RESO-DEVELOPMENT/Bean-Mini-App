@@ -1,10 +1,10 @@
 import { TStore } from "types/store";
-import requestWebAdmin from "utils/axios";
+import requestWebAdmin, { axiosInstances } from "utils/axios";
 import { BaseReponse } from "types/response";
 import { Cart } from "types/cart";
 import { OrderDetails, OrderPreview } from "types/order";
 import { Transaction } from "types/transaction";
-
+const requestPomotion = axiosInstances.promotion;
 const getListOrder = (id: string, params?: any) =>
   requestWebAdmin.get<BaseReponse<OrderPreview>>(`users/${id}/orders`, {
     params,
@@ -15,7 +15,7 @@ const getOrderDetails = (orderId: string, params?: any) =>
   });
 
 const getListTransactions = (id: string, params?: any) =>
-  requestWebAdmin.get<BaseReponse<Transaction>>(`users/${id}/transactions`, {
+  requestPomotion.get<BaseReponse<Transaction>>(`/memberships/${id}/transactions`, {
     params,
   });
 const createNewOrder = (cart: Cart) =>

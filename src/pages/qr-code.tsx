@@ -16,31 +16,31 @@ import { DisplayValue } from "components/display/value";
 import { Subscription } from "./profile";
 
 const QRCodePage: React.FC = () => {
-  const [countdown, setCountdown] = useState(120);
-  const qrCode = useRecoilValueLoadable(qrState);
+  // const [countdown, setCountdown] = useState(120);
+  // const qrCode = useRecoilValueLoadable(qrState);
   const member = useRecoilValueLoadable(memberState);
 
   const [retry, setRetry] = useRecoilState(requestRetriveQRstate);
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (countdown > 0) {
-        setCountdown(countdown - 1);
-      }
-    }, 1000);
-    if (retry == 0 || countdown == 0) {
-      handleUpdateClick();
-    }
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [countdown]);
-  useEffect(() => {
-    handleUpdateClick();
-  }, []);
-  const handleUpdateClick = () => {
-    setRetry((r) => r + 1);
-    setCountdown(120);
-  };
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     if (countdown > 0) {
+  //       setCountdown(countdown - 1);
+  //     }
+  //   }, 1000);
+  //   if (retry == 0 || countdown == 0) {
+  //     handleUpdateClick();
+  //   }
+  //   return () => {
+  //     clearInterval(intervalId);
+  //   };
+  // }, [countdown]);
+  // useEffect(() => {
+  //   handleUpdateClick();
+  // }, []);
+  // const handleUpdateClick = () => {
+  //   setRetry((r) => r + 1);
+  //   setCountdown(120);
+  // };
 
   return (
     <div className="flex flex-col w-full h-full bg-primary">
@@ -60,14 +60,14 @@ const QRCodePage: React.FC = () => {
               <div className="flex justify-center my-8">
                 <QRCode
                   value={
-                    member.state === "hasValue" && qrCode.contents !== null
-                      ? qrCode.contents
+                    member.state === "hasValue"
+                      ? member.contents.phoneNumber
                       : ""
                   }
                   size={220}
                 />
               </div>
-              <div className="text-center text-sm my-4">
+              {/* <div className="text-center text-sm my-4">
                 Tự động cập nhật sau {countdown}s.{" "}
                 <button
                   onClick={handleUpdateClick}
@@ -75,7 +75,7 @@ const QRCodePage: React.FC = () => {
                 >
                   Cập nhật
                 </button>
-              </div>
+              </div> */}
             </>
           ) : (
             <Subscription />

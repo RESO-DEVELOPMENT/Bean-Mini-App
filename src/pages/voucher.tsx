@@ -20,7 +20,7 @@ const VoucherPage = () => {
         <Tabs.Tab key={0} label="Hiện có">
           <Suspense>
             {promotionListData.state === "hasValue" &&
-            promotionListData.contents !== null ? (
+              promotionListData.contents !== null ? (
               <div
                 style={{
                   overflowY: "auto",
@@ -28,7 +28,7 @@ const VoucherPage = () => {
                 }}
               >
                 {promotionListData.contents
-                  .filter((e) => e.promotionType === 3)
+                  .filter((e) => e.promotionType === 2)
                   .map((promotion) => (
                     <VoucherCard
                       key={promotion.promotionId}
@@ -66,7 +66,7 @@ const VoucherPage = () => {
         <Tabs.Tab key={1} label="Của tôi">
           <Suspense>
             {promotionListData.state === "hasValue" &&
-            promotionListData.contents !== null ? (
+              promotionListData.contents !== null ? (
               <div
                 style={{
                   overflowY: "auto",
@@ -76,7 +76,7 @@ const VoucherPage = () => {
                 {promotionListData.contents.filter((e) => e.promotionType === 2)
                   .length > 0 ? (
                   promotionListData.contents
-                    .filter((e) => e.promotionType === 2)
+                    .filter((e) => e.promotionType === 3)
                     .map((promotion) => (
                       <VoucherCard
                         key={promotion.promotionId}

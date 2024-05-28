@@ -79,20 +79,20 @@ export const Delivery: FC = () => {
                 </React.Suspense>
               ),
             },
-            // {
-            //   left: <Icon icon="zi-clock-1" className="my-auto" />,
-            //   right: (
-            //     <Box flex className="space-x-2">
-            //       <Box className="flex-1 space-y-[2px]">
-            //         <TimePicker />
-            //         <Text size="xSmall" className="text-gray">
-            //           Thời gian nhận hàng
-            //         </Text>
-            //       </Box>
-            //       <Icon icon="zi-chevron-right" />
-            //     </Box>
-            //   ),
-            // },
+            {
+              left: <Icon icon="zi-clock-1" className="my-auto" />,
+              right: (
+                <Box flex className="space-x-2">
+                  <Box className="flex-1 space-y-[2px]">
+                    <TimePicker />
+                    <Text size="xSmall" className="text-gray">
+                      Thời gian nhận hàng
+                    </Text>
+                  </Box>
+                  <Icon icon="zi-chevron-right" />
+                </Box>
+              ),
+            },
             {
               left: <Icon icon="zi-note" className="my-auto" />,
               right: (

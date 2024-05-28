@@ -5,21 +5,19 @@ import {
   useRecoilStateLoadable,
   useRecoilValue,
   useRecoilValueLoadable,
+  useResetRecoilState,
 } from "recoil";
 
 import logo from "static/logo.png";
-import { UserInfo } from "types/user";
-import { userState } from "state";
+import { listMembershipCardState, userState } from "state";
 import wallet from "static/icon-bean.png";
 import { DisplayValue } from "components/display/value";
+import { Membership } from "types/user";
 export interface MemberBalanceProps {
-  memberInfo?: UserInfo;
+  memberInfo?: Membership;
 }
 export const WelcomeUser: FC<MemberBalanceProps> = ({ memberInfo }) => {
   const user = useRecoilValueLoadable(userState);
-  const monney = memberInfo?.level.memberWallet.find(
-    (e) => e.walletType.name === "MONEY"
-  );
   return (
     <Header
       className={`app-header no-border pl-4 flex-none pb-[6px] custom-header`}
@@ -41,12 +39,12 @@ export const WelcomeUser: FC<MemberBalanceProps> = ({ memberInfo }) => {
                   <Text className="font-bold">...</Text>
                 )}
               </Text>
-              <Box className="flex" alignItems="center">
+              {/* <Box className="flex" alignItems="center">
                 <Text size="normal" className="font-bold text-primary flex">
                   <DisplayValue value={monney?.balance ?? 0} />
                   <img className="w-5 h-5 ml-1.5" src={wallet} />
                 </Text>
-              </Box>
+              </Box> */}
             </Box>
           </Box>
         ) as unknown as string

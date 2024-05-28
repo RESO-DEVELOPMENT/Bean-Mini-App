@@ -38,7 +38,7 @@ export const StorePicker: FC = () => {
         res = {
           ...prevCart,
           storeId: selectedStore?.contents.id,
-          customerId: member?.id ?? undefined,
+          customerId: member?.membershipId ?? undefined,
         };
         return res;
       });

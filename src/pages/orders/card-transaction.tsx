@@ -41,19 +41,19 @@ const TransactionCard: FC<TransactionProps> = ({ trans }) => {
               <Box flex>
                 <Box className="flex-1 "></Box>
                 <Text size="xxSmall">
-                  {displayTime(new Date(trans.createdDate)) +
+                  {displayTime(new Date(trans.insDate)) +
                     " " +
-                    displayDate(new Date(trans.createdDate))}
+                    displayDate(new Date(trans.insDate))}
                 </Text>
               </Box>
             ),
           },
           {
-            left: <Text size="small">Trạng thái</Text>,
+            left: <Text size="small">Loại giao dịch</Text>,
             right: (
               <Box flex>
                 <Box className="flex-1"></Box>
-                <Text size="small">{showTransactionStatus(trans.status)} </Text>
+                <Text size="small">{showTransactionType(trans.type)} </Text>
               </Box>
             ),
           },

@@ -9,6 +9,7 @@ import { useVirtualKeyboardVisible } from "hooks";
 import { PaymentInfo } from "./payment";
 import { useRecoilStateLoadable } from "recoil";
 import { cartState } from "state";
+import { TimePicker } from "./time-picker";
 
 const CartPage: FC = () => {
   const keyboardVisible = useVirtualKeyboardVisible();
@@ -21,9 +22,9 @@ const CartPage: FC = () => {
         <>
           <CartItems />
           <PaymentInfo />
-
           <Delivery />
           <Divider size={12} />
+
           <TermsAndPolicies />
           <Divider size={32} className="flex-1" />
           {!keyboardVisible && <CartPreview />}

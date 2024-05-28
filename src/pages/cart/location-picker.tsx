@@ -14,8 +14,8 @@ export const LocationPicker: FC = () => {
   const locations =
     selectedStore.contents.locationNearby != null
       ? selectedStore.contents.locationNearby
-          .split("_")
-          .map((item: string) => item.trim())
+        .split("_")
+        .map((item: string) => item.trim())
       : [];
   return (
     <>

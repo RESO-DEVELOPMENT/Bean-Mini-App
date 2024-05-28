@@ -33,7 +33,7 @@ const InformationPage = () => {
             ),
             right: (
               <Box flex className="ml-36">
-                {member.contents.fullName}
+                {member.contents.fullname}
               </Box>
             ),
           },

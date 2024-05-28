@@ -103,7 +103,7 @@ const OrderDetailsPage: FC = () => {
                         <Text size="small">
                           <DisplayPrice>
                             {orderDetail.state == "hasValue" &&
-                            orderDetail.contents !== null
+                              orderDetail.contents !== null
                               ? orderDetail.contents.totalAmount
                               : 0}
                           </DisplayPrice>
@@ -115,21 +115,21 @@ const OrderDetailsPage: FC = () => {
                     left: (
                       <Box className="flex-1 ">
                         {orderDetail.state == "hasValue" &&
-                        orderDetail.contents !== null
+                          orderDetail.contents !== null
                           ? orderDetail.contents.promotionList!.map((p) => (
-                              <Text
-                                size="small"
-                                className="pb-2 whitespace-nowrap"
-                              >
-                                {p.promotionName}
-                              </Text>
-                            ))
+                            <Text
+                              size="small"
+                              className="pb-2 whitespace-nowrap"
+                            >
+                              {p.promotionName}
+                            </Text>
+                          ))
                           : ""}
                       </Box>
                     ),
                     right:
                       orderDetail.state == "hasValue" &&
-                      orderDetail.contents !== null ? (
+                        orderDetail.contents !== null ? (
                         orderDetail.contents.promotionList!.map((p) =>
                           p.effectType == "setDiscount" ? (
                             <Box flex className="space-x-1">
@@ -163,7 +163,7 @@ const OrderDetailsPage: FC = () => {
                         <Text.Title size="small">
                           <DisplayPrice>
                             {orderDetail.state == "hasValue" &&
-                            orderDetail.contents !== null
+                              orderDetail.contents !== null
                               ? orderDetail.contents.finalAmount
                               : 0}
                           </DisplayPrice>
@@ -209,7 +209,7 @@ const OrderDetailsPage: FC = () => {
                         <Box className="flex-1 space-y-[2px]"></Box>
                         <Text.Title size="small">
                           {orderDetail.state == "hasValue" &&
-                          orderDetail.contents !== null
+                            orderDetail.contents !== null
                             ? orderDetail.contents.invoiceId
                             : ""}
                         </Text.Title>
@@ -242,7 +242,7 @@ const OrderDetailsPage: FC = () => {
                         <Box className="flex-1 space-y-[2px]"></Box>
                         <Text size="small">
                           {orderDetail.state == "hasValue" &&
-                          orderDetail.contents !== null
+                            orderDetail.contents !== null
                             ? showOrderType(orderDetail.contents.orderType)
                             : ""}
                         </Text>
@@ -260,7 +260,7 @@ const OrderDetailsPage: FC = () => {
                         <Box className="flex-1 space-y-[2px]"></Box>
                         <Text size="small">
                           {orderDetail.state == "hasValue" &&
-                          orderDetail.contents !== null
+                            orderDetail.contents !== null
                             ? orderDetail.contents.orderType ==
                               OrderType.DELIVERY
                               ? orderDetail.contents.customerInfo.address
@@ -273,7 +273,7 @@ const OrderDetailsPage: FC = () => {
                   {
                     left: (
                       <Box flex className="space-x-1">
-                        <Text size="small">Thời gian giao</Text>
+                        <Text size="small">Nhận món vào</Text>
                       </Box>
                     ),
                     right: (
@@ -281,7 +281,7 @@ const OrderDetailsPage: FC = () => {
                         <Box className="flex-1 space-y-[2px]"></Box>
                         <Text size="small">
                           {orderDetail.state == "hasValue" &&
-                          orderDetail.contents !== null
+                            orderDetail.contents !== null
                             ? orderDetail.contents.customerInfo.deliTime
                             : ""}
                         </Text>
@@ -299,14 +299,14 @@ const OrderDetailsPage: FC = () => {
                         <Box className="flex-1 space-y-[2px]"></Box>
                         <Text size="small">
                           {orderDetail.state == "hasValue" &&
-                          orderDetail.contents !== null
+                            orderDetail.contents !== null
                             ? displayTime(
-                                new Date(orderDetail.contents.checkInDate)
-                              ) +
-                              " " +
-                              displayDate(
-                                new Date(orderDetail.contents.checkInDate)
-                              )
+                              new Date(orderDetail.contents.checkInDate)
+                            ) +
+                            " " +
+                            displayDate(
+                              new Date(orderDetail.contents.checkInDate)
+                            )
                             : ""}
                         </Text>
                       </Box>

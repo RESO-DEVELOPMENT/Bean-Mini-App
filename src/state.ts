@@ -90,8 +90,8 @@ export const memberState = selector({
       if (phone !== undefined && user != null) {
         var response = await userApi.userLogin(phone, user.name);
         if (response.status == 200) {
-          axios.defaults.headers.common.Authorization = `Bearer ${response.data.accessToken}`;
-          var member = await userApi.getUserInfo(response.data.userId ?? "");
+          axios.defaults.headers.common.Authorization = `Bearer ${response.data.data.token}`;
+          var member = await userApi.getUserInfo(response.data.data.userId ?? "");
           return member.data;
         }
       }
@@ -128,10 +128,19 @@ export const memberState = selector({
     let res = { ...cart };
     res = {
       ...cart,
-      customerId: member?.id,
+      customerId: member?.membershipId,
     };
     console.log("cart set", res);
     set(cartState, res);
+  },
+});
+
+export const listMembershipCardState = selector({
+  key: "membershipcardList",
+  get: async ({ get }) => {
+    const member = get(memberState);
+    const listMembership = await userApi.getMembershipCard(member?.membershipId ?? "");
+    return listMembership.data;
   },
 });
 
@@ -154,7 +163,7 @@ export const listOrderState = selector({
     if (request) {
       const member = get(memberState);
       if (member !== null) {
-        const listOrder = await orderApi.getListOrder(member?.id ?? "", {
+        const listOrder = await orderApi.getListOrder(member?.membershipId ?? "", {
           page: 1,
           size: 100,
         });
@@ -172,7 +181,7 @@ export const qrState = selector({
     if (request) {
       const member = get(memberState);
       if (member !== null) {
-        const listOrder = await userApi.generateQrCode(member?.id ?? "");
+        const listOrder = await userApi.generateQrCode(member?.membershipId ?? "");
         return listOrder.data;
       }
     }
@@ -198,10 +207,11 @@ export const listTransactionState = selector({
     const request = get(requestOrderTransactionTriesState);
     if (request) {
       const member = get(memberState);
-      const listOrder = await orderApi.getListTransactions(member?.id ?? "", {
+      const listOrder = await orderApi.getListTransactions(member?.membershipId ?? "", {
         page: 1,
         size: 100,
       });
+
       return listOrder.data.items;
     }
     return [];
@@ -216,9 +226,10 @@ export const listPromotionState = selector({
   key: "listPromotion",
   get: async ({ get }) => {
     const member = get(memberState);
-    const listOrder = await userApi.getListPromotion(member?.id ?? "", {
+    const listOrder = await userApi.getListPromotion(member?.membershipId ?? "", {
       brandCode: "BeanApp",
     });
+    console.log("promotion", listOrder.data)
     return listOrder.data;
   },
 });
@@ -369,8 +380,8 @@ export const cartState = atom<Cart>({
   key: "cart",
   default: {
     storeId: "",
-    orderType: OrderType.EATIN,
-    paymentType: PaymentType.POINTIFY,
+    orderType: OrderType.TAKE_AWAY,
+    paymentType: PaymentType.CASH,
     productList: [],
     totalAmount: 0,
     shippingFee: 0,
@@ -417,10 +428,10 @@ export const notificationsState = atom<Notification[]>({
 export const paymentTypeState = atom<Payment[]>({
   key: "paymentType",
   default: [
-    {
-      type: PaymentType.POINTIFY,
-      name: "Điểm Bean",
-    },
+    // {
+    //   type: PaymentType.POINTIFY,
+    //   name: "Điểm Bean",
+    // },
     {
       type: PaymentType.CASH,
       name: "Tiền mặt",

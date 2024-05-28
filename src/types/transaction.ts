@@ -1,16 +1,13 @@
 export interface Transaction {
-  id: string;
-  transactionJson: string;
-  createdDate: string;
-  orderId: string;
-  userId: string;
-  status: string;
-  brandId: string;
-  amount: number;
-  currency: string;
-  brandPartnerId: string;
-  isIncrease: boolean;
-  type: string;
+  id: string
+  transactionJson: string
+  insDate: string
+  updDate: string
+  amount: number
+  currency: string
+  isIncrease: boolean
+  type: string
+  description: string
 }
 export enum TransactionTypeEnum {
   PAYMENT = "PAYMENT",

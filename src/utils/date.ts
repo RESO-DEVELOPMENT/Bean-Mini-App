@@ -15,7 +15,7 @@ export function displayTime(date: Date) {
 
 export function displayHalfAnHourTimeRange(date: Date) {
   const endTime = new Date(date);
-  endTime.setMinutes(endTime.getMinutes() + 30);
+  endTime.setMinutes(endTime.getMinutes() + 15);
   return `${displayTime(date)} - ${displayTime(endTime)}`;
 }
 
