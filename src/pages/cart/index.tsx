@@ -24,7 +24,6 @@ const CartPage: FC = () => {
           <PaymentInfo />
           <Delivery />
           <Divider size={12} />
-
           <TermsAndPolicies />
           <Divider size={32} className="flex-1" />
           {!keyboardVisible && <CartPreview />}

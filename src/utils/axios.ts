@@ -37,9 +37,6 @@ export const parseParams = (params: any) => {
 };
 
 const admin = "https://admin.reso.vn/api/v1/";
-const account = `${process.env.REACT_APP_WEB_ADMIN_URL}`;
-const paymentService = `${process.env.REACT_APP_PAYMENT_SERVICE_URL}`;
-const report = `${process.env.REACT_APP_REPORT_BASE_URL}`;
 const promotion = "https://api-pointify.reso.vn/api";
 // const promotion = "https://localhost:7131/api";
 const requestWebAdmin = axios.create({
@@ -62,32 +59,7 @@ requestWebAdmin.interceptors.response.use(
   (error) =>
     Promise.reject((error.response && error.response.data) || "Có lỗi xảy ra")
 );
-const requestPaymentServices = axios.create({
-  baseURL: paymentService,
-  paramsSerializer: parseParams,
-});
-requestPaymentServices.interceptors.request.use((options) => {
-  const { method } = options;
 
-  if (method === "put" || method === "post") {
-    Object.assign(options.headers, {
-      "Content-Type": "application/json;charset=UTF-8",
-    });
-  }
-
-  return options;
-});
-
-requestPaymentServices.interceptors.response.use(
-  (response) => response,
-  (error) =>
-    Promise.reject((error.response && error.response.data) || "Có lỗi xảy ra")
-);
-
-const requestLogin = axios.create({
-  baseURL: account,
-  paramsSerializer: parseParams,
-});
 
 const requestPromotion = axios.create({
   baseURL: promotion,
@@ -112,46 +84,7 @@ requestPromotion.interceptors.response.use(
     Promise.reject((error.response && error.response.data) || "Có lỗi xảy ra")
 );
 
-requestLogin.interceptors.request.use((options) => {
-  const { method } = options;
 
-  if (method === "put" || method === "post") {
-    Object.assign(options.headers, {
-      "Content-Type": "application/json;charset=UTF-8",
-    });
-  }
-
-  return options;
-});
-
-requestLogin.interceptors.response.use(
-  (response) => response,
-  (error) =>
-    Promise.reject((error.response && error.response.data) || "Có lỗi xảy ra")
-);
-
-const requestReport = axios.create({
-  baseURL: report,
-  paramsSerializer: parseParams,
-});
-
-requestReport.interceptors.request.use((options) => {
-  const { method } = options;
-
-  if (method === "put" || method === "post") {
-    Object.assign(options.headers, {
-      "Content-Type": "application/json;charset=UTF-8",
-    });
-  }
-
-  return options;
-});
-
-requestReport.interceptors.response.use(
-  (response) => response,
-  (error) =>
-    Promise.reject((error.response && error.response.data) || "Có lỗi xảy ra")
-);
 
 // ----------------------------------------------------------------------
 class AxiosClientFactory {
@@ -179,12 +112,6 @@ class AxiosClientFactory {
     switch (type) {
       case "admin":
         return requestWebAdmin;
-      case "login":
-        return requestLogin;
-      case "report":
-        return requestReport;
-      case "payment":
-        return requestPaymentServices;
       case "promotion":
         return requestPromotion;
       default:

@@ -70,6 +70,7 @@ const VoucherCard: FC<VoucherCardProps> = ({
           <Text className="font-bold">{promotion.promotionName}</Text>
           <p>{promotion.description}</p>
           <p>HSD {displayDate(new Date(promotion.endDate))}</p>
+          <p>Số lượng: {promotion.promotionType == 2 ? "Không giới hạn" : promotion.listVoucher.length}</p>
           <Button
             style={buttonStyle}
             className={

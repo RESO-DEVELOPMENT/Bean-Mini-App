@@ -41,7 +41,6 @@ export const PaymentPicker: FC = () => {
         <Text size="xLarge" className="font-medium text-sm text-primary">
           {showPaymentType(cart.paymentType)}
         </Text>
-        <Icon className="bottom-0.5" icon="zi-chevron-up" />
       </Box>
       {paymentList.state === "hasValue" &&
         createPortal(

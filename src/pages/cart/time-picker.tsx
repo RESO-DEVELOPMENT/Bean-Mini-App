@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from "react";
+import React, { FC, useMemo, useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { cartState, selectedDeliveryTimeState } from "state";
 import { Cart } from "types/cart";
@@ -44,7 +44,23 @@ export const TimePicker: FC = () => {
     }
     return times;
   }, [date]);
+  useEffect(
+    () => {
+      setCart((prevCart) => {
+        let res = { ...prevCart };
+        res = {
+          ...prevCart,
+          customerNote: `${displayHalfAnHourTimeRange(
+            new Date(time)
+          )}, ${displayDate(new Date(date))}`,
+        };
+        return res;
+      });
 
+    },
+
+    []
+  );
   return (
     <Picker
       mask
@@ -66,6 +82,7 @@ export const TimePicker: FC = () => {
           )}`
           : `Chọn thời gian`
       }
+
       onChange={({ date, time }) => {
         if (date) {
           setDate(+date.value);

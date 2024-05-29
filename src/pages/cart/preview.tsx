@@ -18,9 +18,7 @@ import {
 } from "state";
 import { OrderType, PaymentType } from "types/order";
 import { getConfig } from "utils/config";
-import pay, { showPaymentType } from "utils/product";
 import { Payment } from "zmp-sdk";
-import { EventName, events } from "zmp-sdk/apis";
 import { Box, Button, Icon, Text, useSnackbar } from "zmp-ui";
 import { PaymentPicker } from "./payment-picker";
 
@@ -32,16 +30,16 @@ export const CartPreview: FC = () => {
   const navigate = useNavigate();
   console.log("cartPrepare", cartPrepare.contents);
   const onCheckout = async () => {
-    if (cartPrepare.contents.paymentType == PaymentType.CASH) {
-      const body = { ...cartPrepare.contents };
-      Payment.createOrder({
-        desc: `Thanh toán cho ${getConfig((config) => config.app.title)}`,
-        item: [],
-        amount: cartPrepare.contents.finalAmount,
-        success: async (data) => {
-          console.log("Payment success: ", data);
-          let { orderId } = data;
-          const res = await orderApi.createNewOrder(body);
+    const body = { ...cartPrepare.contents };
+    const paymentMethod = cartPrepare.contents.paymentType == PaymentType.CASH ? "COD" : "POINTIFY";
+    await Payment.createOrder({
+      desc: `Thanh toán cho ${getConfig((config) => config.app.title)}`,
+      item: [],
+      method: paymentMethod,
+      extradata: cartPrepare.contents.storeId,
+      amount: cartPrepare.contents.finalAmount,
+      success: async (data) => {
+        await orderApi.createNewOrder(body).then((res) => {
           if (res.status == 200) {
             console.log(res.data);
             snackbar.openSnackbar({
@@ -53,13 +51,12 @@ export const CartPreview: FC = () => {
               let res = { ...prevCart };
               res = {
                 ...prevCart,
-                orderType: OrderType.EATIN,
+                orderType: OrderType.TAKE_AWAY,
                 productList: [],
                 totalAmount: 0,
                 shippingFee: 0,
                 bonusPoint: 0,
                 discountAmount: 0,
-                finalAmount: 0,
                 totalQuantity: 0,
                 promotionList: [],
                 promotionCode: null,
@@ -77,163 +74,17 @@ export const CartPreview: FC = () => {
               text: "Thất bại, " + res.data.Error,
             });
           }
-        },
-        fail: (err) => {
-          console.log("Payment error: ", err);
-          snackbar.openSnackbar({
-            duration: 3000,
-            type: "error",
-            text: "Thất bại, " + err.detail.Error,
-          });
-        },
-      });
-      // events.on(EventName.OpenApp, async (data) => {
-      //   const params = data?.path;
-      //   console.log("params payment", params);
-      //   if (params.includes("/")) {
-      //     try {
-      //       const res = await orderApi.createNewOrder(body)
-      //       if (res.status == 200) {
-      //         console.log(res.data);
-      //         snackbar.openSnackbar({
-      //           type: "success",
-      //           text: "Đặt hàng thành công",
-      //         });
-      //         setCart((prevCart) => {
-      //           let res = { ...prevCart };
-      //           res = {
-      //             ...prevCart,
-      //             orderType: OrderType.EATIN,
-      //             paymentType: PaymentType.POINTIFY,
-      //             productList: [],
-      //             totalAmount: 0,
-      //             shippingFee: 0,
-      //             bonusPoint: 0,
-      //             discountAmount: 0,
-      //             finalAmount: 0,
-      //             totalQuantity: 0,
-      //             customerId: null,
-      //             promotionList: [],
-      //             promotionCode: null,
-      //           };
-      //           return res;
-      //         });
-      //         navigate("/order-detail", {
-      //           state: { id: res.data }
-      //         })
-      //       } else if (res.status == 400) {
-      //         console.log(" log eror", res);
-      //         snackbar.openSnackbar({
-      //           type: "error",
-      //           text: "Đặt hàng thất bại, " + res.data.Error,
-      //         });
-      //       }
-
-      //     } catch (error: any) {
-      //       console.log(" log eror", error);
-      //       snackbar.openSnackbar({
-      //         type: "error",
-      //         text: "Đặt hàng thất bại, " + error.Error,
-      //       });
-      //     }
-
-      //   }
-      // });
-    } else {
-      try {
-        const body = { ...cartPrepare.contents };
-        const res = await orderApi.createNewOrder(body);
-        if (res.status == 200) {
-          console.log(res.data);
-          snackbar.openSnackbar({
-            type: "success",
-            text: "Đặt hàng thành công",
-          });
-          setCart((prevCart) => {
-            let res = { ...prevCart };
-            res = {
-              ...prevCart,
-              orderType: OrderType.EATIN,
-              paymentType: PaymentType.POINTIFY,
-              productList: [],
-              totalAmount: 0,
-              shippingFee: 0,
-              bonusPoint: 0,
-              discountAmount: 0,
-              finalAmount: 0,
-              totalQuantity: 0,
-              customerId: null,
-              promotionList: [],
-              promotionCode: null,
-            };
-            return res;
-          });
-          navigate("/order-detail", {
-            state: { id: res.data },
-          });
-        } else if (res.status == 400) {
-          console.log(" log eror", res);
-          snackbar.openSnackbar({
-            type: "error",
-            text: "Đặt hàng thất bại, " + res.data.Error,
-          });
-        }
-      } catch (error: any) {
-        console.log(" log eror", error);
+        })
+      },
+      fail: (err) => {
+        console.log("Payment error: ", err);
         snackbar.openSnackbar({
+          duration: 3000,
           type: "error",
-          text: "Đặt hàng thất bại, " + error.Error,
+          text: "Thất bại, " + err.detail.Error,
         });
-      }
-    }
-  };
-
-  const onDevCheckout = async () => {
-    try {
-      const body = { ...cartPrepare.contents };
-      const res = await orderApi.createNewOrder(body);
-      if (res.status == 200) {
-        console.log(res.data);
-        snackbar.openSnackbar({
-          type: "success",
-          text: "Đặt hàng thành công",
-        });
-        setCart((prevCart) => {
-          let res = { ...prevCart };
-          res = {
-            ...prevCart,
-            orderType: OrderType.EATIN,
-            paymentType: PaymentType.POINTIFY,
-            productList: [],
-            totalAmount: 0,
-            shippingFee: 0,
-            bonusPoint: 0,
-            discountAmount: 0,
-            finalAmount: 0,
-            totalQuantity: 0,
-            customerId: null,
-            promotionList: [],
-            promotionCode: null,
-          };
-          return res;
-        });
-        navigate("/order-detail", {
-          state: { id: res.data },
-        });
-      } else if (res.status == 400) {
-        console.log(" log eror", res);
-        snackbar.openSnackbar({
-          type: "error",
-          text: "Đặt hàng thất bại, " + res.data.Error,
-        });
-      }
-    } catch (error: any) {
-      console.log(" log eror", error);
-      snackbar.openSnackbar({
-        type: "error",
-        text: "Đặt hàng thất bại, " + error.Error,
-      });
-    }
+      },
+    });
   };
 
   return (
@@ -247,43 +98,28 @@ export const CartPreview: FC = () => {
           <Box
             flex
             flexDirection="row"
-            justifyContent="space-between"
-            className=" flex-none mb-3 mx-4"
+            justifyContent="space-around"
+            className=" flex-none mb-2 mx-2"
           >
             <Box
               flex
               className="space-x-2"
               onClick={() => navigate("/voucher")}
             >
-              <Text size="xLarge" className="font-medium text-sm text-primary">
+              <Text size="xxSmall" className="text-primary">
                 {cartPrepare.state === "hasValue" &&
-                cartPrepare.contents !== null &&
-                cartPrepare.contents.promotionCode !== null
+                  cartPrepare.contents !== null &&
+                  cartPrepare.contents.promotionCode !== null
                   ? cartPrepare.contents.promotionCode
                   : "KHUYẾN MÃI"}
               </Text>
-              <Icon className="bottom-0.5" icon="zi-chevron-up" />
             </Box>
-            {/* <Text.Title
-           onClick={() => navigate("/voucher")}
-           className="text-primary"
-           size="small"
-         >
-           {cartPrepare.state === "hasValue" &&
-           cartPrepare.contents !== null &&
-           cartPrepare.contents.promotionCode !== null
-             ? cartPrepare.contents.promotionCode
-             : "KHUYẾN MÃI"}
-         </Text.Title> */}
 
             <Text.Title
               className="text-gray text-transform: uppercase;"
               size="small"
             >
               <PaymentPicker />
-              {/* {cartPrepare.state === "hasValue" && cartPrepare.contents !== null
-             ? showPaymentType(cartPrepare.contents.paymentType)
-             : "TIỀN MẶT"} */}
             </Text.Title>
           </Box>
           <Button

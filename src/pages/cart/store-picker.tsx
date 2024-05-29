@@ -97,7 +97,7 @@ export const StorePicker: FC = () => {
                         ...prevCart,
                         productList: [],
                         orderType: OrderType.EATIN,
-                        paymentType: PaymentType.POINTIFY,
+                        paymentType: PaymentType.CASH,
                         totalAmount: 0,
                         shippingFee: 0,
                         bonusPoint: 0,

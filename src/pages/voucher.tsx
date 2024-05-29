@@ -87,6 +87,7 @@ const VoucherPage = () => {
                             res = {
                               ...prevCart,
                               promotionCode: promotion.promotionCode,
+                              voucherCode: promotion.listVoucher[0].voucherCode
                             };
                             return prepareCart(res);
                           })
@@ -98,6 +99,7 @@ const VoucherPage = () => {
                             res = {
                               ...prevCart,
                               promotionCode: null,
+                              voucherCode: null
                             };
                             return prepareCart(res);
                           })

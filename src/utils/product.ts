@@ -60,11 +60,11 @@ export default pay;
 export function showPaymentType(paymentType: string) {
   switch (paymentType) {
     case PaymentType.CASH:
-      return "TIỀN MẶT";
+      return "Tiền mặt";
     case PaymentType.POINTIFY:
       return "Điểm BEAN";
     default:
-      return "TIỀN MẶT";
+      return "Tiền mặt";
   }
 }
 export function showOrderStatus(status: string) {
