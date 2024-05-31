@@ -2,8 +2,8 @@ import { atom, selector, selectorFamily } from "recoil";
 import { Product, ProductTypeEnum } from "types/store-menu";
 import { currentStoreMenuState, menuByStoreState, storeMenuState } from "./menu.state";
 import { wait } from "utils/async";
-import { Store } from "types/store";
-import { listStoreState, storeMenuByInputIdState } from "./store.state";
+import { TStore } from "types/store";
+// import { listStoreState, storeMenuByInputIdState } from "./store.state";
 
 export const productsState = selector<Product[]>({
   key: "products",
@@ -73,98 +73,98 @@ export const resultState = selector<Product[]>({
   },
 });
 
-export const storeProductsByCollectionIdState = selectorFamily({
-  key: "storeProductsByCollectionId",
-  get:
-    (collectionId: string) =>
-    async ({ get }) => {
-      const menu = get(currentStoreMenuState);
-      const productsByCollectionId = menu.products.filter(
-        (p) => p.collectionIds.includes(collectionId) && p.type === "PARENT"
-      );
-      return productsByCollectionId;
-    },
-});
+// export const storeProductsByCollectionIdState = selectorFamily({
+//   key: "storeProductsByCollectionId",
+//   get:
+//     (collectionId: string) =>
+//     async ({ get }) => {
+//       const menu = get(currentStoreMenuState);
+//       const productsByCollectionId = menu.products.filter(
+//         (p) => p.collectionIds.includes(collectionId) && p.type === "PARENT"
+//       );
+//       return productsByCollectionId;
+//     },
+// });
 
-export const storeProductsByCategoryIdState = selectorFamily<Product[], string>(
-  {
-    key: "storeProductsByCategoryId",
-    get:
-      (categoryId: string) =>
-      async ({ get }) => {
-        const menu = get(currentStoreMenuState);
-        const result = menu.products.filter(
-          (p) =>
-            p.categoryId == categoryId &&
-            (p.type === ProductTypeEnum.SINGLE ||
-              p.type === ProductTypeEnum.PARENT)
-        );
-        return result;
-      },
-  }
-);
+// export const storeProductsByCategoryIdState = selectorFamily<Product[], string>(
+//   {
+//     key: "storeProductsByCategoryId",
+//     get:
+//       (categoryId: string) =>
+//       async ({ get }) => {
+//         const menu = get(currentStoreMenuState);
+//         const result = menu.products.filter(
+//           (p) =>
+//             p.categoryId == categoryId &&
+//             (p.type === ProductTypeEnum.SINGLE ||
+//               p.type === ProductTypeEnum.PARENT)
+//         );
+//         return result;
+//       },
+//   }
+// );
 
-export const isAddedProductState = atom({
-  key: "isAddedProductState",
-  default: false,
-});
+// export const isAddedProductState = atom({
+//   key: "isAddedProductState",
+//   default: false,
+// });
 
-export const searchedProductsByKeywordState = selectorFamily<
-  Map<Store, Product[]>,
-  string
->({
-  key: "searchedProductsByKeyword",
-  get:
-    (keyword: string) =>
-    async ({ get }) => {
-      const stores = get(listStoreState);
-      // console.log(stores);
-      //nơi lưu trữ kết quả trả về
-      const res: Map<Store, Product[]> = new Map();
-      stores.map((store) => {
-        let menu = get(storeMenuByInputIdState(store.id));
-        let products = menu.products.filter(
-          (p) =>
-            p.type == ProductTypeEnum.PARENT || p.type == ProductTypeEnum.SINGLE
-        );
-        let avaiProducts: Product[] = products.filter((product) =>
-          product.name
-            .trim()
-            .toLowerCase()
-            .includes(keyword.trim().toLowerCase())
-        );
-        if (avaiProducts.length >= 2) {
-          res.set(store, [avaiProducts[0], avaiProducts[1]]);
-        } else if (avaiProducts.length == 1) {
-          res.set(store, [avaiProducts[0]]);
-        }
-      });
-      return res;
-    },
-});
+// export const searchedProductsByKeywordState = selectorFamily<
+//   Map<TStore, Product[]>,
+//   string
+// >({
+//   key: "searchedProductsByKeyword",
+//   get:
+//     (keyword: string) =>
+//     async ({ get }) => {
+//       const stores = get(listStoreState);
+//       // console.log(stores);
+//       //nơi lưu trữ kết quả trả về
+//       const res: Map<TStore, Product[]> = new Map();
+//       stores.map((store) => {
+//         let menu = get(storeMenuByInputIdState(store.id));
+//         let products = menu.products.filter(
+//           (p) =>
+//             p.type == ProductTypeEnum.PARENT || p.type == ProductTypeEnum.SINGLE
+//         );
+//         let avaiProducts: Product[] = products.filter((product) =>
+//           product.name
+//             .trim()
+//             .toLowerCase()
+//             .includes(keyword.trim().toLowerCase())
+//         );
+//         if (avaiProducts.length >= 2) {
+//           res.set(store, [avaiProducts[0], avaiProducts[1]]);
+//         } else if (avaiProducts.length == 1) {
+//           res.set(store, [avaiProducts[0]]);
+//         }
+//       });
+//       return res;
+//     },
+// });
 
-export const currentStoreChildrenProductNoParamState = selector<Product[]>({
-  key: "currentStoreChildrenProduct",
-  get: async ({ get }) => {
-    const menu = get(currentStoreMenuState);
-    return menu.products.filter(
-      (product) => product.type === ProductTypeEnum.CHILD
-    );
-  },
-});
+// export const currentStoreChildrenProductNoParamState = selector<Product[]>({
+//   key: "currentStoreChildrenProduct",
+//   get: async ({ get }) => {
+//     const menu = get(currentStoreMenuState);
+//     return menu.products.filter(
+//       (product) => product.type === ProductTypeEnum.CHILD
+//     );
+//   },
+// });
 
-export const currentStoreChildrenProductState = selectorFamily<
-  Product[],
-  string
->({
-  key: "currentStoreChildrenProduct",
-  get:
-    (storeId: string) =>
-    async ({ get }) => {
-      if (storeId.length == 0) return [];
-      const menu = get(storeMenuByInputIdState(storeId));
-      return menu.products.filter(
-        (product) => product.type === ProductTypeEnum.CHILD
-      );
-    },
-});
+// export const currentStoreChildrenProductState = selectorFamily<
+//   Product[],
+//   string
+// >({
+//   key: "currentStoreChildrenProduct",
+//   get:
+//     (storeId: string) =>
+//     async ({ get }) => {
+//       if (storeId.length == 0) return [];
+//       const menu = get(storeMenuByInputIdState(storeId));
+//       return menu.products.filter(
+//         (product) => product.type === ProductTypeEnum.CHILD
+//       );
+//     },
+// });

@@ -31,13 +31,13 @@ export const cartState = atom<Cart>({
   },
 });
 
-export const totalPriceState = selector({
-  key: "totalPrice",
-  get: ({ get }) => {
-    const cart = get(cartState);
-    return cart.productList.reduce(
-      (total, item) => total + item.totalAmount,
-      0
-    );
-  },
-});
+// export const totalPriceState = selector({
+//   key: "totalPrice",
+//   get: ({ get }) => {
+//     const cart = get(cartState);
+//     return cart.productList.reduce(
+//       (total, item) => total + item.totalAmount,
+//       0
+//     );
+//   },
+// });

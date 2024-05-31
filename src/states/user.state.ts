@@ -1,16 +1,15 @@
 import userApi from "api/user";
 import zaloApi from "api/zalo-api";
 import { atom, selector } from "recoil";
-import { UserInfo } from "types/user";
 import axios from "utils/axios";
 import { getAccessToken, getPhoneNumber, getUserInfo } from "zmp-sdk";
 import { cartState } from "./cart.state";
 import { memberState } from "./member.state";
 
-export const membershipState = atom<UserInfo | null>({
-  key: "membership",
-  default: null,
-});
+// export const membershipState = atom<UserInfo | null>({
+//   key: "membership",
+//   default: null,
+// });
 
 export const requestRetriveQRstate = atom({
   key: "requestRetriveQR",
