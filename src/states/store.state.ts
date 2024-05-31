@@ -59,7 +59,7 @@ export const listStoreState = selector({
     const listStore = await storeApi.getListStore({
       page: 1,
       size: 10,
-      brandCode: "VHGP",
+      brandCode: "BEANAPP",
     });
     return listStore.data.items;
   },

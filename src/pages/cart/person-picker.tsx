@@ -1,7 +1,9 @@
 import { ListItem } from "components/list-item";
 import React, { FC } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { phoneState, requestPhoneTriesState, userState } from "state";
+import { phoneState } from "states/user.state";
+import { userState ,requestPhoneTriesState} from "states/user.state";
+
 
 export const PersonPicker: FC = () => {
   const user = useRecoilValue(userState);

@@ -1,8 +1,9 @@
 import React, { FC, useState } from "react";
 import { useNavigate } from "react-router";
 import { useRecoilValueLoadable, useResetRecoilState } from "recoil";
-import { listBlogState, listMembershipCardState, memberState } from "state";
+// import { listBlogState } from "states/blog.state";
 // import { Pagination } from "swiper";
+import { listMembershipCardState } from "states/member.state";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { getDummyImage } from "utils/product";
 import { Box, Text } from "zmp-ui";

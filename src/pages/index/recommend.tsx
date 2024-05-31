@@ -6,7 +6,7 @@ import { ProductSlideSkeleton } from "components/skeletons";
 import React, { Suspense } from "react";
 import { FC } from "react";
 import { useRecoilValue } from "recoil";
-import { recommendProductsState } from "state";
+import { recommendProductsState } from "states/product.state";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Box, Text } from "zmp-ui";
 

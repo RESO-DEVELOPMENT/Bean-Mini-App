@@ -1,12 +1,12 @@
 import { atom, selector } from "recoil";
-import { menuByStoreState } from "./menu.state";
+import { menuByStoreState, storeMenuState } from "./menu.state";
 import { Category, CategoryType } from "types/store-menu";
-import CategoriesApi from "api/category";
+
 
 export const currentCateState = selector({
   key: "category",
   get: async ({ get }) => {
-    const menu = get(menuByStoreState);
+    const menu = get(storeMenuState);
     const cateId = get(selectedCategoryIdState);
     const currentCate = menu.categories.find((cate) => cate.id === cateId);
     if (currentCate !== undefined) {
@@ -27,7 +27,7 @@ export const categoriesState = selector<Category[]>({
 export const childCategoriesState = selector<Category[]>({
   key: "childCategories",
   get: async ({ get }) => {
-    const menu = get(menuByStoreState);
+    const menu = get(storeMenuState);
     const cateId = get(selectedCategoryIdState);
     const selectedCategory = menu.categories.find((cate) => cate.id === cateId);
     const listChild = menu.categories.filter(
@@ -36,7 +36,7 @@ export const childCategoriesState = selector<Category[]>({
     console.log("select category id ", cateId);
     console.log("select category ", selectedCategory);
     console.log("list category child", listChild);
-    if (selectedCategory?.childCategoryIds.length === 0 || listChild == null) {
+    if (selectedCategory?.childCategoryIds === [] || listChild == null) {
       return [];
     }
     const listChildofParentCate: Category[] = [];
@@ -53,19 +53,7 @@ export const childCategoriesState = selector<Category[]>({
 
 export const selectedCategoryIdState = atom({
   key: "selectedCategoryId",
-  default: "",
+  default: "coffee",
 });
 
-export const foodCategoriesListState = selector({
-  key: "foodCategoriesList",
-  get: async () => {
-    const brandCode = "VHGP";
-    const foodCategoriesResponse = (
-      await CategoriesApi.getCategories(brandCode)
-    ).data;
-    const res = foodCategoriesResponse.items.sort(
-      (a, b) => b.displayOrder - a.displayOrder
-    );
-    return res;
-  },
-});
+

@@ -1,6 +1,6 @@
 import { atom, selector, selectorFamily } from "recoil";
 import { Product, ProductTypeEnum } from "types/store-menu";
-import { currentStoreMenuState, menuByStoreState } from "./menu.state";
+import { currentStoreMenuState, menuByStoreState, storeMenuState } from "./menu.state";
 import { wait } from "utils/async";
 import { Store } from "types/store";
 import { listStoreState, storeMenuByInputIdState } from "./store.state";
@@ -8,7 +8,7 @@ import { listStoreState, storeMenuByInputIdState } from "./store.state";
 export const productsState = selector<Product[]>({
   key: "products",
   get: async ({ get }) => {
-    const menu = get(menuByStoreState);
+    const menu = get(storeMenuState);
     return menu.products.filter(
       (product) =>
         product.type === ProductTypeEnum.SINGLE ||
@@ -20,7 +20,7 @@ export const productsState = selector<Product[]>({
 export const childrenProductState = selector<Product[]>({
   key: "childProducts",
   get: async ({ get }) => {
-    const menu = get(menuByStoreState);
+    const menu = get(storeMenuState);
     return menu.products.filter(
       (product) => product.type === ProductTypeEnum.CHILD
     );
@@ -32,6 +32,9 @@ export const recommendProductsState = selector<Product[]>({
   get: ({ get }) => {
     const products = get(productsState);
     return products
+      .filter(
+        (product) => product.type === "SINGLE" || product.type === "PARENT"
+      )
       .sort((a, b) => b.displayOrder - a.displayOrder);
   },
 });
@@ -54,16 +57,19 @@ export const keywordState = atom({
   default: "",
 });
 
-export const resultState = selector<Map<Store, Product[]>>({
+
+export const resultState = selector<Product[]>({
   key: "result",
   get: async ({ get }) => {
     const keyword = get(keywordState);
     if (!keyword.trim()) {
-      return new Map<Store, Product[]>();
+      return [];
     }
-    const resMap = get(searchedProductsByKeywordState(keyword));
+    const products = get(productsState);
     await wait(500);
-    return resMap as Map<Store, Product[]>;
+    return products.filter((product) =>
+      product.name.trim().toLowerCase().includes(keyword.trim().toLowerCase())
+    );
   },
 });
 

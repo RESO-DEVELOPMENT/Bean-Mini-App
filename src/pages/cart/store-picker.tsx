@@ -10,19 +10,20 @@ import {
   useResetRecoilState,
   useSetRecoilState,
 } from "recoil";
+import { requestLocationTriesState } from "states/order.state";
 import {
-  cartState,
-  memberState,
-  nearbyStoresState,
-  requestLocationTriesState,
   selectedStoreIndexState,
   selectedStoreState,
-} from "state";
+} from "states/store.state";
+import { nearbyStoresState } from "states/store.state";
+import { memberState } from "states/member.state";
+import { cartState } from "states/cart.state";
 import { OrderType, PaymentType } from "types/order";
 import { TStore } from "types/store";
 import { displayDistance } from "utils/location";
 import { setStorage } from "zmp-sdk";
 import { useSnackbar } from "zmp-ui";
+import { fromJSON } from "postcss";
 export const StorePicker: FC = () => {
   const [visible, setVisible] = useState(false);
   const nearbyStores = useRecoilValueLoadable(nearbyStoresState);

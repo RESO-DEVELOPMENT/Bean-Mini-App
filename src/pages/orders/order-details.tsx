@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import { Box, Header, Page, Text } from "zmp-ui";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilValueLoadable } from "recoil";
-import { getOrderDetailstate } from "state";
+import { getOrderDetailstate } from "states/order.state";
 import { DisplayPrice } from "components/display/price";
 import { showOrderType, showPaymentType } from "utils/product";
 import { displayDate, displayTime } from "utils/date";

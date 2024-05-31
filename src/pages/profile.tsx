@@ -6,7 +6,8 @@ import { useToBeImplemented } from "hooks";
 import { useNavigate } from "react-router-dom";
 import { openSupportChat } from "utils/config";
 import { useRecoilValueLoadable, useSetRecoilState } from "recoil";
-import { memberState, requestPhoneTriesState } from "state";
+import {  requestPhoneTriesState } from "states/user.state";
+import {memberState} from "states/member.state";
 
 export const Subscription: FC = () => {
   const retry = useSetRecoilState(requestPhoneTriesState);

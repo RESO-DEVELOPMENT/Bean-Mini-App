@@ -8,7 +8,7 @@ import { Delivery } from "./delivery";
 import { useVirtualKeyboardVisible } from "hooks";
 import { PaymentInfo } from "./payment";
 import { useRecoilStateLoadable } from "recoil";
-import { cartState } from "state";
+import { cartState } from "states/cart.state";
 import { TimePicker } from "./time-picker";
 
 const CartPage: FC = () => {

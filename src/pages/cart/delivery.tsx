@@ -1,6 +1,7 @@
 import React, { useState, FC } from "react";
 import { useRecoilState, useRecoilValueLoadable } from "recoil";
-import { cartState, selectedStoreState } from "state";
+import { selectedStoreState } from "states/store.state";
+import {cartState} from "states/cart.state";
 import { Box, Icon, Text, Modal, Input } from "zmp-ui";
 import { ListRenderer } from "components/list-renderer";
 import { StorePicker } from "./store-picker";

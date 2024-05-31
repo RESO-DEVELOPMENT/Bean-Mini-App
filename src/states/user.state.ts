@@ -4,6 +4,8 @@ import { atom, selector } from "recoil";
 import { UserInfo } from "types/user";
 import axios from "utils/axios";
 import { getAccessToken, getPhoneNumber, getUserInfo } from "zmp-sdk";
+import { cartState } from "./cart.state";
+import { memberState } from "./member.state";
 
 export const membershipState = atom<UserInfo | null>({
   key: "membership",
@@ -72,34 +74,21 @@ export const phoneState = selector<string | undefined>({
           phone = value.data.data.number.replace(/^\84/, "0");
         });
       }
+      console.warn(
+        "Sử dụng token này để truy xuất số điện thoại của người dùng",
+        token
+      );
+      console.warn(
+        "Chi tiết tham khảo: ",
+        "https://mini.zalo.me/blog/thong-bao-thay-doi-luong-truy-xuat-thong-tin-nguoi-dung-tren-zalo-mini-app"
+      );
+      console.warn("Giả lập số điện thoại mặc định: 0337076898");
       return phone;
     }
   },
 });
 
-export const memberState = selector({
-  key: "member",
-  get: async ({ get }) => {
-    const requested = get(requestPhoneTriesState);
-    if (requested) {
-      const user = get(userState);
-      const phone = get(phoneState);
-      if (phone !== undefined && user != null) {
-        var response = await userApi.userLogin(phone, user.name);
-        if (response.status == 200) {
-          axios.defaults.headers.common.Authorization = `Bearer ${response.data.data.token}`;
-          var member = await userApi.getUserInfo(
-            response.data.data.userId ?? ""
-          );
-          console.log(member.data);
-          return member.data;
-        }
-      }
-      return null;
-    }
-    return null;
-  },
-});
+
 
 export const qrState = selector({
   key: "qrCode",
@@ -108,9 +97,7 @@ export const qrState = selector({
     if (request) {
       const member = get(memberState);
       if (member !== null) {
-        const listOrder = await userApi.generateQrCode(
-          member?.membershipId || ""
-        );
+        const listOrder = await userApi.generateQrCode(member?.membershipId ?? "");
         return listOrder.data;
       }
     }

@@ -9,7 +9,8 @@ import {
 } from "recoil";
 
 import logo from "static/logo.png";
-import { listMembershipCardState, userState } from "state";
+import { listMembershipCardState } from "states/member.state";
+import {userState} from 'states/user.state';
 import wallet from "static/icon-bean.png";
 import { DisplayValue } from "components/display/value";
 import { Membership } from "types/user";

@@ -1,16 +1,18 @@
 import menuApi from "api/menu";
 import { selector } from "recoil";
-import { listStoreState, selectedStoreIdState } from "./store.state";
+import { listStoreState, selectedStoreIdState, selectedStoreState } from "./store.state";
 
 export const menuByStoreState = selector({
   key: "menuByStore",
   get: async ({ get }) => {
     const currentStore = get(selectedStoreIdState);
-    if (currentStore === null || currentStore === undefined) {
+    console.log("cua hang hien tai", currentStore)
+    if (currentStore === null || currentStore === undefined || currentStore === "") {
       const store = get(listStoreState);
       const menu = await menuApi.getMenu(store[0].id);
       return menu.data;
     } else {
+      console.log("goi api ne");
       const menu = await menuApi.getMenu(get(selectedStoreIdState));
       return menu.data;
     }
@@ -28,6 +30,21 @@ export const currentStoreMenuState = selector({
     } else {
       const menu = await menuApi.getMenu(currentStore);
       console.log(menu.data);
+      return menu.data;
+    }
+  },
+});
+
+export const storeMenuState = selector({
+  key: "storeMenu",
+  get: async ({ get }) => {
+    const currentStore = get(selectedStoreState);
+    if (currentStore === null || currentStore === undefined) {
+      const store = get(listStoreState);
+      const menu = await menuApi.getMenu(store[0].id);
+      return menu.data;
+    } else {
+      const menu = await menuApi.getMenu(currentStore.id);
       return menu.data;
     }
   },

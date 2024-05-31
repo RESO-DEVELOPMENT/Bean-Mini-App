@@ -2,7 +2,7 @@ import React, { useState, FunctionComponent } from "react";
 import { FC } from "react";
 import { useNavigate } from "react-router";
 import { useRecoilValueLoadable } from "recoil";
-import { listBlogState } from "state";
+import { listBlogState } from "states/blog.state";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import "swiper/swiper-bundle.min.css";
 import { Box } from "zmp-ui";

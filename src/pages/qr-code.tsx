@@ -10,7 +10,9 @@ import {
   useRecoilValueLoadable,
   useSetRecoilState,
 } from "recoil";
-import { qrState, memberState, requestRetriveQRstate } from "state";
+import {  requestRetriveQRstate } from "states/user.state";
+import {qrState} from "states/user.state";
+import { memberState } from "states/member.state";
 import { DisplayPrice } from "components/display/price";
 import { DisplayValue } from "components/display/value";
 import { Subscription } from "./profile";

@@ -1,6 +1,6 @@
 import orderApi from "api/order";
 import { atom, selector, selectorFamily } from "recoil";
-import { memberState } from "./user.state";
+import { memberState } from "./member.state";
 import { OrderDetails, PaymentType } from "types/order";
 import { Payment } from "types/payment";
 
@@ -15,16 +15,11 @@ export const listOrderState = selector({
     const request = get(requestOrderTransactionTriesState);
     if (request) {
       const member = get(memberState);
-      // console.log("lấy id member để check lịch sử ", member);
       if (member !== null) {
-        const listOrder = await orderApi.getListOrder(
-          member.membershipId || "67c3bab8-91bb-4828-9f3a-d87c87957209",
-          {
-            page: 1,
-            size: 100,
-          }
-        );
-        console.log("danh sách trả về", listOrder);
+        const listOrder = await orderApi.getListOrder(member?.membershipId ?? "", {
+          page: 1,
+          size: 100,
+        });
         return listOrder.data.items;
       }
     }
@@ -43,10 +38,10 @@ export const getOrderDetailstate = selectorFamily<OrderDetails, string>({
 export const paymentTypeState = atom<Payment[]>({
   key: "paymentType",
   default: [
-    {
-      type: PaymentType.POINTIFY,
-      name: "Điểm Bean",
-    },
+    // {
+    //   type: PaymentType.POINTIFY,
+    //   name: "Điểm Bean",
+    // },
     {
       type: PaymentType.CASH,
       name: "Tiền mặt",

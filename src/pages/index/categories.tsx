@@ -2,12 +2,13 @@ import React from "react";
 import { FC } from "react";
 import { Box, Text } from "zmp-ui";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { categoriesState, selectedCategoryIdState } from "state";
+import {  selectedCategoryIdState } from "states/category.state";
+import {categoriesState} from "states/category.state";
 import { useNavigate } from "react-router";
 
 export const Categories: FC = () => {
+  console.log("categories")
   const categories = useRecoilValue(categoriesState);
-
   const navigate = useNavigate();
   const setSelectedCategoryId = useSetRecoilState(selectedCategoryIdState);
 
