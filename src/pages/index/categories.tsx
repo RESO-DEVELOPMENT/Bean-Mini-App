@@ -7,7 +7,7 @@ import {categoriesState} from "states/category.state";
 import { useNavigate } from "react-router";
 
 export const Categories: FC = () => {
-  console.log("categories")
+
   const categories = useRecoilValue(categoriesState);
   const navigate = useNavigate();
   const setSelectedCategoryId = useSetRecoilState(selectedCategoryIdState);

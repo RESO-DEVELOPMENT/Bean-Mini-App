@@ -2,28 +2,28 @@ import storeApi from "api/store";
 import { atom, selector, selectorFamily } from "recoil";
 import { selectedCategoryIdState } from "./category.state";
 import menuApi from "api/menu";
-import { currentStoreMenuState } from "./menu.state";
+
 import { TStore } from "types/store";
 
-// export const selectedStoreObjState = atom<TStore>({
-//   key: "selectedStoreObj",
-//   default: {
-//     id: "",
-//     brandId: "",
-//     name: "",
-//     shortName: "",
-//     code: "",
-//     email: "",
-//     address: "",
-//     status: "",
-//     wifiName: "",
-//     wifiPassword: "",
-//     lat: "",
-//     long: "",
-//     locationNearby: "",
-//     distance: 0,
-//   },
-// });
+export const selectedStoreObjState = atom<TStore>({
+  key: "selectedStoreObj",
+  default: {
+    id: "",
+    brandId: "",
+    name: "",
+    shortName: "",
+    code: "",
+    email: "",
+    address: "",
+    status: "",
+    wifiName: "",
+    wifiPassword: "",
+    lat: "",
+    long: "",
+    locationNearby: "",
+    distance: 0,
+  },
+});
 
 export const selectedStoreIdState = atom<string>({
   key: "selectedStoreId",
@@ -35,10 +35,10 @@ export const selectedStoreIdState = atom<string>({
 //   default: "Tên Quán",
 // });
 
-export const selectedStoreIndexState = atom<number>({
-  key: "selectedStoreIndex",
-  default: 0,
-});
+// export const selectedStoreIndexState = atom<number>({
+//   key: "selectedStoreIndex",
+//   default: 0,
+// });
 // export const selectLocationState = atom<string>({
 //   key: "selectLocationState",
 //   default: "",
@@ -47,9 +47,12 @@ export const selectedStoreIndexState = atom<number>({
 export const selectedStoreState = selector({
   key: "selectedStore",
   get: async ({ get }) => {
-    const index = get(selectedStoreIndexState);
     const stores = get(listStoreState);
-    return stores[index];
+    const storeObj = get(selectedStoreObjState);
+    var result;
+    if(storeObj.id !== "" || storeObj.id !== null)
+         result = stores.filter((s) => s.id === storeObj.id)[0] || stores[0];
+    return result;
   },
 });
 

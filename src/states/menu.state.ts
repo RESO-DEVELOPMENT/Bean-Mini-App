@@ -1,19 +1,20 @@
 import menuApi from "api/menu";
 import { selector } from "recoil";
-import { listStoreState, selectedStoreIdState, selectedStoreState } from "./store.state";
+import { listStoreState, selectedStoreIdState, selectedStoreObjState, selectedStoreState } from "./store.state";
 
 export const menuByStoreState = selector({
   key: "menuByStore",
   get: async ({ get }) => {
-    const currentStore = get(selectedStoreIdState);
+    const currentStore = get(selectedStoreObjState);
     console.log("cua hang hien tai", currentStore)
-    if (currentStore === null || currentStore === undefined || currentStore === "") {
+    if (currentStore === null || currentStore === undefined || currentStore.id === "") {
       const store = get(listStoreState);
       const menu = await menuApi.getMenu(store[0].id);
       return menu.data;
     } else {
       console.log("goi api ne");
-      const menu = await menuApi.getMenu(get(selectedStoreIdState));
+      const menu = await menuApi.getMenu(currentStore.id);
+      console.log(menu)
       return menu.data;
     }
   },
