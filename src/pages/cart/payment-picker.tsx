@@ -24,13 +24,7 @@ export const PaymentPicker: FC = () => {
   const [cart, setCart] = useRecoilState(cartState);
   return (
     <>
-      {/* <ListItem
-        onClick={() => {
-          setVisible(true);
-        }}
-        title={showPaymentType(cart.paymentType)}
-        subtitle={undefined}
-      /> */}
+
       <Box
         flex
         className="space-x-2"
