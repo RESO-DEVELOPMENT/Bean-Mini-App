@@ -9,11 +9,13 @@ import {
   useSetRecoilState,
 } from "recoil";
 import {
-  cartState,
   paymentTypeState,
-  requestLocationTriesState,
-  selectedStoreState,
-} from "state";
+  
+  
+} from "states/order.state";
+import {requestLocationTriesState} from "states/order.state";
+import {selectedStoreState} from "states/store.state";
+import { cartState } from "states/cart.state";
 import { showPaymentType } from "utils/product";
 import { Box, Icon, Text } from "zmp-ui";
 

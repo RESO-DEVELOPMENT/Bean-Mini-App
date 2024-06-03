@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { FC } from "react";
 import { useRecoilState } from "recoil";
-import { keywordState } from "state";
+import { keywordState } from "states/product.state";
 import { Box, Input } from "zmp-ui";
 import { debounce } from "lodash";
 

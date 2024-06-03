@@ -8,14 +8,13 @@ import {
 } from "recoil";
 import "./orders.css";
 import {
-  categoriesState,
-  listOrderState,
-  listTransactionState,
-  memberState,
-  productsByCategoryState,
-  requestOrderTransactionTriesState,
+  
   selectedCategoryIdState,
-} from "state";
+} from "states/category.state";
+// import {categoriesState} from "states/category.state";
+import {listOrderState} from "states/order.state";
+import {requestOrderTransactionTriesState} from "states/order.state";
+import { memberState } from "states/member.state";
 import { Box, Header, Icon, Page, Tabs, Text } from "zmp-ui";
 import OrderCard from "./card-order";
 import TransactionCard from "./card-transaction";
@@ -26,6 +25,8 @@ import { showOrderStatus } from "utils/product";
 import { OrderStatus } from "types/order";
 import { useNavigate } from "react-router-dom";
 import { Subscription } from "pages/profile";
+
+import { listTransactionState } from "states/transaction.state";
 const HistoryPicker: FC = () => {
   const selectedCategory = useRecoilValue(selectedCategoryIdState);
   const orderListData = useRecoilValueLoadable(listOrderState);

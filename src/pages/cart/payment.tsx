@@ -1,9 +1,9 @@
 import { DisplayPrice } from "components/display/price";
 import { ListRenderer } from "components/list-renderer";
 import React, { FC } from "react";
-import { useRecoilValue, useRecoilValueLoadable } from "recoil";
-import { cartState, prepareCartState } from "state";
-import { prepareCart, showPaymentType } from "utils/product";
+import {  useRecoilValueLoadable } from "recoil";
+import { cartState, prepareCartState } from "states/cart.state";
+// import { prepareCart, showPaymentType } from "utils/product";
 import { Box, Text } from "zmp-ui";
 
 export const PaymentInfo: FC = () => {

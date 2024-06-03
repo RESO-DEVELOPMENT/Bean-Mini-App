@@ -9,7 +9,7 @@ import {
 import { Cart } from "types/cart";
 import { getPhoneNumber } from "zmp-sdk";
 import { useRecoilValue } from "recoil";
-import { accessTokenState, phoneTokenState } from "state";
+import { accessTokenState, phoneTokenState } from "states/user.state";
 import axios from "axios";
 
 const getUserPhone = async (code: string, accessToken: string) => {

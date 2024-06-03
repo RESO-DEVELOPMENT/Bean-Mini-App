@@ -2,7 +2,8 @@ import { ListRenderer } from "components/list-renderer";
 import React, { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValueLoadable } from "recoil";
-import { memberState, userState } from "state";
+import { memberState } from "states/member.state";
+import {  userState } from "states/user.state";
 import logo from "static/logo.png";
 import { Box, Text } from "zmp-react";
 

@@ -2,7 +2,7 @@ import { DisplayPrice } from "components/display/price";
 import { ListRenderer } from "components/list-renderer";
 import React, { FC, useState } from "react";
 import { useRecoilState, useRecoilStateLoadable, useRecoilValue } from "recoil";
-import { cartState } from "state";
+import { cartState } from "../../states/cart.state";
 import { Cart, ProductList } from "types/cart";
 import { prepareCart } from "utils/product";
 import { Box, Icon, Text } from "zmp-ui";

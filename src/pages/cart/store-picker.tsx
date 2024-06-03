@@ -3,31 +3,31 @@ import { ListItem } from "components/list-item";
 import React, { FC, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import {
-  useRecoilState,
-  useRecoilStateLoadable,
   useRecoilValue,
   useRecoilValueLoadable,
-  useResetRecoilState,
   useSetRecoilState,
 } from "recoil";
+import { requestLocationTriesState } from "states/order.state";
 import {
-  cartState,
-  memberState,
-  nearbyStoresState,
-  requestLocationTriesState,
-  selectedStoreIndexState,
+  selectedStoreObjState,
   selectedStoreState,
-} from "state";
+} from "states/store.state";
+import { nearbyStoresState } from "states/store.state";
+import { memberState } from "states/member.state";
+import { cartState } from "states/cart.state";
 import { OrderType, PaymentType } from "types/order";
 import { TStore } from "types/store";
 import { displayDistance } from "utils/location";
-import { setStorage } from "zmp-sdk";
+// import { setStorage } from "zmp-sdk";
 import { useSnackbar } from "zmp-ui";
+// import { fromJSON } from "postcss";
 export const StorePicker: FC = () => {
   const [visible, setVisible] = useState(false);
-  const nearbyStores = useRecoilValueLoadable(nearbyStoresState);
-  const setSelectedStoreIndex = useSetRecoilState(selectedStoreIndexState);
+  const nearbyStores = useRecoilValueLoadable(nearbyStoresState)
+  const setStoreObj = useSetRecoilState(selectedStoreObjState);
   const selectedStore = useRecoilValueLoadable(selectedStoreState);
+// console.log(selectedStore.contents)
+
   const setCart = useSetRecoilState(cartState);
   const member = useRecoilValue(memberState);
   const snackbar = useSnackbar();
@@ -77,20 +77,20 @@ export const StorePicker: FC = () => {
                     : store.name,
                   highLight: store.id === selectedStore?.contents.id,
                   onClick: () => {
-                    setSelectedStoreIndex(i);
-                    setStorage({
-                      data: {
-                        storeIndex: i,
-                      },
-                      success: (data) => {
-                        // xử lý khi gọi api thành công
-                        console.log("set ok", data);
-                      },
-                      fail: (error) => {
-                        // xử lý khi gọi api thất bại
-                        console.log("set error", error);
-                      },
-                    });
+                    setStoreObj(store);
+                    // setStorage({
+                    //   data: {
+                    //     storeIndex: i,
+                    //   },
+                    //   success: (data) => {
+                    //     // xử lý khi gọi api thành công
+                    //     console.log("set ok", data);
+                    //   },
+                    //   fail: (error) => {
+                    //     // xử lý khi gọi api thất bại
+                    //     console.log("set error", error);
+                    //   },
+                    // });
                     setCart((prevCart) => {
                       let res = { ...prevCart };
                       res = {

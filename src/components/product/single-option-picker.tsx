@@ -28,22 +28,26 @@ export const SingleOptionPicker: FC<{
             value={option.menuProductId}
             className={value === option.menuProductId ? "font-bold" : ""}
           >
-            <Box className="grid justify-between m-1">
+            <Box className=" justify-between m-1 flex w-full">
               <Text
                 className={
                   value === option.menuProductId
-                    ? "font-bold relative"
-                    : "relative"
+                    ? "font-bold "
+                    : ""
                 }
+                style={{ width: "5rem" }}
               >
                 Size {option.size}
               </Text>
               <Text
                 className={
                   value === option.menuProductId
-                    ? "font-bold absolute right-0"
-                    : "absolute right-0"
+                    ? "font-bold"
+                    : ""
                 }
+                style={{ marginLeft: "12rem" ,
+                  
+                }}
               >
                 <DisplayPrice>{option.sellingPrice}</DisplayPrice>
               </Text>

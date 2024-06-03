@@ -5,9 +5,9 @@ import React, { FC, ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useRecoilValue, useRecoilState } from "recoil";
 import {
-  cartState,
   childrenProductState,
-} from "state";
+} from "states/product.state";
+import {cartState} from "../../states/cart.state"
 import { ProductList } from "types/cart";
 import { Product, ProductTypeEnum } from "types/store-menu";
 import { prepareCart } from "utils/product";
@@ -127,7 +127,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
               </Box>
               <Box className="space-y-5">
                 {
-                  currentChild != null && currentChild != [] && (
+                  currentChild != null && currentChild.length > 0 && (
                     <SingleOptionPicker
                       key={product.menuProductId}
                       variant={currentChild}

@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { useRecoilValue } from "recoil";
-import { cartState } from "state";
+import { cartState } from "../states/cart.state";
 import { Box, Text } from "zmp-ui";
 
 export const CartIcon: FC<{ active?: boolean }> = ({ active }) => {

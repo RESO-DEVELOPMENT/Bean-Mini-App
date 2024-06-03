@@ -4,7 +4,8 @@ import { ListItem } from "components/list-item";
 import React, { FC, useState } from "react";
 import { createPortal } from "react-dom";
 import { useRecoilState, useRecoilValueLoadable } from "recoil";
-import { cartState, selectedStoreState } from "state";
+import { selectedStoreState } from "states/store.state";
+import { cartState } from "states/cart.state";
 import { OrderType } from "types/order";
 
 export const LocationPicker: FC = () => {

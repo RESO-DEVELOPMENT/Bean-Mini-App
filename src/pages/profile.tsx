@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, Suspense } from "react";
 import { Box, Header, Icon, Page, Text } from "zmp-ui";
 import subscriptionDecor from "static/subscription-decor.svg";
 import { ListRenderer } from "components/list-renderer";
@@ -6,7 +6,10 @@ import { useToBeImplemented } from "hooks";
 import { useNavigate } from "react-router-dom";
 import { openSupportChat } from "utils/config";
 import { useRecoilValueLoadable, useSetRecoilState } from "recoil";
-import { memberState, requestPhoneTriesState } from "state";
+import {  requestPhoneTriesState } from "states/user.state";
+import {memberState} from "states/member.state";
+import { ContentFallback } from "components/content-fallback";
+
 
 export const Subscription: FC = () => {
   const retry = useSetRecoilState(requestPhoneTriesState);
@@ -119,20 +122,27 @@ const Other: FC = () => {
 const ProfilePage: FC = () => {
   const member = useRecoilValueLoadable(memberState);
   return (
-    <Page>
-      <Header showBackIcon={false} title="Tài khoản" />
-      {member.state === "hasValue" && member.contents !== null ? (
-        <>
-          {" "}
-          <Personal />
-          <Other />
-        </>
+    <>
+      {member.state === "loading" ? (
+        <ContentFallback />
       ) : (
-        <>
-          <Subscription /> <Other />
-        </>
+        <Page>
+          <Header showBackIcon={false} title="Tài khoản" />
+          {member.state === "hasValue" && member.contents !== null ? (
+            <>
+              <Personal />
+              <Other />
+            </>
+          ) : (
+            <>
+              <Subscription /> <Other />
+            </>
+          )}
+        </Page>
       )}
-    </Page>
+    </>
   );
 };
+
+
 export default ProfilePage;

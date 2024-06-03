@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { ListRenderer } from "components/list-renderer";
 import { useRecoilValue } from "recoil";
-import { notificationsState } from "state";
+import { notificationsState } from "states/notification.state";
 import { Box, Header, Page, Text } from "zmp-ui";
 import { Divider } from "components/divider";
 

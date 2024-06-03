@@ -41,6 +41,7 @@
     "recoil": "^0.7.7",
     "styled-components": "^6.1.8",
     "swiper": "^9.1.0",
+    "zmp-cli": "^3.15.5",
     "zmp-framework": "^1.7.5",
     "zmp-sdk": "^2.33.1",
     "zmp-ui": "^1.6.0-rc.6"

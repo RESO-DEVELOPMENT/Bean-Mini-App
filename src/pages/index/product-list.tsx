@@ -1,7 +1,8 @@
 import React, { FC, Suspense } from "react";
 import { Section } from "components/section";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { cartState, productsState } from "state";
+import {  productsState } from "states/product.state";
+import { cartState } from "states/cart.state";
 import { Box } from "zmp-ui";
 import { ProductItem } from "components/product/item";
 import { ProductItemSkeleton } from "components/skeletons";
