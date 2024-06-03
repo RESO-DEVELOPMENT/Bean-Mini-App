@@ -22,7 +22,7 @@ import BlogDetail from "pages/wallet/blog-detail";
 
 if (getSystemInfo().platform === "android") {
   const androidSafeTop = Math.round(
-    (window as any).ZaloJavaScriptInterface.getStatusBarHeight() /
+    // (window as any).ZaloJavaScriptInterface.getStatusBarHeight() /
       window.devicePixelRatio
   );
   document.body.style.setProperty(
