@@ -1,12 +1,12 @@
 import menuApi from "api/menu";
 import { selector } from "recoil";
-import { listStoreState, selectedStoreIdState, selectedStoreObjState } from "./store.state";
+import { listStoreState, selectedStoreObjState } from "./store.state";
 
-export const menuByStoreState = selector({
+export const currentStoreMenuState = selector({
   key: "menuByStore",
   get: async ({ get }) => {
     const currentStore = get(selectedStoreObjState);
-    console.log("cua hang hien tai", currentStore)
+    // console.log("cua hang hien tai", currentStore)
     if (currentStore === null || currentStore === undefined || currentStore.id === "") {
       const store = get(listStoreState);
       const menu = await menuApi.getMenu(store[0].id);

@@ -1,6 +1,6 @@
 import { atom, selector, selectorFamily } from "recoil";
 import { Product, ProductTypeEnum } from "types/store-menu";
-import { menuByStoreState } from "./menu.state";
+import { currentStoreMenuState } from "./menu.state";
 import { wait } from "utils/async";
 import { TStore } from "types/store";
 // import { listStoreState, storeMenuByInputIdState } from "./store.state";
@@ -8,7 +8,7 @@ import { TStore } from "types/store";
 export const productsState = selector<Product[]>({
   key: "products",
   get: async ({ get }) => {
-    const menu = get(menuByStoreState);
+    const menu = get(currentStoreMenuState);
     return menu.products.filter(
       (product) =>
         product.type === ProductTypeEnum.SINGLE ||
@@ -20,7 +20,7 @@ export const productsState = selector<Product[]>({
 export const childrenProductState = selector<Product[]>({
   key: "childProducts",
   get: async ({ get }) => {
-    const menu = get(menuByStoreState);
+    const menu = get(currentStoreMenuState);
     return menu.products.filter(
       (product) => product.type === ProductTypeEnum.CHILD
     );

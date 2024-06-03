@@ -23,10 +23,10 @@ export const selectedStoreObjState = atom<TStore>({
   },
 });
 
-export const selectedStoreIdState = atom<string>({
-  key: "selectedStoreId",
-  default: "",
-});
+// export const selectedStoreIdState = atom<string>({
+//   key: "selectedStoreId",
+//   default: "",
+// });
 
 // export const selectedStoreNameState = atom<string>({
 //   key: "selectedStoreName",
@@ -74,14 +74,14 @@ export const nearbyStoresState = selector({
   },
 });
 
-export const selectedStoreByIdState = selector({
-  key: "selectedStoreById",
-  get: async ({ get }) => {
-    const id = get(selectedStoreIdState);
-    const stores = get(listStoreState);
-    return stores.filter((s) => s.id === id)[0];
-  },
-});
+// export const selectedStoreByIdState = selector({
+//   key: "selectedStoreById",
+//   get: async ({ get }) => {
+//     const id = get(selectedStoreIdState);
+//     const stores = get(listStoreState);
+//     return stores.filter((s) => s.id === id)[0];
+//   },
+// });
 
 // export const storeMenuByInputIdState = selectorFamily({
 //   key: "storeMenuByInputId",

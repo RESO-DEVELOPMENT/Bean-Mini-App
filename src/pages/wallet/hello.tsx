@@ -1,25 +1,18 @@
 import React, { FC } from "react";
 import { Box, Header, Text } from "zmp-ui";
 import {
-  useRecoilState,
-  useRecoilStateLoadable,
-  useRecoilValue,
   useRecoilValueLoadable,
-  useResetRecoilState,
 } from "recoil";
 
 import logo from "static/logo.png";
-import { listMembershipCardState } from "states/member.state";
 import {userState} from 'states/user.state';
-import wallet from "static/icon-bean.png";
-import { DisplayValue } from "components/display/value";
 import { Membership } from "types/user";
 export interface MemberBalanceProps {
   memberInfo?: Membership;
 }
 export const WelcomeUser: FC<MemberBalanceProps> = ({ memberInfo }) => {
   const user = useRecoilValueLoadable(userState);
-  console.log(user);
+  // console.log(user);
   return (
     <Header
       className={`app-header no-border pl-4 flex-none pb-[6px] custom-header`}
