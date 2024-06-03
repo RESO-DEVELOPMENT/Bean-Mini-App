@@ -31,7 +31,7 @@ export const SingleOptionPicker: FC<{
             <Box className=" justify-between m-1 flex w-full">
               <Text
                 className={value === option.menuProductId ? "font-bold " : ""}
-                style={{ width: "5rem" }}
+                style={{ width: "4rem" }}
               >
                 Size {option.size}
               </Text>
