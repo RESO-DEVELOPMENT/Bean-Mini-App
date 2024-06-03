@@ -26,7 +26,7 @@ export const StorePicker: FC = () => {
   const nearbyStores = useRecoilValueLoadable(nearbyStoresState)
   const setStoreObj = useSetRecoilState(selectedStoreObjState);
   const selectedStore = useRecoilValueLoadable(selectedStoreState);
-console.log(selectedStore.contents)
+// console.log(selectedStore.contents)
 
   const setCart = useSetRecoilState(cartState);
   const member = useRecoilValue(memberState);

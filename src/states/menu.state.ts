@@ -1,6 +1,6 @@
 import menuApi from "api/menu";
 import { selector } from "recoil";
-import { listStoreState, selectedStoreIdState, selectedStoreObjState, selectedStoreState } from "./store.state";
+import { listStoreState, selectedStoreIdState, selectedStoreObjState } from "./store.state";
 
 export const menuByStoreState = selector({
   key: "menuByStore",
@@ -36,17 +36,17 @@ export const menuByStoreState = selector({
 //   },
 // });
 
-export const storeMenuState = selector({
-  key: "storeMenu",
-  get: async ({ get }) => {
-    const currentStore = get(selectedStoreState);
-    if (currentStore === null || currentStore === undefined) {
-      const store = get(listStoreState);
-      const menu = await menuApi.getMenu(store[0].id);
-      return menu.data;
-    } else {
-      const menu = await menuApi.getMenu(currentStore.id);
-      return menu.data;
-    }
-  },
-});
+// export const storeMenuState = selector({
+//   key: "storeMenu",
+//   get: async ({ get }) => {
+//     const currentStore = get(selectedStoreState);
+//     if (currentStore === null || currentStore === undefined) {
+//       const store = get(listStoreState);
+//       const menu = await menuApi.getMenu(store[0].id);
+//       return menu.data;
+//     } else {
+//       const menu = await menuApi.getMenu(currentStore.id);
+//       return menu.data;
+//     }
+//   },
+// });

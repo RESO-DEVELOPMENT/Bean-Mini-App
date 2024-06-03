@@ -5,8 +5,6 @@ import {
   productsByCategoryState,
   
 } from "states/product.state";
-import {selectedCategoryIdState} from "states/category.state";
-import {categoriesState} from "states/category.state";
 import {childCategoriesState} from "states/category.state";
 import { currentCateState } from "states/category.state";
 import { Box, Header, Page, Tabs, Text } from "zmp-ui";

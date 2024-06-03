@@ -1,7 +1,5 @@
 import storeApi from "api/store";
 import { atom, selector, selectorFamily } from "recoil";
-import { selectedCategoryIdState } from "./category.state";
-import menuApi from "api/menu";
 
 import { TStore } from "types/store";
 

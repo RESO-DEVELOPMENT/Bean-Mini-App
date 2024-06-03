@@ -1,12 +1,12 @@
 import { atom, selector } from "recoil";
-import { menuByStoreState, storeMenuState } from "./menu.state";
+import { menuByStoreState } from "./menu.state";
 import { Category, CategoryType } from "types/store-menu";
 
 
 export const currentCateState = selector({
   key: "category",
   get: async ({ get }) => {
-    const menu = get(storeMenuState);
+    const menu = get(menuByStoreState);
     const cateId = get(selectedCategoryIdState);
     const currentCate = menu.categories.find((cate) => cate.id === cateId);
     if (currentCate !== undefined) {
@@ -27,7 +27,7 @@ export const categoriesState = selector<Category[]>({
 export const childCategoriesState = selector<Category[]>({
   key: "childCategories",
   get: async ({ get }) => {
-    const menu = get(storeMenuState);
+    const menu = get(menuByStoreState);
     const cateId = get(selectedCategoryIdState);
     const selectedCategory = menu.categories.find((cate) => cate.id === cateId);
     const listChild = menu.categories.filter(

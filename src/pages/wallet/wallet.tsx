@@ -7,7 +7,7 @@ import {
   useRecoilValueLoadable,
   useSetRecoilState,
 } from "recoil";
-import {  selectedStoreIndexState } from "states/store.state";
+// import {  selectedStoreIndexState } from "states/store.state";
 import {memberState } from "states/member.state";
 import { getStorage } from "zmp-sdk";
 import { Box, Page, Text } from "zmp-ui";
