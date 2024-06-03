@@ -2,8 +2,6 @@ import { atom, selector, selectorFamily } from "recoil";
 import { Product, ProductTypeEnum } from "types/store-menu";
 import { currentStoreMenuState } from "./menu.state";
 import { wait } from "utils/async";
-import { TStore } from "types/store";
-// import { listStoreState, storeMenuByInputIdState } from "./store.state";
 
 export const productsState = selector<Product[]>({
   key: "products",
