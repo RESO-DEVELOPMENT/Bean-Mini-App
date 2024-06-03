@@ -19,6 +19,7 @@ export interface MemberBalanceProps {
 }
 export const WelcomeUser: FC<MemberBalanceProps> = ({ memberInfo }) => {
   const user = useRecoilValueLoadable(userState);
+  console.log(user);
   return (
     <Header
       className={`app-header no-border pl-4 flex-none pb-[6px] custom-header`}
