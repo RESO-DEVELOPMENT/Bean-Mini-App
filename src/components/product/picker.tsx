@@ -107,7 +107,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
             categoryCode: productToAdd!.code,
             totalAmount: productToAdd!.sellingPrice * quantity,
             discount: productToAdd!.discountPrice,
-            finalAmount: productToAdd!.sellingPrice * quantity,
+            finalAmount: (productToAdd!.sellingPrice * quantity) - productToAdd!.discountPrice,
             picUrl: productToAdd!.picUrl,
           };
 
