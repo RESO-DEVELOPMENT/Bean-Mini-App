@@ -15,7 +15,6 @@ import OrderDetailsPage from "pages/orders/order-details";
 import WalletScreen from "pages/wallet/wallet";
 import VoucherPage from "pages/voucher";
 import QRCodePage from "pages/qr-code";
-import App from "pages/qr-code";
 import InformationPage from "pages/information";
 import FeedbackForm from "pages/feedback";
 import BlogDetail from "pages/wallet/blog-detail";

@@ -23,6 +23,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
   isUpdate,
   product,
 }) => {
+  console.log("vào component picker");
   const [cart, setCart] = useRecoilState(cartState);
   const childProducts = useRecoilValue(childrenProductState);
   let currentChild = childProducts
@@ -72,8 +73,9 @@ export const ProductPicker: FC<ProductPickerProps> = ({
             productListObjectToUpdate.quantity += quantity;
 
             productListObjectToUpdate.finalAmount +=
+              (quantity * productToAdd.sellingPrice) - productToAdd.discountPrice;
+              productListObjectToUpdate.totalAmount +=
               quantity * productToAdd.sellingPrice;
-
             return productListObjectToUpdate;
           }
 
@@ -96,7 +98,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
             code: productToAdd!.code,
             categoryCode: productToAdd!.code,
             totalAmount: productToAdd!.sellingPrice * quantity,
-            discount: 0,
+            discount: productToAdd!.discountPrice,
             finalAmount: productToAdd!.sellingPrice * quantity,
             picUrl: productToAdd!.picUrl,
           };
