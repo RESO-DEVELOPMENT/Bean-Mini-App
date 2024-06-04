@@ -65,20 +65,14 @@ export const ProductPicker: FC<ProductPickerProps> = ({
 
         let isProductInCart = false;
         const updatedProductList = res.productList.map((addedProduct) => {
-          if (addedProduct.productInMenuId === productToAdd?.menuProductId) {
+          if (addedProduct.productInMenuId === product?.menuProductId) {
             isProductInCart = true;
-
             const productListObjectToUpdate = { ...addedProduct };
-
             productListObjectToUpdate.quantity += quantity;
-
-            productListObjectToUpdate.finalAmount +=
-              (quantity * productToAdd.sellingPrice) - productToAdd.discountPrice;
-              productListObjectToUpdate.totalAmount +=
-              quantity * productToAdd.sellingPrice;
+            productListObjectToUpdate.finalAmount += (quantity * product.sellingPrice) - addedProduct.discount;
+            productListObjectToUpdate.totalAmount += (quantity * product.sellingPrice);
             return productListObjectToUpdate;
           }
-
           return addedProduct;
         });
 
