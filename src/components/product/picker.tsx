@@ -4,10 +4,8 @@ import { Sheet } from "components/fullscreen-sheet";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useRecoilValue, useRecoilState } from "recoil";
-import {
-  childrenProductState,
-} from "states/product.state";
-import {cartState} from "../../states/cart.state"
+import { childrenProductState } from "states/product.state";
+import { cartState } from "../../states/cart.state";
 import { ProductList } from "types/cart";
 import { Product, ProductTypeEnum } from "types/store-menu";
 import { prepareCart } from "utils/product";
@@ -48,8 +46,8 @@ export const ProductPicker: FC<ProductPickerProps> = ({
       product.type == ProductTypeEnum.SINGLE
         ? product.menuProductId
         : currentChild != null && currentChild != undefined
-          ? currentChild[0].menuProductId
-          : null
+        ? currentChild[0].menuProductId
+        : null
     );
     setQuantity(1);
   }, []);
@@ -58,13 +56,36 @@ export const ProductPicker: FC<ProductPickerProps> = ({
     if (product) {
       setCart((prevCart) => {
         let res = { ...prevCart };
-        if (false) {
-        } else {
-          const productToAdd =
-            product.type == ProductTypeEnum.SINGLE
-              ? product
-              : currentChild.find((a) => a.menuProductId === menuProductId);
 
+        const productToAdd =
+          product.type == ProductTypeEnum.SINGLE
+            ? product
+            : currentChild.find((a) => a.menuProductId === menuProductId);
+
+        let isProductInCart = false;
+        const updatedProductList = res.productList.map((addedProduct) => {
+          if (addedProduct.productInMenuId === productToAdd?.menuProductId) {
+            isProductInCart = true;
+
+            const productListObjectToUpdate = { ...addedProduct };
+
+            productListObjectToUpdate.quantity += quantity;
+
+            productListObjectToUpdate.finalAmount +=
+              quantity * productToAdd.sellingPrice;
+
+            return productListObjectToUpdate;
+          }
+
+          return addedProduct;
+        });
+
+        if (isProductInCart) {
+          res = {
+            ...prevCart,
+            productList: updatedProductList,
+          };
+        } else {
           const cartItem: ProductList = {
             productInMenuId: productToAdd!.menuProductId,
             parentProductId: productToAdd!.parentProductId,
@@ -90,6 +111,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
         return prepareCart(res);
       });
     }
+
     setVisible(false);
   };
   return (
@@ -179,9 +201,9 @@ export const ProductPicker: FC<ProductPickerProps> = ({
                   >
                     {quantity > 0
                       ? //  existed
-                      //   ? "Cập nhật giỏ hàng"
-                      //   :
-                      "Thêm vào giỏ hàng"
+                        //   ? "Cập nhật giỏ hàng"
+                        //   :
+                        "Thêm vào giỏ hàng"
                       : "Xoá"}
                   </Button>
                 ) : (
