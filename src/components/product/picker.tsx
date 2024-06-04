@@ -55,33 +55,47 @@ export const ProductPicker: FC<ProductPickerProps> = ({
 
   const addToCart = async () => {
     if (product) {
+      // console.log(product);
       setCart((prevCart) => {
+        // console.log(prevCart)
+        //lấy thông tin object đưa vào res - những cái đã có trong đó
         let res = { ...prevCart };
-
+        //kiểm tra trạng thái product dc add
+        //Nếu single -> trả về sản phẩm đó thôi
+        //Nếu Kiểu khác (Parent) -> tìm thằng con nó ở currentChild -> xác định child nào cần dc add
         const productToAdd =
           product.type == ProductTypeEnum.SINGLE
             ? product
             : currentChild.find((a) => a.menuProductId === menuProductId);
-
+        // console.log(productToAdd);
         let isProductInCart = false;
         const updatedProductList = res.productList.map((addedProduct) => {
-          if (addedProduct.productInMenuId === product?.menuProductId) {
+          if (addedProduct.productInMenuId === productToAdd?.menuProductId) {
             isProductInCart = true;
+            // Tạo một bản sao của addedProduct
             const productListObjectToUpdate = { ...addedProduct };
+            // Cập nhật thuộc tính quantity trong bản sao
             productListObjectToUpdate.quantity += quantity;
-            productListObjectToUpdate.finalAmount += (quantity * product.sellingPrice) - addedProduct.discount;
-            productListObjectToUpdate.totalAmount += (quantity * product.sellingPrice);
+            productListObjectToUpdate.totalAmount +=
+            quantity * productToAdd.sellingPrice;
+            productListObjectToUpdate.finalAmount +=
+              (quantity * productToAdd.sellingPrice) - addedProduct.discount;
+            // Trả về bản sao đã được cập nhật
             return productListObjectToUpdate;
           }
+          // Trả về phần tử đã được cập nhật hoặc không thay đổi
           return addedProduct;
         });
 
+        // console.log(updatedProductList)
         if (isProductInCart) {
           res = {
             ...prevCart,
             productList: updatedProductList,
           };
+          // console.log("Có rồi nè");
         } else {
+          //tạo 1 đối tượng productList để thêm vào
           const cartItem: ProductList = {
             productInMenuId: productToAdd!.menuProductId,
             parentProductId: productToAdd!.parentProductId,
