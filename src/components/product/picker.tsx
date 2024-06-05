@@ -3,7 +3,7 @@ import { DisplayPrice } from "components/display/price";
 import { Sheet } from "components/fullscreen-sheet";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState, useRecoilValueLoadable } from "recoil";
 import { childrenProductState } from "states/product.state";
 import { cartState } from "../../states/cart.state";
 import { ProductList } from "types/cart";
@@ -12,6 +12,7 @@ import { prepareCart } from "utils/product";
 import { Box, Button, Text } from "zmp-ui";
 import { QuantityPicker } from "./quantity-picker";
 import { SingleOptionPicker } from "./single-option-picker";
+import { memberState } from "states/member.state";
 
 export interface ProductPickerProps {
   product: Product;
@@ -23,6 +24,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
   isUpdate,
   product,
 }) => {
+  const member = useRecoilValueLoadable(memberState);
   const [cart, setCart] = useRecoilState(cartState);
   const childProducts = useRecoilValue(childrenProductState);
   let currentChild = childProducts
@@ -85,6 +87,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
           res = {
             ...prevCart,
             productList: updatedProductList,
+            // customerId: member?.contents?.membershipId || null,
           };
         } else {
           const cartItem: ProductList = {
@@ -106,7 +109,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
 
           res = {
             ...prevCart,
-
+            // customerId: member?.contents?.membershipId || null,
             productList: prevCart.productList.concat(cartItem),
           };
         }

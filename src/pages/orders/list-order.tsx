@@ -1,5 +1,3 @@
-import { ListRenderer } from "components/list-renderer";
-import { ProductItem } from "components/product/item";
 import React, { FC, Suspense, useCallback, useEffect, useState } from "react";
 import {
   useRecoilState,
@@ -14,7 +12,6 @@ import { listOrderState } from "states/order.state";
 import { requestOrderTransactionTriesState } from "states/order.state";
 import { memberState } from "states/member.state";
 import { Box, Header, Icon, Page, Tabs, Text } from "zmp-ui";
-import OrderCard from "./card-order";
 import TransactionCard from "./card-transaction";
 import { Card } from "react-bootstrap";
 import { displayDate, displayTime } from "utils/date";
@@ -25,11 +22,14 @@ import { useNavigate } from "react-router-dom";
 import { Subscription } from "pages/profile";
 
 import { listTransactionState } from "states/transaction.state";
-import { listStoreState, selectedStoreIdState, selectedStoreObjState } from "states/store.state";
+import {
+  listStoreState,
+  selectedStoreIdState,
+  selectedStoreObjState,
+} from "states/store.state";
 import { cartState } from "states/cart.state";
-import { Cart, ProductList } from "types/cart";
-import { TStore } from "types/store";
 import ProductRePicker from "components/product/repicker";
+import { ContentFallback } from "components/content-fallback";
 const HistoryPicker: FC = () => {
   const selectedCategory = useRecoilValue(selectedCategoryIdState);
   const orderListData = useRecoilValueLoadable(listOrderState);
@@ -52,27 +52,37 @@ const HistoryPicker: FC = () => {
   useEffect(() => {
     retry((r) => r + 1);
   }, []);
-  const gotoPage = ( id: string) => {
+  const gotoPage = (id: string) => {
     navigate("/order-detail", { state: { id } });
   };
   const setCurrentStoreId = useSetRecoilState(selectedStoreIdState);
   const [cart, setCart] = useRecoilState(cartState);
   const reAddToCart = useCallback((store, reOrderProducts) => {
     if (!store) return;
-  
+
     setCurrentStoreId(store.id);
-  
+
     setCart((prevCart) => {
       const isSameStore = prevCart.storeId === store.id;
       const newCart = isSameStore
-        ? { ...prevCart, storeId: store.id }
-        : { ...prevCart, storeId: store.id, productList: [] };
-  
+        ? {
+            ...prevCart,
+            storeId: store.id,
+            // customerId: member?.contents.membershipId ?? null,
+          }
+        : {
+            ...prevCart,
+            storeId: store.id,
+            productList: [],
+            // customerId: member?.contents.membershipId ?? null,
+          };
+
       const updatedProductList = newCart.productList.map((addedProduct) => {
         const productToAdd = reOrderProducts.find(
-          ({ product }) => product.menuProductId === addedProduct.productInMenuId
+          ({ product }) =>
+            product.menuProductId === addedProduct.productInMenuId
         );
-  
+
         if (productToAdd) {
           return {
             ...addedProduct,
@@ -82,15 +92,16 @@ const HistoryPicker: FC = () => {
               productToAdd.quantity * productToAdd.product.sellingPrice,
           };
         }
-  
+
         return addedProduct;
       });
-  
+
       const newProducts = reOrderProducts
         .filter(
           ({ product }) =>
             !updatedProductList.some(
-              (addedProduct) => addedProduct.productInMenuId === product.menuProductId
+              (addedProduct) =>
+                addedProduct.productInMenuId === product.menuProductId
             )
         )
         .map(({ product, quantity }) => ({
@@ -107,15 +118,14 @@ const HistoryPicker: FC = () => {
           finalAmount: product.sellingPrice * quantity,
           picUrl: product.picUrl,
         }));
-  
+
       newCart.productList = updatedProductList.concat(newProducts);
-  
+
       return prepareCart(newCart);
     });
-  
+
     navigate("/cart");
   }, []);
-  
 
   return (
     <>
@@ -136,12 +146,7 @@ const HistoryPicker: FC = () => {
                   }}
                 >
                   {orderListData.contents.map((order, index) => (
-                    <Box
-                      key={index}
-                     
-                      className="m-2 p-2 bg-white"
-                      flex
-                    >
+                    <Box key={index} className="m-2 p-2 bg-white" flex>
                       <Card className="time-order">
                         <div className="flex justify-between">
                           <Text.Title size="normal">
@@ -205,7 +210,9 @@ const HistoryPicker: FC = () => {
                   ))}
                 </div>
               ) : (
-                <Box />
+                <Box>
+                  <ContentFallback />
+                </Box>
               )}
             </Suspense>
           </Tabs.Tab>

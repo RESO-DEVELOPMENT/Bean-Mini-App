@@ -9,26 +9,10 @@ import { useVirtualKeyboardVisible } from "hooks";
 import { PaymentInfo } from "./payment";
 import { useRecoilStateLoadable, useRecoilValue } from "recoil";
 import { cartState } from "states/cart.state";
-import { TimePicker } from "./time-picker";
-import { Cart } from "types/cart";
-import store from "api/store";
-import { memberState } from "states/member.state";
-import { prepareCart } from "utils/product";
 
 const CartPage: FC = () => {
   const keyboardVisible = useVirtualKeyboardVisible();
   const [cart, setCart] = useRecoilStateLoadable(cartState);
-  // console.log("current cart", cart.contents);
-  const member = useRecoilValue(memberState);
-  useEffect(() => {
-    setCart((prevCart) => {
-      let updatedCart: Cart = {
-        ...prevCart,
-        customerId: member?.membershipId ?? null,
-      };
-      return prepareCart(updatedCart);
-    });
-  }, []);
   return (
     <Page className="flex flex-col">
       <Header title="Giỏ hàng" showBackIcon={false} />
