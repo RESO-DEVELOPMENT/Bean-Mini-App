@@ -2,6 +2,7 @@ import { ListRenderer } from "components/list-renderer";
 import { ProductItem } from "components/product/item";
 import React, { FC, Suspense, useCallback, useEffect, useState } from "react";
 import {
+  useRecoilState,
   useRecoilValue,
   useRecoilValueLoadable,
   useSetRecoilState,
@@ -24,11 +25,11 @@ import { useNavigate } from "react-router-dom";
 import { Subscription } from "pages/profile";
 
 import { listTransactionState } from "states/transaction.state";
-import { ProductRePicker } from "components/product/repicker";
-import { listStoreState, selectedStoreObjState } from "states/store.state";
+import { listStoreState, selectedStoreIdState, selectedStoreObjState } from "states/store.state";
 import { cartState } from "states/cart.state";
 import { Cart, ProductList } from "types/cart";
 import { TStore } from "types/store";
+import ProductRePicker from "components/product/repicker";
 const HistoryPicker: FC = () => {
   const selectedCategory = useRecoilValue(selectedCategoryIdState);
   const orderListData = useRecoilValueLoadable(listOrderState);
@@ -54,6 +55,67 @@ const HistoryPicker: FC = () => {
   const gotoPage = ( id: string) => {
     navigate("/order-detail", { state: { id } });
   };
+  const setCurrentStoreId = useSetRecoilState(selectedStoreIdState);
+  const [cart, setCart] = useRecoilState(cartState);
+  const reAddToCart = useCallback((store, reOrderProducts) => {
+    if (!store) return;
+  
+    setCurrentStoreId(store.id);
+  
+    setCart((prevCart) => {
+      const isSameStore = prevCart.storeId === store.id;
+      const newCart = isSameStore
+        ? { ...prevCart, storeId: store.id }
+        : { ...prevCart, storeId: store.id, productList: [] };
+  
+      const updatedProductList = newCart.productList.map((addedProduct) => {
+        const productToAdd = reOrderProducts.find(
+          ({ product }) => product.menuProductId === addedProduct.productInMenuId
+        );
+  
+        if (productToAdd) {
+          return {
+            ...addedProduct,
+            quantity: addedProduct.quantity + productToAdd.quantity,
+            finalAmount:
+              addedProduct.finalAmount +
+              productToAdd.quantity * productToAdd.product.sellingPrice,
+          };
+        }
+  
+        return addedProduct;
+      });
+  
+      const newProducts = reOrderProducts
+        .filter(
+          ({ product }) =>
+            !updatedProductList.some(
+              (addedProduct) => addedProduct.productInMenuId === product.menuProductId
+            )
+        )
+        .map(({ product, quantity }) => ({
+          productInMenuId: product.menuProductId,
+          parentProductId: product.parentProductId,
+          name: product.name,
+          type: product.type,
+          quantity,
+          sellingPrice: product.sellingPrice,
+          code: product.code,
+          categoryCode: product.code,
+          totalAmount: product.sellingPrice * quantity,
+          discount: 0,
+          finalAmount: product.sellingPrice * quantity,
+          picUrl: product.picUrl,
+        }));
+  
+      newCart.productList = updatedProductList.concat(newProducts);
+  
+      return prepareCart(newCart);
+    });
+  
+    navigate("/cart");
+  }, []);
+  
 
   return (
     <>
@@ -130,11 +192,11 @@ const HistoryPicker: FC = () => {
                             <Text.Header>Chi tiết đơn hàng</Text.Header>
                           </div>
                           {order && order.status !== OrderStatus.PENDING && (
-                            // <ProductRePicker isUpdate={false} orderId={order.id} key={order.id} reAddToCart={() => reAddToCart} stores={stores} />
                             <ProductRePicker
                               isUpdate={false}
                               orderId={order.id}
                               key={order.id}
+                              reAddToCart={reAddToCart}
                             />
                           )}
                         </div>
