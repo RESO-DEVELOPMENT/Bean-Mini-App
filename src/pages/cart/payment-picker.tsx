@@ -22,7 +22,7 @@ import { Box, Icon, Text } from "zmp-ui";
 export const PaymentPicker: FC = () => {
   const [visible, setVisible] = useState(false);
   const paymentList = useRecoilValueLoadable(paymentTypeState);
-  const selectedStore = useRecoilValue(selectedStoreState);
+  // const selectedStore = useRecoilValue(selectedStoreState);
   const [cart, setCart] = useRecoilState(cartState);
   return (
     <>

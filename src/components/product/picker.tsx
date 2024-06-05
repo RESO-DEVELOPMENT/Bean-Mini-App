@@ -23,7 +23,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
   isUpdate,
   product,
 }) => {
-  console.log("vào component picker");
+  // console.log("vào component picker");
   const [cart, setCart] = useRecoilState(cartState);
   const childProducts = useRecoilValue(childrenProductState);
   let currentChild = childProducts
