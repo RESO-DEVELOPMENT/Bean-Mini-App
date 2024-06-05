@@ -13,6 +13,7 @@ import {
 } from "states/store.state";
 import { Box } from "zmp-ui";
 import { ContentFallback } from "components/content-fallback";
+import { memberState } from "states/member.state";
 
 export interface ProductPickerProps {
   orderId: string;
@@ -31,7 +32,8 @@ export const ProductRePicker: FC<ProductPickerProps> = ({
   if (!orderId) {
     return <Box></Box>;
   }
-
+  const member = useRecoilValue(memberState);
+  console.log(member);
   const setCurrentStoreId = useSetRecoilState(selectedStoreIdState);
   const [cart, setCart] = useRecoilState(cartState);
   const [reOrderProducts, setReOrderProducts] = useState<
@@ -81,8 +83,15 @@ export const ProductRePicker: FC<ProductPickerProps> = ({
       setCart((prevCart) => {
         let res: Cart =
           prevCart.storeId === store!.id
-            ? { ...prevCart, storeId: store!.id }
-            : { ...prevCart, storeId: store!.id, productList: [] };
+            ? {
+                ...prevCart,
+                storeId: store!.id,
+              }
+            : {
+                ...prevCart,
+                storeId: store!.id,
+                productList: [],
+              };
 
         let isProductInCart = false;
         const updatedProductList = res.productList.map((addedProduct) => {
