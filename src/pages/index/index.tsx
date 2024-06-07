@@ -2,6 +2,7 @@ import React, { Suspense, useEffect } from "react";
 import { Box, Page } from "zmp-ui";
 import { Inquiry } from "./inquiry";
 import { Welcome } from "./welcome";
+import { Banner } from "./banner";
 import { Categories } from "./categories";
 import { Recommend } from "./recommend";
 import { ProductList } from "./product-list";

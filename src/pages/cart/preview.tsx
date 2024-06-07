@@ -4,10 +4,15 @@ import { Subscription } from "pages/profile";
 import React, { FC } from "react";
 import { useNavigate } from "react-router";
 import {
+  useRecoilState,
+  useRecoilStateLoadable,
+  useRecoilValue,
   useRecoilValueLoadable,
   useSetRecoilState,
 } from "recoil";
-
+import {
+  selectedStoreState,
+} from "states/store.state";
 import {
   memberState,
 } from "states/member.state";
