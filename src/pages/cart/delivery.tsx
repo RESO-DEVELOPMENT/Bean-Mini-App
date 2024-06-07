@@ -1,10 +1,9 @@
 import React, { useState, FC } from "react";
 import { useRecoilState, useRecoilValueLoadable } from "recoil";
-import { selectedStoreState } from "states/store.state";
+import { selectedStoreObjState } from "states/store.state";
 import {cartState} from "states/cart.state";
 import { Box, Icon, Text, Modal, Input } from "zmp-ui";
 import { ListRenderer } from "components/list-renderer";
-import { StorePicker } from "./store-picker";
 import { TimePicker } from "./time-picker";
 import { LocationPicker } from "./location-picker";
 
@@ -38,7 +37,7 @@ const AddressPopup = ({ onConfirm, address, setAddress }) => {
 
 export const Delivery: FC = () => {
   const [cart, setCart] = useRecoilState(cartState);
-  const store = useRecoilValueLoadable(selectedStoreState);
+  const store = useRecoilValueLoadable(selectedStoreObjState);
   const [showPopup, setShowPopup] = useState(false);
   const [notes, setNotes] = useState(cart.notes || "");
 

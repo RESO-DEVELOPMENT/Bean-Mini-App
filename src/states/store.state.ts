@@ -45,7 +45,7 @@ export const selectedStoreIdState = atom<string>({
 
 export const selectedStoreState = selector({
   key: "selectedStore",
-  get: async ({ get }) => {
+  get: async ({ get}) => {
     const stores = get(listStoreState);
     const storeObj = get(selectedStoreObjState);
     var result;
