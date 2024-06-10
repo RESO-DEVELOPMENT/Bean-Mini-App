@@ -1,34 +1,115 @@
-import React, { FC } from "react";
-import { FaMinus, FaPlus } from "react-icons/fa";
-import { Box, Text } from "zmp-ui";
+import { SingleOptionPicker } from "components/product/single-option-picker";
+import React, { FC, useState } from "react";
+import { createPortal } from "react-dom";
+import { Product } from "types/store-menu";
+import { Box, Button, Icon, Sheet, Text } from "zmp-ui";
 
 export const QuantityChangeSection: FC<{
-  id: string;
-  quantity: number;
-  handleClick: (
-    productInMenuId: string,
-    quantity: number,
-  ) => any;
-}> = ({ id, quantity, handleClick }) => {
+  handleChange: (product: Product, quantity: number) => any;
+  visible: boolean;
+  setVisible: (visible: boolean) => void;
+  product: any;
+  isUpdate: boolean;
+  currentChild?: any;
+  setMenuProductId?: any;
+  menuProductId?: string;
+}> = ({
+  currentChild,
+  isUpdate,
+  handleChange,
+  visible,
+  setVisible,
+  product,
+  setMenuProductId,
+  menuProductId
+}) => {
+  // console.log(product);
+  const [quantity, setQuantity] = useState(product.quantity || 1);
   return (
-    <Box className="flex items-center space-x-1">
-      <Box
-        className="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full cursor-pointer hover:bg-gray-300"
-        onClick={() => handleClick(id, quantity - 1)}
-      >
-        <FaMinus className="text-gray-600" />
-      </Box>
-      <Box className="w-6 text-center">
-        <Text size="small" className="text-gray-800">
-          {quantity}
-        </Text>
-      </Box>
-      <Box
-        className="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full cursor-pointer hover:bg-gray-300"
-        onClick={() => handleClick(id, quantity + 1)}
-      >
-        <FaPlus className="text-gray-600" />
-      </Box>
-    </Box>
+    <>
+      {createPortal(
+        <Sheet visible={visible} onClose={() => setVisible(false)} autoHeight>
+          {product && (
+            <Box className="space-y-6 mt-2" p={4}>
+              <Box className="space-y-4 ml">
+                <Text.Title>{product.name}</Text.Title>
+              </Box>
+              <Box className="space-y-4 ml">
+                <Text.Title>{product.description}</Text.Title>
+              </Box>
+
+              <Box className="flex justify-between">
+                <Text>{product.description}</Text>
+              </Box>
+              <Box className="space-y-5">
+                {currentChild != null && currentChild.length > 0 && (
+                  <SingleOptionPicker
+                    key={product.menuProductId}
+                    variant={currentChild}
+                    defaultValue={""}
+                    varianName={"Kích cỡ"}
+                    value={menuProductId ?? ""}
+                    onChange={(selectedOption) =>
+                      setMenuProductId(selectedOption)
+                    }
+                  />
+                )}
+              </Box>
+              <Box className="flex items-center space-x-1">
+                <Button
+                  onClick={() =>
+                    setQuantity((preQuantity) => {
+                      if (preQuantity == 1) return;
+                      return preQuantity - 1;
+                    })
+                  }
+                  variant="secondary"
+                  type="neutral"
+                  icon={
+                    <div className="py-3 px-1">
+                      <div className="w-full h-[2px] bg-black" />
+                    </div>
+                  }
+                />
+                <Box
+                  flex
+                  justifyContent="center"
+                  alignItems="center"
+                  className="flex-1"
+                >
+                  <Text size="large" className="font-medium">
+                    Số lượng: {quantity}
+                  </Text>
+                </Box>
+                <Button
+                  onClick={() => {
+                    // console.log("click", quantity);
+                    setQuantity((preQuantity) => preQuantity + 1);
+                  }}
+                  variant="secondary"
+                  type="neutral"
+                  icon={<Icon icon="zi-plus" />}
+                />
+              </Box>
+              <Box className="space-y-5">
+                <Button
+                  variant="primary"
+                  type="highlight"
+                  fullWidth
+                  onClick={() => {
+                    setVisible(false);
+                    console.log(quantity)
+                    handleChange(product, quantity);
+                  }}
+                >
+                  {isUpdate ? "Cập nhật" : "Thêm vào giỏ hàng"}
+                </Button>
+              </Box>
+            </Box>
+          )}
+        </Sheet>,
+        document.body
+      )}
+    </>
   );
 };

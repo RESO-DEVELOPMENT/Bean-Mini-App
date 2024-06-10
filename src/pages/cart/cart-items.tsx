@@ -7,34 +7,58 @@ import { Cart, ProductList } from "types/cart";
 import { prepareCart } from "utils/product";
 import { Box, Icon, Text } from "zmp-ui";
 import { QuantityChangeSection } from "./quantity-change";
-
+import { Product } from "types/store-menu";
 export const CartItems: FC = () => {
   const [editingItem, setEditingItem] = useState<ProductList | undefined>();
   const [cart, setCart] = useRecoilState(cartState);
+  const [visible, setVisible] = useState(false);
 
-  const changeCartItemNumber = (productInMenuId: string, quantity: number) => {
-    if (quantity == 0) {
-      let toDeleteItem = cart.productList.find(
-        (item) => item.productInMenuId === productInMenuId
-      );
-      return clearCartItem(toDeleteItem!);
-    }
+  const handleEditSheetShow = () => {
+    setVisible(true);
+  };
+  const changeCartItemNumber = (product: Product | ProductList, quantity: number) => {
+    console.log(product)
     setCart((prevCart) => {
-      let newProductList = prevCart.productList.map((item) => {
-        if (item.productInMenuId === productInMenuId) {
-          return {
-            ...item,
-            totalAmount: item.sellingPrice * quantity,
-            finalAmount: item.sellingPrice * quantity - item.discount,
-            quantity: quantity,
-          };
-        }
-        return item;
-      });
+      if(cart.productList.some((p) => p.productInMenuId === (product as ProductList).productInMenuId)) {
+        let newProductList = prevCart.productList.map((item) => {
+          if (item.productInMenuId === (product as ProductList)!.productInMenuId) {
+            return {
+              ...item,
+              totalAmount: item.sellingPrice * quantity,
+              finalAmount: item.sellingPrice * quantity - item.discount,
+              quantity: quantity,
+            };
+          }
+          return item;
+        });
+        let res = {
+          ...prevCart,
+          productList: newProductList,
+        };
+        console.log("đổi số lượng")
+        return prepareCart(res);
+      }
+      const cartItem: ProductList = {
+        productInMenuId: (product as Product)!.menuProductId,
+        parentProductId: product!.parentProductId,
+        name: product!.name,
+        type: product!.type,
+        quantity: quantity!,
+        sellingPrice: product!.sellingPrice,
+        code: product!.code,
+        categoryCode: product!.code,
+        totalAmount: product!.sellingPrice * quantity!,
+        discount: (product as Product)!.discountPrice,
+        finalAmount:
+        product!.sellingPrice * quantity! -
+        (product as Product)!.discountPrice,
+        picUrl: product!.picUrl,
+      }
       let res = {
         ...prevCart,
-        productList: newProductList,
+        productList: cart.productList.concat(cartItem),
       };
+      console.log("thêm sản phẩm")
       return prepareCart(res);
     });
   };
@@ -76,14 +100,22 @@ export const CartItems: FC = () => {
                   </Text>
                 </div>
               </Box>
-              <Box className="flex-initial">
-              <QuantityChangeSection 
+              <Box className="flex-initial" onClick={handleEditSheetShow}>
+                {/* <QuantityChangeSection 
                 id={item.productInMenuId}
                 handleClick={changeCartItemNumber}
                 quantity={item.quantity}
+              /> */}
+                <Icon icon="zi-edit" className="mt-1 text-primary" />
+              </Box>
+              <QuantityChangeSection
+                visible={visible}
+                setVisible={setVisible}
+                product={item}
+                handleChange={changeCartItemNumber}
+                isUpdate={true}
               />
-                </Box>
-              <Box onClick={() => clearCartItem(item)} className="flex-none" >
+              <Box onClick={() => clearCartItem(item)} className="flex-initial">
                 <Icon icon="zi-delete" className="mt-1 text-red-500" />
               </Box>
             </Box>
