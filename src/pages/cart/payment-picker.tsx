@@ -6,18 +6,16 @@ import {
   useRecoilState,
   useRecoilValue,
   useRecoilValueLoadable,
-  useSetRecoilState,
 } from "recoil";
 import {
   paymentTypeState,
-  
-  
+
+
 } from "states/order.state";
-import {requestLocationTriesState} from "states/order.state";
-import {selectedStoreState} from "states/store.state";
+import { selectedStoreState } from "states/store.state";
 import { cartState } from "states/cart.state";
 import { showPaymentType } from "utils/product";
-import { Box, Icon, Text } from "zmp-ui";
+import { Box, Text } from "zmp-ui";
 
 export const PaymentPicker: FC = () => {
   const [visible, setVisible] = useState(false);
