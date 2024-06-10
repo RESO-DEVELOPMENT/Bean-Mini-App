@@ -33,7 +33,6 @@ const ProductItem: FC<{ product: any }> = ({ product }) => (
 
 const RecommendContent: FC = () => {
   const recommendProducts = useRecoilValue(recommendProductsState);
-  // console.log("vào recommend");
   return (
     <Section title="Gợi ý cho bạn" padding="title-only">
       <Swiper slidesPerView={1.25} spaceBetween={16}>

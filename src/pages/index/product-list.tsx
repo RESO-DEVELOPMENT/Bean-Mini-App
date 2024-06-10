@@ -8,7 +8,6 @@ import { ProductItemSkeleton } from "components/skeletons";
 
 export const ProductListContent: FC = () => {
   const products = useRecoilValue(productsState);
-  // console.log("vào productlist");
   return (
     <Section title="Danh sách sản phẩm">
       <Box className="grid grid-cols-2 gap-4">

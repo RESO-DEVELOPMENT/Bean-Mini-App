@@ -1,4 +1,4 @@
-import React, { FC, Suspense } from 'react';
+import React, { FC } from 'react';
 import { Box, Text } from 'zmp-ui';
 import { useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router';
@@ -36,10 +36,3 @@ export const Categories: FC = () => {
   );
 };
 
-// export const Categories: FC = () => {
-//   return (
-//     // <Suspense fallback={<CategoriesSkeleton />}>
-//       <CategoriesContent />
-//     // </Suspense>
-//   );
-// };
