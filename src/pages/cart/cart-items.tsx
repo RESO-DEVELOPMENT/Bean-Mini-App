@@ -6,10 +6,38 @@ import { cartState } from "../../states/cart.state";
 import { Cart, ProductList } from "types/cart";
 import { prepareCart } from "utils/product";
 import { Box, Icon, Text } from "zmp-ui";
+import { QuantityChangeSection } from "./quantity-change";
 
 export const CartItems: FC = () => {
   const [editingItem, setEditingItem] = useState<ProductList | undefined>();
   const [cart, setCart] = useRecoilState(cartState);
+
+  const changeCartItemNumber = (productInMenuId: string, quantity: number) => {
+    if (quantity == 0) {
+      let toDeleteItem = cart.productList.find(
+        (item) => item.productInMenuId === productInMenuId
+      );
+      return clearCartItem(toDeleteItem!);
+    }
+    setCart((prevCart) => {
+      let newProductList = prevCart.productList.map((item) => {
+        if (item.productInMenuId === productInMenuId) {
+          return {
+            ...item,
+            totalAmount: item.sellingPrice * quantity,
+            finalAmount: item.sellingPrice * quantity - item.discount,
+            quantity: quantity,
+          };
+        }
+        return item;
+      });
+      let res = {
+        ...prevCart,
+        productList: newProductList,
+      };
+      return prepareCart(res);
+    });
+  };
 
   const clearCartItem = (item: ProductList) => {
     setCart((prevCart) => {
@@ -43,14 +71,20 @@ export const CartItems: FC = () => {
               <Box className="space-y-1 flex-1">
                 <Text size="small">{item.name}</Text>
                 <div className="flex">
-
                   <Text className="text-gray" size="xSmall">
                     <DisplayPrice>{item.finalAmount}</DisplayPrice>
                   </Text>
                 </div>
               </Box>
-              <Box onClick={() => clearCartItem(item)}>
-                <Icon icon="zi-delete" className="mt-2 text-red-500" />
+              <Box className="flex-initial">
+              <QuantityChangeSection 
+                id={item.productInMenuId}
+                handleClick={changeCartItemNumber}
+                quantity={item.quantity}
+              />
+                </Box>
+              <Box onClick={() => clearCartItem(item)} className="flex-none" >
+                <Icon icon="zi-delete" className="mt-1 text-red-500" />
               </Box>
             </Box>
           )}

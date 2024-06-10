@@ -1,44 +1,47 @@
-import { ListRenderer } from "components/list-renderer";
-import { ProductItem } from "components/product/item";
-import React, { FC, Suspense, useEffect } from "react";
+import React, { FC, Suspense, useCallback, useEffect, useState } from "react";
 import {
+  useRecoilState,
   useRecoilValue,
   useRecoilValueLoadable,
   useSetRecoilState,
 } from "recoil";
 import "./orders.css";
-import {
-  
-  selectedCategoryIdState,
-} from "states/category.state";
-// import {categoriesState} from "states/category.state";
-import {listOrderState} from "states/order.state";
-import {requestOrderTransactionTriesState} from "states/order.state";
+import { selectedCategoryIdState } from "states/category.state";
+import { listOrderState } from "states/order.state";
+import { requestOrderTransactionTriesState } from "states/order.state";
 import { memberState } from "states/member.state";
 import { Box, Header, Icon, Page, Tabs, Text } from "zmp-ui";
-import OrderCard from "./card-order";
 import TransactionCard from "./card-transaction";
 import { Card } from "react-bootstrap";
 import { displayDate, displayTime } from "utils/date";
 import { DisplayPrice } from "components/display/price";
-import { showOrderStatus } from "utils/product";
+import { prepareCart, showOrderStatus } from "utils/product";
 import { OrderStatus } from "types/order";
 import { useNavigate } from "react-router-dom";
 import { Subscription } from "pages/profile";
-
 import { listTransactionState } from "states/transaction.state";
+import {
+  listStoreState,
+  selectedStoreIdState,
+} from "states/store.state";
+import { cartState } from "states/cart.state";
+import ProductRePicker from "components/product/repicker";
+import { ContentFallback } from "components/content-fallback";
 const HistoryPicker: FC = () => {
   const selectedCategory = useRecoilValue(selectedCategoryIdState);
   const orderListData = useRecoilValueLoadable(listOrderState);
   const transactionListData = useRecoilValueLoadable(listTransactionState);
+  const navigate = useNavigate();
   const handleResetClick = (event) => {
     event.stopPropagation();
     navigate("/order");
-    // const handleResetClick = (orderId) => {
-    //   navigate("/order");
   };
+  const [stores, setStores] = useState([]);
+  let storesResponse = useRecoilValueLoadable(listStoreState);
+  useEffect(() => {
+    setStores(storesResponse.contents);
+  }, []);
 
-  const navigate = useNavigate();
   const retry = useSetRecoilState(requestOrderTransactionTriesState);
   const member = useRecoilValueLoadable(memberState);
   useEffect(() => {
@@ -47,6 +50,76 @@ const HistoryPicker: FC = () => {
   const gotoPage = (id: string) => {
     navigate("/order-detail", { state: { id } });
   };
+  const setCurrentStoreId = useSetRecoilState(selectedStoreIdState);
+  const [cart, setCart] = useRecoilState(cartState);
+  const reAddToCart = useCallback((store, reOrderProducts) => {
+    if (!store) return;
+    setCurrentStoreId(store.id);
+    setCart((prevCart) => {
+      const isSameStore = prevCart.storeId === store.id;
+      const newCart = isSameStore
+        ? {
+            ...prevCart,
+            storeId: store.id,
+            // customerId: member?.contents.membershipId ?? null,
+          }
+        : {
+            ...prevCart,
+            storeId: store.id,
+            productList: [],
+            // customerId: member?.contents.membershipId ?? null,
+          };
+
+      const updatedProductList = newCart.productList.map((addedProduct) => {
+        const productToAdd = reOrderProducts.find(
+          ({ product }) =>
+            product.menuProductId === addedProduct.productInMenuId
+        );
+
+        if (productToAdd) {
+          return {
+            ...addedProduct,
+            quantity: addedProduct.quantity + productToAdd.quantity,
+            finalAmount:
+              addedProduct.finalAmount +
+              productToAdd.quantity * productToAdd.product.sellingPrice,
+          };
+        }
+
+        return addedProduct;
+      });
+
+      const newProducts = reOrderProducts
+        .filter(
+          ({ product }) =>
+            !updatedProductList.some(
+              (addedProduct) =>
+                addedProduct.productInMenuId === product.menuProductId
+            )
+        )
+        .map(({ product, quantity }) => ({
+          productInMenuId: product.menuProductId,
+          parentProductId: product.parentProductId,
+          name: product.name,
+          type: product.type,
+          quantity,
+          sellingPrice: product.sellingPrice,
+          code: product.code,
+          categoryCode: product.code,
+          totalAmount: product.sellingPrice * quantity,
+          discount: 0,
+          finalAmount: product.sellingPrice * quantity,
+          picUrl: product.picUrl,
+        }));
+
+      newCart.productList = updatedProductList.concat(newProducts);
+
+      return prepareCart(newCart);
+    });
+
+    navigate("/cart");
+  }, []);
+
   return (
     <>
       {member.state === "hasValue" && member.contents !== null ? (
@@ -66,12 +139,7 @@ const HistoryPicker: FC = () => {
                   }}
                 >
                   {orderListData.contents.map((order, index) => (
-                    <Box
-                      key={index}
-                      onClick={() => gotoPage(order.id)}
-                      className="m-2 p-2 bg-white"
-                      flex
-                    >
+                    <Box key={index} className="m-2 p-2 bg-white" flex>
                       <Card className="time-order">
                         <div className="flex justify-between">
                           <Text.Title size="normal">
@@ -114,20 +182,20 @@ const HistoryPicker: FC = () => {
                         </div>
 
                         <hr className="hr-order" />
-                        <div className="flex mt-1 justify-center">
-                          <Text.Header
-                            className=" m-1 flex-1 align-middle font-normal text-m text-primary"
+                        <div className="flex mt-1 justify-between">
+                          <div
+                            className="m-1 "
                             onClick={() => gotoPage(order.id)}
                           >
-                            Chi tiết đơn hàng
-                          </Text.Header>
-                          {order.status !== OrderStatus.PENDING && (
-                            <button
-                              className="font-bold bg-primary mr-1 p-1 pl-6 pr-6 rounded-md text-white text-sm hover:text-sky-200 hover:bg-cyan-800"
-                              onClick={handleResetClick}
-                            >
-                              Đặt lại
-                            </button>
+                            <Text.Header>Chi tiết đơn hàng</Text.Header>
+                          </div>
+                          {order && order.status !== OrderStatus.PENDING && (
+                            <ProductRePicker
+                              isUpdate={false}
+                              orderId={order.id}
+                              key={order.id}
+                              reAddToCart={reAddToCart}
+                            />
                           )}
                         </div>
                       </Card>
@@ -135,59 +203,10 @@ const HistoryPicker: FC = () => {
                   ))}
                 </div>
               ) : (
-                <Box />
+                <Box>
+                  <ContentFallback />
+                </Box>
               )}
-              {/* <ListRenderer
-    onClick={(item) => {
-      gotoPage(item.navigate);
-    }}
-    items={[
-      {
-        navigate: "/order-detail",
-        // left: <Icon icon="zi-user" />,
-        right: (
-          <Box flex>
-            <Card>
-              <div className="flex justify-between time-order  mb-2">
-                <Text className="text-[17px]">10/12/2024, 08:23</Text>
-                <Text className="font-bold bg-emerald-100 p-0.5 pr-1 pl-1 rounded-md text-green">
-                  Giao thành công
-                </Text>
-              </div>
-              <div className="flex mb-2">
-                <div className="m-2">
-                  <img
-                    className="img-orders rounded-md"
-                    src="https://www.cnet.com/a/img/resize/36e8e8fe542ad9af413eb03f3fbd1d0e2322f0b2/hub/2023/02/03/afedd3ee-671d-4189-bf39-4f312248fb27/gettyimages-1042132904.jpg?auto=webp&fit=crop&height=1200&width=1200"
-                  />
-                </div>
-                <div>
-                  <Text.Header className="text-[18px] leading-6 mb-2">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing
-                    elit.
-                  </Text.Header>
-                  <Text className="text-[17px]">
-                    2 phần - <b className="font-semibold">132.000đ</b>
-                  </Text>
-                </div>
-              </div>
-              <hr className="hr-order" />
-              <div className="flex mt-4 justify-center">
-                <Text.Header className="flex-1 align-middle font-normal text-sm">
-                  Xem chi tiết đơn hàng
-                </Text.Header>
-                <button className="font-bold bg-sky-200 p-1 pl-6 pr-6 rounded-md text-cyan-800 text-sm hover:text-sky-200 hover:bg-cyan-800">
-                  Đặt lại
-                </button>
-              </div>
-            </Card>
-          </Box>
-        ),
-      },
-    ]}
-    // renderLeft={(item) => item.left}
-    renderRight={(item) => item.right}
-  /> */}
             </Suspense>
           </Tabs.Tab>
           <Tabs.Tab key={1} label="Giao dịch">
@@ -216,29 +235,6 @@ const HistoryPicker: FC = () => {
     </>
   );
 };
-
-// const ListOrder: FC<{ categoryId: string }> = ({categoryId}) => {
-//   const productsByCategory = useRecoilValue(
-//     productsByCategoryState(categoryId)
-//   );
-
-//   if (productsByCategory.length === 0) {
-//     return (
-//       <Box className="flex-1 bg-background p-4 flex justify-center items-center">
-//         <Text size="xSmall" className="text-gray">
-//           Không có sản phẩm trong danh mục
-//         </Text>
-//       </Box>
-//     );
-//   }
-//   return (
-//     <Box className="bg-background grid grid-cols-2 gap-4 p-4">
-//       {productsByCategory.map((product) => (
-//         <ProductItem key={product.id} product={product} onQuantityChange={0} />
-//       ))}
-//     </Box>
-//   );
-// };
 
 const HistoryPage: FC = () => {
   return (

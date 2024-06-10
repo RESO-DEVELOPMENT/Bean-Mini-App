@@ -3,17 +3,16 @@ import { DisplayPrice } from "components/display/price";
 import { Sheet } from "components/fullscreen-sheet";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { useRecoilValue, useRecoilState } from "recoil";
-import {
-  childrenProductState,
-} from "states/product.state";
-import {cartState} from "../../states/cart.state"
+import { useRecoilValue, useRecoilState, useRecoilValueLoadable } from "recoil";
+import { childrenProductState } from "states/product.state";
+import { cartState } from "../../states/cart.state";
 import { ProductList } from "types/cart";
 import { Product, ProductTypeEnum } from "types/store-menu";
 import { prepareCart } from "utils/product";
 import { Box, Button, Text } from "zmp-ui";
 import { QuantityPicker } from "./quantity-picker";
 import { SingleOptionPicker } from "./single-option-picker";
+import { memberState } from "states/member.state";
 
 export interface ProductPickerProps {
   product: Product;
@@ -25,6 +24,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
   isUpdate,
   product,
 }) => {
+  const member = useRecoilValueLoadable(memberState);
   const [cart, setCart] = useRecoilState(cartState);
   const childProducts = useRecoilValue(childrenProductState);
   let currentChild = childProducts
@@ -48,8 +48,8 @@ export const ProductPicker: FC<ProductPickerProps> = ({
       product.type == ProductTypeEnum.SINGLE
         ? product.menuProductId
         : currentChild != null && currentChild != undefined
-          ? currentChild[0].menuProductId
-          : null
+        ? currentChild[0].menuProductId
+        : null
     );
     setQuantity(1);
   }, []);
@@ -58,13 +58,38 @@ export const ProductPicker: FC<ProductPickerProps> = ({
     if (product) {
       setCart((prevCart) => {
         let res = { ...prevCart };
-        if (false) {
-        } else {
-          const productToAdd =
-            product.type == ProductTypeEnum.SINGLE
-              ? product
-              : currentChild.find((a) => a.menuProductId === menuProductId);
 
+        const productToAdd =
+          product.type == ProductTypeEnum.SINGLE
+            ? product
+            : currentChild.find((a) => a.menuProductId === menuProductId);
+
+        let isProductInCart = false;
+        const updatedProductList = res.productList.map((addedProduct) => {
+          if (addedProduct.productInMenuId === productToAdd?.menuProductId) {
+            isProductInCart = true;
+
+            const productListObjectToUpdate = { ...addedProduct };
+
+            productListObjectToUpdate.quantity += quantity;
+            productListObjectToUpdate.totalAmount +=
+              quantity * productToAdd.sellingPrice;
+            productListObjectToUpdate.finalAmount +=
+              quantity * productToAdd.sellingPrice - addedProduct.discount;
+
+            return productListObjectToUpdate;
+          }
+
+          return addedProduct;
+        });
+
+        if (isProductInCart) {
+          res = {
+            ...prevCart,
+            productList: updatedProductList,
+            // customerId: member?.contents?.membershipId || null,
+          };
+        } else {
           const cartItem: ProductList = {
             productInMenuId: productToAdd!.menuProductId,
             parentProductId: productToAdd!.parentProductId,
@@ -75,14 +100,16 @@ export const ProductPicker: FC<ProductPickerProps> = ({
             code: productToAdd!.code,
             categoryCode: productToAdd!.code,
             totalAmount: productToAdd!.sellingPrice * quantity,
-            discount: 0,
-            finalAmount: productToAdd!.sellingPrice * quantity,
+            discount: productToAdd!.discountPrice,
+            finalAmount:
+              productToAdd!.sellingPrice * quantity -
+              productToAdd!.discountPrice,
             picUrl: productToAdd!.picUrl,
           };
 
           res = {
             ...prevCart,
-
+            // customerId: member?.contents?.membershipId || null,
             productList: prevCart.productList.concat(cartItem),
           };
         }
@@ -90,6 +117,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
         return prepareCart(res);
       });
     }
+
     setVisible(false);
   };
   return (
@@ -104,14 +132,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
             <Box className="space-y-6 mt-2" p={4}>
               <Box className="space-y-4 ml">
                 <Text.Title>{product.name}</Text.Title>
-                {/* <div className="flex justify-center items-center">
-                  {" "}
-                  <img
-                    src={product.picUrl}
-                    alt={product.name}
-                    className="w-32 h-32 object-cover"
-                  />
-                </div> */}
+              
                 <Box className="flex justify-between">
                   <Text>
                     <div
@@ -120,9 +141,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
                       }}
                     ></div>
                   </Text>
-                  {/* <Text className="ml-40 font-bold">
-                    <DisplayPrice>{product.sellingPrice}</DisplayPrice>
-                  </Text> */}
+                 
                 </Box>
               </Box>
               <Box className="space-y-5">
@@ -139,34 +158,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
                       }
                     />
                   )
-                  // childProducts.map((variant) =>
-                  //   variant.type === ProductTypeEnum.CHILD ? (
-                  //     <SingleOptionPicker
-                  //       key={variant.m}
-                  //       variant={variant}
-                  //       value={options[variant.key] as string}
-                  //       onChange={(selectedOption) =>
-                  //         setOptions((prevOptions) => ({
-                  //           ...prevOptions,
-                  //           [variant.key]: selectedOption,
-                  //         }))
-                  //       }
-                  //     />
-                  //   ) : (
-                  //     <MultipleOptionPicker
-                  //       key={variant.key}
-                  //       product={product}
-                  //       variant={variant}
-                  //       value={options[variant.key] as string[]}
-                  //       onChange={(selectedOption) =>
-                  //         setOptions((prevOptions) => ({
-                  //           ...prevOptions,
-                  //           [variant.key]: selectedOption,
-                  //         }))
-                  //       }
-                  //     />
-                  //   )
-                  // )
+                
                 }
                 <QuantityPicker value={quantity} onChange={setQuantity} />
                 {!isUpdate ? (
@@ -179,9 +171,9 @@ export const ProductPicker: FC<ProductPickerProps> = ({
                   >
                     {quantity > 0
                       ? //  existed
-                      //   ? "Cập nhật giỏ hàng"
-                      //   :
-                      "Thêm vào giỏ hàng"
+                        //   ? "Cập nhật giỏ hàng"
+                        //   :
+                        "Thêm vào giỏ hàng"
                       : "Xoá"}
                   </Button>
                 ) : (

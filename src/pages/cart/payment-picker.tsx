@@ -1,10 +1,8 @@
 import { ActionSheet } from "components/fullscreen-sheet";
-
 import React, { FC, useState } from "react";
 import { createPortal } from "react-dom";
 import {
   useRecoilState,
-  useRecoilValue,
   useRecoilValueLoadable,
 } from "recoil";
 import {
@@ -20,11 +18,9 @@ import { Box, Text } from "zmp-ui";
 export const PaymentPicker: FC = () => {
   const [visible, setVisible] = useState(false);
   const paymentList = useRecoilValueLoadable(paymentTypeState);
-  const selectedStore = useRecoilValue(selectedStoreState);
   const [cart, setCart] = useRecoilState(cartState);
   return (
     <>
-
       <Box
         flex
         className="space-x-2"

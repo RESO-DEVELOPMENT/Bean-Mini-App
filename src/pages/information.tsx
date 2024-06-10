@@ -1,5 +1,5 @@
 import { ListRenderer } from "components/list-renderer";
-import React, { ReactNode } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValueLoadable } from "recoil";
 import { memberState } from "states/member.state";

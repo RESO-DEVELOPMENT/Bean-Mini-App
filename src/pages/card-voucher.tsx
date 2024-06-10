@@ -1,6 +1,5 @@
-// VoucherCard.tsx
 
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { Promotion } from "types/promotion";
 import { displayDate } from "utils/date";
 import { Button } from "zmp-react";

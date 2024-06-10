@@ -2,7 +2,6 @@ import React from "react";
 import { FC } from "react";
 import { Box, Text } from "zmp-ui";
 import { useNavigate } from "react-router";
-import qrwallet from "static/qrwallet.png";
 import qrpoint from "static/qrpoint.png";
 import order from "static/order.png";
 import voucher from "static/voucher.png";

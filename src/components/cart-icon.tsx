@@ -21,9 +21,9 @@ export const CartIcon: FC<{ active?: boolean }> = ({ active }) => {
         />
       </svg>
       {cart.productList.length > 0 && (
-        <Box className="absolute -right-1 -top-[2px] p-[2px] bg-background rounded-full">
+        <Box className="absolute -right-2 -top-2 p-[2px] bg-background rounded-full">
           <Text
-            className="w-4 h-4 pl-1.5 bg-primary rounded-full text-white"
+            className="w-4 h-4 bg-primary rounded-full text-white"
             size="xxxxSmall"
           >
             {cart.productList.length > 9 ? "9+" : cart.productList.length}

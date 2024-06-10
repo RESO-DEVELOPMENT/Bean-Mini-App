@@ -31,7 +31,7 @@ export const CartPreview: FC = () => {
   const navigate = useNavigate();
   console.log("cartPrepare", cartPrepare.contents);
   const onCheckout = async () => {
-    const body = { ...cartPrepare.contents };
+    const body = { ...cartPrepare.contents, customerId: member?.contents.membershipId ?? null, };
     const paymentMethod = cartPrepare.contents.paymentType == PaymentType.CASH ? "COD" : "POINTIFY";
     await Payment.createOrder({
       desc: `Thanh toán cho ${getConfig((config) => config.app.title)}`,

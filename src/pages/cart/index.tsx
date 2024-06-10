@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { Divider } from "components/divider";
 import { Box, Header, Page } from "zmp-ui";
 import { CartItems } from "./cart-items";
@@ -7,14 +7,12 @@ import { TermsAndPolicies } from "./term-and-policies";
 import { Delivery } from "./delivery";
 import { useVirtualKeyboardVisible } from "hooks";
 import { PaymentInfo } from "./payment";
-import { useRecoilStateLoadable } from "recoil";
+import { useRecoilStateLoadable, useRecoilValue } from "recoil";
 import { cartState } from "states/cart.state";
-import { TimePicker } from "./time-picker";
 
 const CartPage: FC = () => {
   const keyboardVisible = useVirtualKeyboardVisible();
   const [cart, setCart] = useRecoilStateLoadable(cartState);
-  console.log("current cart", cart.contents);
   return (
     <Page className="flex flex-col">
       <Header title="Giỏ hàng" showBackIcon={false} />

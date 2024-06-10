@@ -7,11 +7,12 @@ export const productsState = selector<Product[]>({
   key: "products",
   get: async ({ get }) => {
     const menu = get(currentStoreMenuState);
-    return menu.products.filter(
+    let res =  menu.products.filter(
       (product) =>
         product.type === ProductTypeEnum.SINGLE ||
         product.type === ProductTypeEnum.PARENT
     );
+    return res;
   },
 });
 
@@ -25,17 +26,19 @@ export const childrenProductState = selector<Product[]>({
   },
 });
 
+
 export const recommendProductsState = selector<Product[]>({
   key: "recommendProducts",
   get: ({ get }) => {
-    const products = get(productsState);
-    return products
-      .filter(
-        (product) => product.type === "SINGLE" || product.type === "PARENT"
-      )
-      .sort((a, b) => b.displayOrder - a.displayOrder);
+    const products = [...get(productsState)]; // Tạo bản sao của mảng products
+    // Không cần filter lại vì productsState đã được filter
+    // chỉ cần sắp xếp lại danh sách sản phẩm theo displayOrder
+    const sortedProducts = products.sort((a, b) => b.displayOrder - a.displayOrder);
+    return sortedProducts;
   },
 });
+
+
 
 export const productsByCategoryState = selectorFamily<Product[], string>({
   key: "productsByCategory",

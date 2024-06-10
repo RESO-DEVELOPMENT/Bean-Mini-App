@@ -1,20 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Box, Text, Icon } from "zmp-ui";
-import { IoEyeSharp } from "react-icons/io5";
-import wallet from "static/wallet.png";
+import React from "react";
+
 import QRCode from "react-qr-code";
-import Barcode from "react-barcode";
 import {
   useRecoilState,
-  useRecoilValue,
   useRecoilValueLoadable,
-  useSetRecoilState,
 } from "recoil";
 import {  requestRetriveQRstate } from "states/user.state";
-import {qrState} from "states/user.state";
 import { memberState } from "states/member.state";
-import { DisplayPrice } from "components/display/price";
-import { DisplayValue } from "components/display/value";
 import { Subscription } from "./profile";
 
 const QRCodePage: React.FC = () => {

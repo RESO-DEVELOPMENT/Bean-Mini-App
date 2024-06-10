@@ -33,9 +33,6 @@ export const childCategoriesState = selector<Category[]>({
     const listChild = menu.categories.filter(
       (cate) => cate.type === CategoryType.CHILD
     );
-    // console.log("select category id ", cateId);
-    // console.log("select category ", selectedCategory);
-    // console.log("list category child", listChild);
     if (selectedCategory?.childCategoryIds.length === 0 || listChild == null) {
       return [];
     }

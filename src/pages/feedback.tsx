@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Icon } from "zmp-ui";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const FeedbackForm: React.FC = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
