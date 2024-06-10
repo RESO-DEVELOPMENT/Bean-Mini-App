@@ -26,18 +26,19 @@ export const childrenProductState = selector<Product[]>({
   },
 });
 
+
 export const recommendProductsState = selector<Product[]>({
   key: "recommendProducts",
   get: ({ get }) => {
-    const products = get(productsState);
-    let res = products
-      .filter(
-        (product) => product.type === "SINGLE" || product.type === "PARENT"
-      )
-      .sort((a, b) => b.displayOrder - a.displayOrder);
-      return res;
+    const products = [...get(productsState)]; // Tạo bản sao của mảng products
+    // Không cần filter lại vì productsState đã được filter
+    // chỉ cần sắp xếp lại danh sách sản phẩm theo displayOrder
+    const sortedProducts = products.sort((a, b) => b.displayOrder - a.displayOrder);
+    return sortedProducts;
   },
 });
+
+
 
 export const productsByCategoryState = selectorFamily<Product[], string>({
   key: "productsByCategory",
