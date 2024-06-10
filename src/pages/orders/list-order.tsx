@@ -7,7 +7,6 @@ import {
 } from "recoil";
 import "./orders.css";
 import { selectedCategoryIdState } from "states/category.state";
-// import {categoriesState} from "states/category.state";
 import { listOrderState } from "states/order.state";
 import { requestOrderTransactionTriesState } from "states/order.state";
 import { memberState } from "states/member.state";
@@ -20,12 +19,10 @@ import { prepareCart, showOrderStatus } from "utils/product";
 import { OrderStatus } from "types/order";
 import { useNavigate } from "react-router-dom";
 import { Subscription } from "pages/profile";
-
 import { listTransactionState } from "states/transaction.state";
 import {
   listStoreState,
   selectedStoreIdState,
-  selectedStoreObjState,
 } from "states/store.state";
 import { cartState } from "states/cart.state";
 import ProductRePicker from "components/product/repicker";
@@ -38,8 +35,6 @@ const HistoryPicker: FC = () => {
   const handleResetClick = (event) => {
     event.stopPropagation();
     navigate("/order");
-    // const handleResetClick = (orderId) => {
-    //   navigate("/order");
   };
   const [stores, setStores] = useState([]);
   let storesResponse = useRecoilValueLoadable(listStoreState);
@@ -59,9 +54,7 @@ const HistoryPicker: FC = () => {
   const [cart, setCart] = useRecoilState(cartState);
   const reAddToCart = useCallback((store, reOrderProducts) => {
     if (!store) return;
-
     setCurrentStoreId(store.id);
-
     setCart((prevCart) => {
       const isSameStore = prevCart.storeId === store.id;
       const newCart = isSameStore

@@ -6,7 +6,6 @@ import {  listPromotionState } from "states/promotion.state";
 import { cartState } from "states/cart.state";
 import { useRecoilState, useRecoilValueLoadable } from "recoil";
 import { prepareCart } from "utils/product";
-import orderApi from "api/order";
 
 const VoucherPage = () => {
   const navigate = useNavigate();

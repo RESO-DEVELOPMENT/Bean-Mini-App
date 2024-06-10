@@ -1,8 +1,7 @@
-import React, { FC } from "react";
+import React from "react";
 import { useLocation } from "react-router-dom";
 import { useRecoilValueLoadable } from "recoil";
 import { getBlogDetailState } from "states/blog.state";
-import { TBlog } from "types/blog";
 import { Box, Text } from "zmp-react";
 import { Header, Page } from "zmp-ui";
 

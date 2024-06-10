@@ -1,21 +1,18 @@
 import { useToBeImplemented } from "hooks";
-import React, { FC, Suspense } from "react";
-import { Box, Icon, Text } from "zmp-ui";
-import subscriptionDecor from "static/subscription-decor.svg";
-import { DisplayPrice } from "components/display/price";
-import { CartIcon } from "components/cart-icon";
+import React, { FC } from "react";
+import { Box, Text } from "zmp-ui";
 import { useNavigate } from "react-router";
 // import point from "static/point.png";
 import wallet from "static/icon-bean.png";
-import { MemberWallet, UserInfo } from "types/user";
 import { DisplayValue } from "components/display/value";
 
 export interface MemberBalanceProps {
-  memberInfo?: UserInfo;
+  memberInfo?: any;
 }
 export const WalletBalance: FC<MemberBalanceProps> = ({ memberInfo }) => {
   const onClick = useToBeImplemented();
   const navigate = useNavigate();
+  console.log(memberInfo);
   const pointWallet = memberInfo?.level.memberWallet.find(
     (e) => e.walletType.name === "POINT"
   );

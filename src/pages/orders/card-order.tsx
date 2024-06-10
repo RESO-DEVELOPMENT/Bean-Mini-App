@@ -1,7 +1,7 @@
 // VoucherCard.tsx
 
 import { DisplayPrice } from "components/display/price";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { OrderPreview } from "types/order";
 import { Box, Text } from "zmp-ui";
 

@@ -1,4 +1,4 @@
-import React, { useState, FunctionComponent } from "react";
+import React from "react";
 import { FC } from "react";
 import { useNavigate } from "react-router";
 import { useRecoilValueLoadable } from "recoil";

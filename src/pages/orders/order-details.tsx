@@ -7,8 +7,7 @@ import { DisplayPrice } from "components/display/price";
 import { showOrderType, showPaymentType } from "utils/product";
 import { displayDate, displayTime } from "utils/date";
 import { ListRenderer } from "components/list-renderer";
-import { OrderStatus, OrderType } from "types/order";
-import { showOrderStatus } from "utils/product";
+import {  OrderType } from "types/order";
 import { openSupportChat } from "utils/config";
 
 const OrderDetailsPage: FC = () => {
