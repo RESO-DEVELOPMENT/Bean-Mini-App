@@ -36,7 +36,7 @@ export const PaymentInfo: FC = () => {
                 {cartPrepare.state == "hasValue" &&
                 cartPrepare.contents !== null
                   ? cartPrepare.contents.promotionList!.map((p) => (
-                      <Text size="xxSmall">{p.name}</Text>
+                      <Text key={p.code} size="xxSmall">{p.name}</Text>
                     ))
                   : ""}
               </Box>
