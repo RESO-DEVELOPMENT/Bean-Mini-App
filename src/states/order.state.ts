@@ -49,17 +49,17 @@ export const paymentTypeState = atom<Payment[]>({
   ],
 });
 
-export const selectLocationState = atom<string>({
-  key: "selectLocationState",
-  default: "",
-});
+// export const selectLocationState = atom<string>({
+//   key: "selectLocationState",
+//   default: "",
+// });
 
 export const selectedDeliveryTimeState = atom({
   key: "selectedDeliveryTime",
   default: +new Date(),
 });
 
-export const addressState = atom({
-  key: "address",
-  default: "",
-});
+// export const addressState = atom({
+//   key: "address",
+//   default: "",
+// });

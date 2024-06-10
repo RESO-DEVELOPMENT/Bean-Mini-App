@@ -10,7 +10,7 @@ export const listPromotionState = selector({
     const listOrder = await userApi.getListPromotion(member?.membershipId ?? "", {
       brandCode: "BeanApp",
     });
-    console.log("promotion", listOrder.data)
+    // console.log("promotion", listOrder.data)
     return listOrder.data;
   },
 });

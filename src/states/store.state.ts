@@ -1,4 +1,4 @@
-import menuApi from "api/menu";
+
 import storeApi from "api/store";
 import { atom, selector, selectorFamily } from "recoil";
 
@@ -84,15 +84,7 @@ export const nearbyStoresState = selector({
 //   },
 // });
 
-export const storeMenuByInputIdState = selectorFamily({
-  key: "storeMenuByInputId",
-  get:
-    (storeId: string) =>
-    async () => {
-      const menu = await menuApi.getMenu(storeId);
-      return menu.data;
-    },
-});
+
 
 // export const storeIdsByCategoryState = selector({
 //   key: "storeIdsByCategory",

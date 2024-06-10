@@ -4,7 +4,9 @@ import { Product } from "types/store-menu";
 import { ContentFallback } from "components/content-fallback";
 import { TStore } from "types/store";
 import { getOrderDetailstate } from "states/order.state";
-import { storeMenuByInputIdState, listStoreState } from "states/store.state";
+import { storeMenuByInputIdState } from "states/menu.state";
+import {listStoreState } from "states/store.state";
+
 import { Box } from "zmp-ui";
 
 export interface ProductPickerProps {

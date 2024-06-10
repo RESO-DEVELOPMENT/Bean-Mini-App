@@ -1,5 +1,5 @@
 import menuApi from "api/menu";
-import { selector } from "recoil";
+import { selector, selectorFamily } from "recoil";
 import { listStoreState, selectedStoreObjState } from "./store.state";
 
 export const currentStoreMenuState = selector({
@@ -12,14 +12,21 @@ export const currentStoreMenuState = selector({
       const menu = await menuApi.getMenu(store[0].id);
       return menu.data;
     } else {
-      console.log("goi api ne");
-      const menu = await menuApi.getMenu(currentStore.id);
-      console.log(menu)
-      return menu.data;
+      // console.log("goi api ne");
+      const menu = get(storeMenuByInputIdState(currentStore.id));
+      // console.log(menu)
+      return menu;
     }
   },
+});export const storeMenuByInputIdState = selectorFamily({
+  key: "storeMenuByInputId",
+  get:
+    (storeId: string) =>
+    async () => {
+      const menu = await menuApi.getMenu(storeId);
+      return menu.data;
+    },
 });
-
 // export const currentStoreMenuState = selector({
 //   key: "currentStoreMenu",
 //   get: async ({ get }) => {
