@@ -7,11 +7,12 @@ export const productsState = selector<Product[]>({
   key: "products",
   get: async ({ get }) => {
     const menu = get(currentStoreMenuState);
-    return menu.products.filter(
+    let res =  menu.products.filter(
       (product) =>
         product.type === ProductTypeEnum.SINGLE ||
         product.type === ProductTypeEnum.PARENT
     );
+    return res;
   },
 });
 
@@ -29,11 +30,12 @@ export const recommendProductsState = selector<Product[]>({
   key: "recommendProducts",
   get: ({ get }) => {
     const products = get(productsState);
-    return products
+    let res = products
       .filter(
         (product) => product.type === "SINGLE" || product.type === "PARENT"
       )
       .sort((a, b) => b.displayOrder - a.displayOrder);
+      return res;
   },
 });
 

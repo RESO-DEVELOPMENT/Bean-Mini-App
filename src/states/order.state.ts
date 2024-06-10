@@ -59,11 +59,6 @@ export const selectedDeliveryTimeState = atom({
   default: +new Date(),
 });
 
-export const requestLocationTriesState = atom({
-  key: "requestLocationTries",
-  default: 0,
-});
-
 export const addressState = atom({
   key: "address",
   default: "",

@@ -1,35 +1,27 @@
 import { ActionSheet } from "components/fullscreen-sheet";
 import { ListItem } from "components/list-item";
 import React, { FC, useState, useEffect } from "react";
-import { createPortal } from "react-dom";
 import {
   useRecoilValue,
-  useRecoilValueLoadable,
   useSetRecoilState,
 } from "recoil";
-import { requestLocationTriesState } from "states/order.state";
 import {
   selectedStoreObjState,
   selectedStoreState,
 } from "states/store.state";
 import { nearbyStoresState } from "states/store.state";
-import { memberState } from "states/member.state";
 import { cartState } from "states/cart.state";
 import { OrderType, PaymentType } from "types/order";
 import { TStore } from "types/store";
 import { displayDistance } from "utils/location";
-// import { setStorage } from "zmp-sdk";
 import { useSnackbar } from "zmp-ui";
-// import { fromJSON } from "postcss";
+
 export const StorePicker: FC = () => {
   const [visible, setVisible] = useState(false);
-  const nearbyStores = useRecoilValueLoadable(nearbyStoresState)
+  const nearbyStores = useRecoilValue(nearbyStoresState)
   const setStoreObj = useSetRecoilState(selectedStoreObjState);
-  const selectedStore = useRecoilValueLoadable(selectedStoreState);
-// console.log(selectedStore.contents)
-
+  const selectedStore = useRecoilValue(selectedStoreState);
   const setCart = useSetRecoilState(cartState);
-  const member = useRecoilValue(memberState);
   const snackbar = useSnackbar();
   useEffect(
     () => {
@@ -37,14 +29,12 @@ export const StorePicker: FC = () => {
         let res = { ...prevCart };
         res = {
           ...prevCart,
-          storeId: selectedStore?.contents.id,
-          customerId: member?.membershipId ?? undefined,
+          storeId: selectedStore?.id,
         };
         return res;
       });
-      // setCart(cart);
+
     },
-    //eslint-disable-next-line
     [selectedStore]
   );
   return (
@@ -60,37 +50,24 @@ export const StorePicker: FC = () => {
             text: "Khi đổi cửa hàng, các sản phẩm từ cửa hàng cũ sẽ bị xoá",
           });
         }}
-        title={selectedStore.contents?.name ?? ""}
-        subtitle={selectedStore.contents?.address ?? ""}
+        title={selectedStore.name || ""}
+        subtitle={selectedStore.address || ""}
       />
-      {nearbyStores.state === "hasValue" &&
+
         createPortal(
           <ActionSheet
             title="Các cửa hàng ở gần bạn"
             visible={visible}
             onClose={() => setVisible(false)}
             actions={[
-              nearbyStores.contents.map(
+              nearbyStores.map(
                 (store: TStore & { distance?: number }, i) => ({
                   text: store.distance
                     ? `${store.name} - ${displayDistance(store.distance)}`
                     : store.name,
-                  highLight: store.id === selectedStore?.contents.id,
+                  highLight: store.id === selectedStore?.id,
                   onClick: () => {
                     setStoreObj(store);
-                    // setStorage({
-                    //   data: {
-                    //     storeIndex: i,
-                    //   },
-                    //   success: (data) => {
-                    //     // xử lý khi gọi api thành công
-                    //     console.log("set ok", data);
-                    //   },
-                    //   fail: (error) => {
-                    //     // xử lý khi gọi api thất bại
-                    //     console.log("set error", error);
-                    //   },
-                    // });
                     setCart((prevCart) => {
                       let res = { ...prevCart };
                       res = {
@@ -117,16 +94,15 @@ export const StorePicker: FC = () => {
             ]}
           ></ActionSheet>,
           document.body
-        )}
+        )
     </>
   );
 };
 
 export const RequestStorePickerLocation: FC = () => {
-  const retry = useSetRecoilState(requestLocationTriesState);
   return (
     <ListItem
-      onClick={() => retry((r) => r + 1)}
+      onClick={() => {}}
       title="Chọn cửa hàng"
       subtitle="Yêu cầu truy cập vị trí"
     />
