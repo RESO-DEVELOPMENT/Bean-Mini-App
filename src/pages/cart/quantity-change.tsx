@@ -1,7 +1,7 @@
 import { SingleOptionPicker } from "components/product/single-option-picker";
 import React, { FC, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { Cart, ProductList } from "types/cart";
+import { ProductList } from "types/cart";
 import { Product } from "types/store-menu";
 import { Box, Button, Icon, Sheet, Text } from "zmp-ui";
 
@@ -9,50 +9,38 @@ export const QuantityChangeSection: FC<{
   handleChange: (product: Product | ProductList, quantity: number) => any;
   visible: boolean;
   setVisible: (visible: boolean) => void;
-  product: Product;
-  productInCart: ProductList;
-  isUpdate: boolean;
+
+  product?: Product;
   currentChild?: Product[];
   menuProductId?: string;
   productChosen?: Product;
   setProductChosen?: any;
+  productInCart: ProductList;
+  isUpdate: boolean;
 }> = ({
-  currentChild,
-  isUpdate,
   handleChange,
   visible,
   setVisible,
+  
   product,
-  productInCart,
+  currentChild,
   productChosen,
   setProductChosen,
+  productInCart,
+  isUpdate,
 }) => {
-  console.log("product In cart", productInCart);
-  const productInCartToUse = productInCart;
-
-  console.log("product In cart TO Use", productInCartToUse);
   const [quantity, setQuantity] = useState(
     productInCart ? productInCart.quantity : 1
   );
-  // useEffect(() => {
-  //   setQuantity(productInCart ? productInCart.quantity : 1);
-  //   setProductInCart(() => {
-  //     cart!.productList.find(
-  //       (p) => p.productInMenuId === productChosen?.menuProductId
-  //     )});
-  //     console.log("productInCart", productInCart);
-  //     console.log("productChosen", productChosen!.name);
-  // }, [productChosen, productInCart])
   useEffect(() => {
-    setQuantity(productInCartToUse ? productInCartToUse.quantity : 1);
+    setQuantity(productInCart ? productInCart.quantity : 1);
   }, [productChosen, productInCart]);
-
   return (
     <>
       {createPortal(
-        <Sheet visible={visible} onClose={() => setVisible(false)} autoHeight>
+        <Sheet visible={visible} onClose={() => setVisible(false)} autoHeight unmountOnClose={true}>
           {product && (
-            <Box className="space-y-6 mt-2" p={4}>
+            <Box className="space-y-6 mt-2 " p={4}>
               <Box className="space-y-4 ml">
                 <Text.Title>{product.name}</Text.Title>
               </Box>
@@ -121,9 +109,9 @@ export const QuantityChangeSection: FC<{
                   fullWidth
                   onClick={() => {
                     setVisible(false);
-                    console.log(productInCartToUse);
+                    // console.log(productInCart);
                     handleChange(
-                      productInCartToUse ? productInCartToUse : productChosen!,
+                      productInCart ? productInCart : productChosen!,
                       quantity
                     );
                   }}

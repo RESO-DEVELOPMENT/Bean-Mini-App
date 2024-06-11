@@ -61,13 +61,11 @@ const HistoryPicker: FC = () => {
         ? {
             ...prevCart,
             storeId: store.id,
-            // customerId: member?.contents.membershipId ?? null,
           }
         : {
             ...prevCart,
             storeId: store.id,
             productList: [],
-            // customerId: member?.contents.membershipId ?? null,
           };
 
       const updatedProductList = newCart.productList.map((addedProduct) => {

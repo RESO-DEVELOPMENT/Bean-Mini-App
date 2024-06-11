@@ -1,18 +1,11 @@
 import orderApi from "api/order";
-import { DisplayPrice } from "components/display/price";
 import { Subscription } from "pages/profile";
 import React, { FC } from "react";
 import { useNavigate } from "react-router";
 import {
-  useRecoilState,
-  useRecoilStateLoadable,
-  useRecoilValue,
   useRecoilValueLoadable,
   useSetRecoilState,
 } from "recoil";
-import {
-  selectedStoreState,
-} from "states/store.state";
 import {
   memberState,
 } from "states/member.state";
@@ -26,12 +19,12 @@ import { cartState, prepareCartState } from "states/cart.state";
 export const CartPreview: FC = () => {
   const setCart = useSetRecoilState(cartState);
   const cartPrepare = useRecoilValueLoadable(prepareCartState);
-  const member = useRecoilValueLoadable(memberState);
+  // const member = useRecoilValueLoadable(memberState);
   const snackbar = useSnackbar();
   const navigate = useNavigate();
   // console.log("cartPrepare", cartPrepare.contents);
   const onCheckout = async () => {
-    const body = { ...cartPrepare.contents, customerId: member?.contents.membershipId ?? null, };
+    const body = { ...cartPrepare.contents };
     const paymentMethod = cartPrepare.contents.paymentType == PaymentType.CASH ? "COD" : "POINTIFY";
     await Payment.createOrder({
       desc: `Thanh toán cho ${getConfig((config) => config.app.title)}`,
@@ -94,7 +87,7 @@ export const CartPreview: FC = () => {
       flexDirection="column"
       className="sticky bottom-0 bg-background p-4 space-4"
     >
-      {member.state === "hasValue" && member.contents !== null ? (
+      {cartPrepare.state === "hasValue" && cartPrepare.contents.customerId !== null ? (
         <>
           <Box
             flex
