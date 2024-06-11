@@ -88,7 +88,7 @@ export const CustomInquiry: FC<Props> = ({ placeholder, state }) => {
   return (
     <Box p={2} className="bg-white items-center flex flex-row">
       <Input.Search
-        defaultValue={keyword}
+        defaultValue={""}
         placeholder={placeholder}
         onChange={(e) => {
           handleChange(e.target.value);

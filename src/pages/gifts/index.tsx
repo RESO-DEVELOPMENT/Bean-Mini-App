@@ -1,12 +1,14 @@
-import React, { FC, useEffect, useState } from "react";
-import {
-  useRecoilState,
-  useRecoilStateLoadable,
-  useRecoilValue,
-  useRecoilValueLoadable,
-} from "recoil";
-import { MemberLevel, Membership, RecentlySearchMember } from "types/user";
-import { Box, Header, Tabs, Text } from "zmp-ui";
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { useRecoilState, useRecoilValueLoadable, useRecoilValue } from "recoil";
+import { Membership, RecentlySearchMember } from "types/user";
+import { Box, Header, Page, Tabs, Text } from "zmp-ui";
 import { MembersList } from "./members-list";
 import { Divider } from "components/divider";
 import {
@@ -19,86 +21,84 @@ import { CustomInquiry } from "pages/search/inquiry";
 import { ContentFallback } from "components/content-fallback";
 import { getStorage, setStorage } from "zmp-sdk";
 
-export const GiftsPage: FC = () => {
-  return (
-    <>
-      <Header title="Quà tặng" />
-      <GiftsPageContent />
-    </>
-  );
-};
+export const GiftsPage: FC = () => (
+  <Page>
+    <Header title="Quà tặng" />
+    <GiftsPageContent />
+  </Page>
+);
 
 const GiftsPageContent: FC = () => {
   const [phone, setPhone] = useRecoilState(rawPhoneNumberState);
   const [searchMembers, setSearchMembers] = useState<Membership[]>([]);
-  const [recentlySearch, setRecentlySearch] = useState<Membership[]>([]);
+  const recentlySearchRef = useRef<Membership[]>([]);
   const membersSearchByPhoneLoadable = useRecoilValueLoadable(
     memberByRawPhoneInputState
   );
   const key = useRecoilValue(recentSearchMembersKeyState);
 
-  useEffect(() => {
+  const loadRecentlySearch = useCallback(() => {
     getStorage({
       keys: [key],
       success: (data) => {
         const { recentSearchMembers } = data;
-        setRecentlySearch(recentSearchMembers || []);
+        recentlySearchRef.current = recentSearchMembers || [];
       },
-      fail: (error) => {
-        console.log(error);
-      },
+      fail: (error) => console.log(error),
     });
+  }, []);
+
+  useEffect(() => {
+    loadRecentlySearch();
+    setPhone("");
   }, []);
 
   useEffect(() => {
     if (
       membersSearchByPhoneLoadable.state === "hasValue" &&
-      membersSearchByPhoneLoadable.contents !== null
+      membersSearchByPhoneLoadable.contents &&
+      phone.length > 0
     ) {
-      setSearchMembers(membersSearchByPhoneLoadable.contents?.items || []);
+      const memberSearchTemp = membersSearchByPhoneLoadable.contents.items[0];
+      setSearchMembers(membersSearchByPhoneLoadable.contents.items || []);
+
       getStorage({
         keys: [key],
         success: (data) => {
           const { recentSearchMembers } = data;
-          setRecentlySearch(recentSearchMembers || []);
-          let memberSearchTemp =
-            membersSearchByPhoneLoadable.contents?.items[0];
-          var newDataStorage: RecentlySearchMember[] = [];
-          let newSearch: RecentlySearchMember = {
-            membershipId: memberSearchTemp.membershipId,
-            phoneNumber: memberSearchTemp.phoneNumber,
-            fullname: memberSearchTemp.fullname,
-          };
-          if (recentSearchMembers != null) {
-            if (
-              recentSearchMembers.some(
-                (m) => m.membershipId === memberSearchTemp.membershipId
-              )
+          const currentSearchMembers = recentSearchMembers || [];
+          if (
+            !currentSearchMembers.some(
+              (m: RecentlySearchMember) =>
+                m.membershipId === memberSearchTemp.membershipId
             )
-              return;
-            newDataStorage = [...recentSearchMembers, newSearch];
-          } else newDataStorage = [...newDataStorage, newSearch];
-
-          data[key] = newDataStorage;
-          setStorage({
-            data,
-            success: (data) => {
-              // xử lý khi gọi api thành công
-              console.log("set ok", data);
-            },
-            fail: (error) => {
-              // xử lý khi gọi api thất bại
-              console.log("set error", error);
-            },
-          });
+          ) {
+            const newSearch: RecentlySearchMember = {
+              membershipId: memberSearchTemp.membershipId,
+              phoneNumber: memberSearchTemp.phoneNumber,
+              fullname: memberSearchTemp.fullname,
+            };
+            const newDataStorage = [...currentSearchMembers, newSearch];
+            recentlySearchRef.current = newDataStorage;
+            setStorage({
+              data: { [key]: newDataStorage },
+              success: () => console.log("Set storage successful"),
+              fail: (error) => console.log("Set storage error", error),
+            });
+          }
         },
-        fail: (error) => {
-          console.log(error);
-        },
+        fail: (error) => console.log(error),
       });
-    } else setSearchMembers([]);
-  }, [phone, membersSearchByPhoneLoadable.state]);
+    } else {
+      setSearchMembers([]);
+    }
+  }, [membersSearchByPhoneLoadable.state, phone]);
 
+  const searchMembersLength = useMemo(
+    () => searchMembers.length,
+    [searchMembers.length]
+  );
+  console.log("rerender");
   return (
     <Box className="">
       <CustomInquiry
@@ -107,7 +107,7 @@ const GiftsPageContent: FC = () => {
       />
       <Divider />
       <Text className="pl-4">
-        Tìm bạn qua số điện thoại {`(${searchMembers.length})`}
+        Tìm bạn qua số điện thoại {`(${searchMembersLength})`}
       </Text>
       <Divider />
       <Tabs scrollable className="category-tabs">
@@ -121,38 +121,9 @@ const GiftsPageContent: FC = () => {
           )}
         </Tabs.Tab>
         <Tabs.Tab key={1} label="Tìm gần đây">
-          <MembersList members={recentlySearch} />
+          <MembersList members={recentlySearchRef.current} />
         </Tabs.Tab>
       </Tabs>
     </Box>
   );
 };
-
-const demo: Membership[] = [
-  {
-    membershipId: "123",
-    phoneNumber: "1234567890",
-    email: "",
-    fullname: "user 1",
-    gender: 1,
-    memberLevel: {} as MemberLevel,
-  },
-  {
-    membershipId: "234",
-    phoneNumber: "1234567890",
-    email: "",
-    fullname: "user 2",
-    gender: 1,
-    memberLevel: {} as MemberLevel,
-  },
-  {
-    membershipId: "345",
-    phoneNumber: "1234567890",
-    email: "",
-    fullname: "user 3",
-    gender: 1,
-    memberLevel: {} as MemberLevel,
-  },
-];
-
-export default GiftsPage;
