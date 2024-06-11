@@ -59,14 +59,15 @@ const HistoryPicker: FC = () => {
       const isSameStore = prevCart.storeId === store.id;
       const newCart = isSameStore
         ? {
-            ...prevCart,
-            storeId: store.id,
-          }
+          ...prevCart,
+          storeId: store.id,
+
+        }
         : {
-            ...prevCart,
-            storeId: store.id,
-            productList: [],
-          };
+          ...prevCart,
+          storeId: store.id,
+          productList: [],
+        };
 
       const updatedProductList = newCart.productList.map((addedProduct) => {
         const productToAdd = reOrderProducts.find(
@@ -129,7 +130,7 @@ const HistoryPicker: FC = () => {
           <Tabs.Tab key={0} label="Đơn hàng">
             <Suspense>
               {orderListData.state === "hasValue" &&
-              orderListData.contents !== null ? (
+                orderListData.contents !== null ? (
                 <div
                   style={{
                     overflowY: "auto",
@@ -149,10 +150,10 @@ const HistoryPicker: FC = () => {
                               order.status == OrderStatus.NEW
                                 ? "font-bold bg-gray p-1 rounded-md text-white"
                                 : order.status == OrderStatus.PENDING
-                                ? "font-bold bg-blue-400 p-1 rounded-md text-white"
-                                : order.status == OrderStatus.PAID
-                                ? "font-bold bg-emerald-400 p-1 rounded-md text-white"
-                                : "font-bold bg-red-400 p-1 rounded-md text-white"
+                                  ? "font-bold bg-blue-400 p-1 rounded-md text-white"
+                                  : order.status == OrderStatus.PAID
+                                    ? "font-bold bg-emerald-400 p-1 rounded-md text-white"
+                                    : "font-bold bg-red-400 p-1 rounded-md text-white"
                             }
                           >
                             {showOrderStatus(order.status)}
@@ -210,7 +211,7 @@ const HistoryPicker: FC = () => {
           <Tabs.Tab key={1} label="Giao dịch">
             <Suspense>
               {transactionListData.state === "hasValue" &&
-              transactionListData.contents !== null ? (
+                transactionListData.contents !== null ? (
                 <div
                   style={{
                     overflowY: "auto",

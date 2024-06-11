@@ -12,8 +12,8 @@ export interface Cart {
   voucherCode?: string | null;
   promotionList?: PromotionList[];
   customerId?: string | null;
-  customerName?: string;
-  customerPhone?: string;
+  customerName?: string | null;
+  customerPhone?: string | null;
   deliveryAddress?: string;
   message?: string;
   customerNumber?: number;
