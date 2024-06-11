@@ -15,6 +15,7 @@ export interface MemberLevel {
   maxPoint: number
   nextLevelName: string
   memberWallet: MemberWallet[]
+  membershipCard: MembershipCard[]
 }
 
 
@@ -40,14 +41,12 @@ export interface MembershipCard {
   membershipCardCode: string
   physicalCardCode: any
   membershipCardType: MembershipCardType
-  memberWallet: MemberWallet[]
 }
 
 export interface MembershipCardType {
   id: string
   name: string
   cardImg: string
-  indexLevel: number
 }
 
 export interface MemberWallet {

@@ -48,8 +48,8 @@ export const ProductPicker: FC<ProductPickerProps> = ({
       product.type == ProductTypeEnum.SINGLE
         ? product.menuProductId
         : currentChild != null && currentChild != undefined
-        ? currentChild[0].menuProductId
-        : null
+          ? currentChild[0].menuProductId
+          : null
     );
     setQuantity(1);
   }, []);
@@ -87,7 +87,6 @@ export const ProductPicker: FC<ProductPickerProps> = ({
           res = {
             ...prevCart,
             productList: updatedProductList,
-            // customerId: member?.contents?.membershipId || null,
           };
         } else {
           const cartItem: ProductList = {
@@ -109,8 +108,8 @@ export const ProductPicker: FC<ProductPickerProps> = ({
 
           res = {
             ...prevCart,
-            // customerId: member?.contents?.membershipId || null,
             productList: prevCart.productList.concat(cartItem),
+
           };
         }
 
@@ -132,7 +131,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
             <Box className="space-y-6 mt-2" p={4}>
               <Box className="space-y-4 ml">
                 <Text.Title>{product.name}</Text.Title>
-              
+
                 <Box className="flex justify-between">
                   <Text>
                     <div
@@ -141,7 +140,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
                       }}
                     ></div>
                   </Text>
-                 
+
                 </Box>
               </Box>
               <Box className="space-y-5">
@@ -158,7 +157,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
                       }
                     />
                   )
-                
+
                 }
                 <QuantityPicker value={quantity} onChange={setQuantity} />
                 {!isUpdate ? (
@@ -171,9 +170,9 @@ export const ProductPicker: FC<ProductPickerProps> = ({
                   >
                     {quantity > 0
                       ? //  existed
-                        //   ? "Cập nhật giỏ hàng"
-                        //   :
-                        "Thêm vào giỏ hàng"
+                      //   ? "Cập nhật giỏ hàng"
+                      //   :
+                      "Thêm vào giỏ hàng"
                       : "Xoá"}
                   </Button>
                 ) : (

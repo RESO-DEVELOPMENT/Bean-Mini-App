@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { useNavigate } from "react-router";
 import { useRecoilValueLoadable, useResetRecoilState } from "recoil";
-import { listMembershipCardState } from "states/member.state";
+import { listMembershipCardState, memberState } from "states/member.state";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Box, Text } from "zmp-ui";
 import { Autoplay, Pagination, Navigation, EffectCards } from "swiper";
@@ -11,7 +11,7 @@ import "swiper/css/navigation";
 
 
 export const Banner: FC = () => {
-  const membershipCards = useRecoilValueLoadable(listMembershipCardState);
+  const membership = useRecoilValueLoadable(memberState);
   const navigate = useNavigate();
   return (
     <Box style={{ overflowX: "hidden" }} py={4}>
@@ -25,12 +25,12 @@ export const Banner: FC = () => {
           disableOnInteraction: false,
         }}
       >
-        {membershipCards.state === "hasValue" &&
-          membershipCards.contents?.map((card, i) => (
+        {membership.state === "hasValue" &&
+          membership.contents?.memberLevel.membershipCard.map((card, i) => (
             <SwiperSlide
               key={i}
               className="px-4"
-              onClick={() => navigate("/qr")}
+              onClick={() => navigate(`/qr?code=${card.membershipCardCode}`)}
             >
               <Box
                 className="w-full rounded-xl aspect-[16/9] bg-cover bg-center bg-skeleton"

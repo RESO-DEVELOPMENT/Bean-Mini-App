@@ -5,37 +5,16 @@ import {
   useRecoilState,
   useRecoilValueLoadable,
 } from "recoil";
-import {  requestRetriveQRstate } from "states/user.state";
+import { requestRetriveQRstate } from "states/user.state";
 import { memberState } from "states/member.state";
 import { Subscription } from "./profile";
+import { useSearchParams } from "react-router-dom";
 
 const QRCodePage: React.FC = () => {
-  // const [countdown, setCountdown] = useState(120);
-  // const qrCode = useRecoilValueLoadable(qrState);
+  const [searchParams] = useSearchParams();
+  const code = searchParams.get("code");
+  console.log("code", code);
   const member = useRecoilValueLoadable(memberState);
-
-  const [retry, setRetry] = useRecoilState(requestRetriveQRstate);
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     if (countdown > 0) {
-  //       setCountdown(countdown - 1);
-  //     }
-  //   }, 1000);
-  //   if (retry == 0 || countdown == 0) {
-  //     handleUpdateClick();
-  //   }
-  //   return () => {
-  //     clearInterval(intervalId);
-  //   };
-  // }, [countdown]);
-  // useEffect(() => {
-  //   handleUpdateClick();
-  // }, []);
-  // const handleUpdateClick = () => {
-  //   setRetry((r) => r + 1);
-  //   setCountdown(120);
-  // };
-
   return (
     <div className="flex flex-col w-full h-full bg-primary">
       <div className="px-4 py-20">
@@ -45,7 +24,6 @@ const QRCodePage: React.FC = () => {
           <span className="text-xl text-white font-bold m-4">
             Mã Thành Viên
           </span>
-          {/* <Icon className="mt-8 color-white" icon="zi-more-horiz-solid" /> */}
         </div>
         <div className="bg-white p-4 rounded-lg  text-black">
           {member.state === "hasValue" && member.contents !== null ? (
@@ -54,22 +32,12 @@ const QRCodePage: React.FC = () => {
               <div className="flex justify-center my-8">
                 <QRCode
                   value={
-                    member.state === "hasValue"
-                      ? member.contents.phoneNumber
-                      : ""
+                    code ?? member.contents.memberLevel.membershipCard[0].membershipCardCode
                   }
                   size={220}
                 />
               </div>
-              {/* <div className="text-center text-sm my-4">
-                Tự động cập nhật sau {countdown}s.{" "}
-                <button
-                  onClick={handleUpdateClick}
-                  className="text-green-600 underline"
-                >
-                  Cập nhật
-                </button>
-              </div> */}
+
             </>
           ) : (
             <Subscription />

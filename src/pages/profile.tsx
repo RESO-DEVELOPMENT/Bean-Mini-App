@@ -5,8 +5,8 @@ import { ListRenderer } from "components/list-renderer";
 import { useNavigate } from "react-router-dom";
 import { openSupportChat } from "utils/config";
 import { useRecoilValueLoadable, useSetRecoilState } from "recoil";
-import {  requestPhoneTriesState } from "states/user.state";
-import {memberState} from "states/member.state";
+import { requestPhoneTriesState } from "states/user.state";
+import { memberState } from "states/member.state";
 import { ContentFallback } from "components/content-fallback";
 
 

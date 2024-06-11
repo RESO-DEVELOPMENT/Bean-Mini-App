@@ -2,13 +2,27 @@ import orderApi from "api/order";
 import { atom, selector } from "recoil";
 import { Cart } from "types/cart";
 import { OrderType, PaymentType } from "types/order";
+import { memberState } from "./member.state";
 
 export const prepareCartState = selector<Cart>({
   key: "prepareCart",
   get: async ({ get }) => {
     const cart = get(cartState);
-    var res = await orderApi.prepareOrder(cart);
-    return res.data;
+    const membership = await get(memberState);
+    console.log("memebr", membership);
+    if (membership !== undefined && membership !== null) {
+      let req = {
+        ...cart,
+        customerId: membership.membershipId,
+        customerPhone: membership.phoneNumber,
+        customerName: membership.fullname
+      };
+      var res = await orderApi.prepareOrder(req);
+      return res.data;
+    } else {
+      var res = await orderApi.prepareOrder(cart);
+      return res.data;
+    }
   },
 });
 
