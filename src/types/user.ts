@@ -62,3 +62,11 @@ export interface WalletType {
   name: string
   currency: string
 }
+
+export interface RecentlySearchMember {
+  membershipId: string
+  phoneNumber: string
+  fullname: string
+}
+
+

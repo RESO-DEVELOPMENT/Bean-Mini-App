@@ -1,5 +1,7 @@
 import React from "react";
 import { FC } from "react";
+import { RecoilState, useRecoilState } from "recoil";
+import { phoneSearchState } from "states/member.state";
 import { Box, Input, useNavigate } from "zmp-ui";
 
 export const Inquiry: FC = () => {
@@ -13,3 +15,5 @@ export const Inquiry: FC = () => {
     </Box>
   );
 };
+
+

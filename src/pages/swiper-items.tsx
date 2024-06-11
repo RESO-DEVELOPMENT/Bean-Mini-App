@@ -3,6 +3,7 @@ import { FC } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.min.css";
 import { Box } from "zmp-ui";
+import { IoIosGift } from "react-icons/io";
 import { IoTicket } from "react-icons/io5";
 import { FaCartPlus } from "react-icons/fa";
 import { MdPayments } from "react-icons/md";
@@ -48,6 +49,12 @@ export const SwiperItem: FC = () => {
       </div>
       <div className="text-center text-sm">Khuyến mãi</div>
     </SwiperSlide>,
+    <SwiperSlide key={4} style={swiperStyle} onClick={() => navigate("/gifts")}>
+    <div style={containerStyle}>
+      <IoIosGift  className="icon-color" size={iconSize} />
+    </div>
+    <div className="text-center text-sm">Quà tặng</div>
+  </SwiperSlide>,
 
     // <SwiperSlide key={4}>
     //   <div style={containerStyle}>

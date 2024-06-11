@@ -18,11 +18,12 @@ import QRCodePage from "pages/qr-code";
 import InformationPage from "pages/information";
 import FeedbackForm from "pages/feedback";
 import BlogDetail from "pages/wallet/blog-detail";
+import { GiftsPage } from "pages/gifts";
 
 if (getSystemInfo().platform === "android") {
   const androidSafeTop = Math.round(
     // (window as any).ZaloJavaScriptInterface.getStatusBarHeight() /
-      window.devicePixelRatio
+    window.devicePixelRatio
   );
   document.body.style.setProperty(
     "--zaui-safe-area-inset-top",
@@ -46,12 +47,13 @@ export const Layout: FC = () => {
           <Route path="/history" element={<HistoryPage />}></Route>
           <Route path="/order-detail" element={<OrderDetailsPage />}></Route>
           <Route path="/voucher" element={<VoucherPage />}></Route>
-          <Route path="/qr" element={<QRCodePage />}></Route>
-          <Route path="/info" element={<InformationPage />}></Route>,
+          <Route path="/qr" element={<QRCodePage />} />
+          <Route path="/info" element={<InformationPage />} />,
           <Route path="/feedback" element={<FeedbackForm />} />,
           <Route path="/blog" element={<BlogDetail />}>
-            {" "}
+            
           </Route>
+          <Route path="/gifts" element={<GiftsPage />}></Route>{" "}
         </Routes>
       </Box>
       <Navigation />

@@ -1,14 +1,20 @@
+import { keywordState } from "states/product.state";
 import userApi from "api/user";
 import axios from "axios";
-import { selector } from "recoil";
+import { atom, selector, selectorFamily } from "recoil";
 import { cartState, prepareCartState } from "./cart.state";
 import { requestPhoneTriesState, userState, phoneState } from "./user.state";
+import { Membership, RecentlySearchMember } from "types/user";
+import { membershipApi } from "api/member";
+import { getStorage, setStorage } from "zmp-sdk";
 
 export const listMembershipCardState = selector({
   key: "membershipcardList",
   get: async ({ get }) => {
     const member = get(memberState);
-    const listMembership = await userApi.getMembershipCard(member?.membershipId ?? "");
+    const listMembership = await userApi.getMembershipCard(
+      member?.membershipId ?? ""
+    );
     return listMembership.data;
   },
 });
@@ -32,7 +38,9 @@ export const memberState = selector({
         var response = await userApi.userLogin(phone, user.name);
         if (response.status == 200) {
           axios.defaults.headers.common.Authorization = `Bearer ${response.data.data.token}`;
-          var member = await userApi.getUserInfo(response.data.data.userId ?? "");
+          var member = await userApi.getUserInfo(
+            response.data.data.userId ?? ""
+          );
           return member.data;
         }
       }
@@ -71,9 +79,45 @@ export const memberState = selector({
       ...cart,
       customerId: member?.membershipId,
       customerName: member?.fullname,
-      customerPhone: member?.phoneNumber
+      customerPhone: member?.phoneNumber,
     };
     console.log("cart set", res);
     set(cartState, res);
+  },
+});
+
+export const memberByRawPhoneInputState = selector({
+  key: "memberByRawPhoneInput",
+  get: async ({ get }) => {
+    const keyPhoneSearch = get(phoneSearchState);
+    if (keyPhoneSearch.length >= 10) {
+      const membersSearch = await membershipApi.getMemeberships(keyPhoneSearch);
+
+      return membersSearch.data;
+    }
+    return null;
+  },
+});
+
+export const recentSearchMembersKeyState = atom({
+  key: "recentSearchMembersKey",
+  default: "recentSearchMembers",
+});
+
+export const rawPhoneNumberState = atom<string>({
+  key: "rawPhoneNumber",
+  default: "",
+});
+
+export const phoneSearchState = selector<string>({
+  key: "phoneSearch",
+  get: ({ get }) => {
+    const rawPhoneNumber = get(rawPhoneNumberState);
+    return rawPhoneNumber.replace(/^0/, "+84");
+  },
+  set: ({ set }, newValue) => {
+    if (typeof newValue === "string" && newValue.length == 10) {
+      set(rawPhoneNumberState, newValue);
+    } else set(rawPhoneNumberState, "");
   },
 });
