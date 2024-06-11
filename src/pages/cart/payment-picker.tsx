@@ -10,7 +10,7 @@ import {
 
 
 } from "states/order.state";
-import { selectedStoreState } from "states/store.state";
+
 import { cartState } from "states/cart.state";
 import { showPaymentType } from "utils/product";
 import { Box, Text } from "zmp-ui";
