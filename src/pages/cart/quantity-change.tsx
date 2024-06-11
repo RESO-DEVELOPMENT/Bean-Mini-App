@@ -1,18 +1,21 @@
 import { SingleOptionPicker } from "components/product/single-option-picker";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { Cart, ProductList } from "types/cart";
 import { Product } from "types/store-menu";
 import { Box, Button, Icon, Sheet, Text } from "zmp-ui";
 
 export const QuantityChangeSection: FC<{
-  handleChange: (product: Product, quantity: number) => any;
+  handleChange: (product: Product | ProductList, quantity: number) => any;
   visible: boolean;
   setVisible: (visible: boolean) => void;
-  product: any;
+  product: Product;
+  productInCart: ProductList;
   isUpdate: boolean;
-  currentChild?: any;
-  setMenuProductId?: any;
+  currentChild?: Product[];
   menuProductId?: string;
+  productChosen?: Product;
+  setProductChosen?: any;
 }> = ({
   currentChild,
   isUpdate,
@@ -20,11 +23,30 @@ export const QuantityChangeSection: FC<{
   visible,
   setVisible,
   product,
-  setMenuProductId,
-  menuProductId
+  productInCart,
+  productChosen,
+  setProductChosen,
 }) => {
-  // console.log(product);
-  const [quantity, setQuantity] = useState(product.quantity || 1);
+  console.log("product In cart", productInCart);
+  const productInCartToUse = productInCart;
+
+  console.log("product In cart TO Use", productInCartToUse);
+  const [quantity, setQuantity] = useState(
+    productInCart ? productInCart.quantity : 1
+  );
+  // useEffect(() => {
+  //   setQuantity(productInCart ? productInCart.quantity : 1);
+  //   setProductInCart(() => {
+  //     cart!.productList.find(
+  //       (p) => p.productInMenuId === productChosen?.menuProductId
+  //     )});
+  //     console.log("productInCart", productInCart);
+  //     console.log("productChosen", productChosen!.name);
+  // }, [productChosen, productInCart])
+  useEffect(() => {
+    setQuantity(productInCartToUse ? productInCartToUse.quantity : 1);
+  }, [productChosen, productInCart]);
+
   return (
     <>
       {createPortal(
@@ -34,9 +56,6 @@ export const QuantityChangeSection: FC<{
               <Box className="space-y-4 ml">
                 <Text.Title>{product.name}</Text.Title>
               </Box>
-              <Box className="space-y-4 ml">
-                <Text.Title>{product.description}</Text.Title>
-              </Box>
 
               <Box className="flex justify-between">
                 <Text>{product.description}</Text>
@@ -44,13 +63,17 @@ export const QuantityChangeSection: FC<{
               <Box className="space-y-5">
                 {currentChild != null && currentChild.length > 0 && (
                   <SingleOptionPicker
-                    key={product.menuProductId}
+                    key={product.id}
                     variant={currentChild}
                     defaultValue={""}
                     varianName={"Kích cỡ"}
-                    value={menuProductId ?? ""}
+                    value={productChosen!.menuProductId || ""}
                     onChange={(selectedOption) =>
-                      setMenuProductId(selectedOption)
+                      setProductChosen(() => {
+                        return currentChild.find(
+                          (option) => option.menuProductId === selectedOption
+                        )!;
+                      })
                     }
                   />
                 )}
@@ -59,7 +82,7 @@ export const QuantityChangeSection: FC<{
                 <Button
                   onClick={() =>
                     setQuantity((preQuantity) => {
-                      if (preQuantity == 1) return;
+                      if (preQuantity === 1) return preQuantity;
                       return preQuantity - 1;
                     })
                   }
@@ -98,8 +121,11 @@ export const QuantityChangeSection: FC<{
                   fullWidth
                   onClick={() => {
                     setVisible(false);
-                    console.log(quantity)
-                    handleChange(product, quantity);
+                    console.log(productInCartToUse);
+                    handleChange(
+                      productInCartToUse ? productInCartToUse : productChosen!,
+                      quantity
+                    );
                   }}
                 >
                   {isUpdate ? "Cập nhật" : "Thêm vào giỏ hàng"}

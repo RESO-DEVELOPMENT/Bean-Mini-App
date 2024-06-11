@@ -29,7 +29,7 @@ export const CartPreview: FC = () => {
   const member = useRecoilValueLoadable(memberState);
   const snackbar = useSnackbar();
   const navigate = useNavigate();
-  console.log("cartPrepare", cartPrepare.contents);
+  // console.log("cartPrepare", cartPrepare.contents);
   const onCheckout = async () => {
     const body = { ...cartPrepare.contents, customerId: member?.contents.membershipId ?? null, };
     const paymentMethod = cartPrepare.contents.paymentType == PaymentType.CASH ? "COD" : "POINTIFY";

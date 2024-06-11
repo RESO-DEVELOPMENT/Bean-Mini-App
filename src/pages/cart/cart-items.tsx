@@ -12,16 +12,25 @@ export const CartItems: FC = () => {
   const [editingItem, setEditingItem] = useState<ProductList | undefined>();
   const [cart, setCart] = useRecoilState(cartState);
   const [visible, setVisible] = useState(false);
-
-  const handleEditSheetShow = () => {
+  const [productInCartChosen, setProductInCartChosen] = useState<ProductList>();
+  const handleEditSheetShow = (productInCart: ProductList) => {
     setVisible(true);
+    setProductInCartChosen(productInCart);
   };
-  const changeCartItemNumber = (product: Product | ProductList, quantity: number) => {
-    console.log(product)
+  const changeCartItemNumber = (
+    product: Product | ProductList,
+    quantity: number
+  ) => {
     setCart((prevCart) => {
-      if(cart.productList.some((p) => p.productInMenuId === (product as ProductList).productInMenuId)) {
+      if (
+        cart.productList.some(
+          (p) => p.productInMenuId === (product as ProductList).productInMenuId
+        )
+      ) {
         let newProductList = prevCart.productList.map((item) => {
-          if (item.productInMenuId === (product as ProductList)!.productInMenuId) {
+          if (
+            item.productInMenuId === (product as ProductList)!.productInMenuId
+          ) {
             return {
               ...item,
               totalAmount: item.sellingPrice * quantity,
@@ -35,7 +44,6 @@ export const CartItems: FC = () => {
           ...prevCart,
           productList: newProductList,
         };
-        console.log("đổi số lượng")
         return prepareCart(res);
       }
       const cartItem: ProductList = {
@@ -50,15 +58,14 @@ export const CartItems: FC = () => {
         totalAmount: product!.sellingPrice * quantity!,
         discount: (product as Product)!.discountPrice,
         finalAmount:
-        product!.sellingPrice * quantity! -
-        (product as Product)!.discountPrice,
+          product!.sellingPrice * quantity! -
+          (product as Product)!.discountPrice,
         picUrl: product!.picUrl,
-      }
+      };
       let res = {
         ...prevCart,
         productList: cart.productList.concat(cartItem),
       };
-      console.log("thêm sản phẩm")
       return prepareCart(res);
     });
   };
@@ -100,7 +107,7 @@ export const CartItems: FC = () => {
                   </Text>
                 </div>
               </Box>
-              <Box className="flex-initial" onClick={handleEditSheetShow}>
+              <Box className="flex-initial" onClick={() => handleEditSheetShow(item)}>
                 {/* <QuantityChangeSection 
                 id={item.productInMenuId}
                 handleClick={changeCartItemNumber}
@@ -108,13 +115,16 @@ export const CartItems: FC = () => {
               /> */}
                 <Icon icon="zi-edit" className="mt-1 text-primary" />
               </Box>
-              <QuantityChangeSection
-                visible={visible}
-                setVisible={setVisible}
-                product={item}
-                handleChange={changeCartItemNumber}
-                isUpdate={true}
-              />
+              {productInCartChosen && (
+                <QuantityChangeSection
+                  visible={visible}
+                  setVisible={setVisible}
+                  product={{} as Product}
+                  productInCart={productInCartChosen}
+                  handleChange={changeCartItemNumber}
+                  isUpdate={true}
+                />
+              )}
               <Box onClick={() => clearCartItem(item)} className="flex-initial">
                 <Icon icon="zi-delete" className="mt-1 text-red-500" />
               </Box>
