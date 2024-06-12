@@ -1,16 +1,37 @@
-import React, { Suspense } from "react";
+import React, { FC, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Header, Page, Tabs } from "zmp-ui";
 import VoucherCard from "./card-voucher";
-import {  listPromotionState } from "states/promotion.state";
+import { listPromotionState } from "states/promotion.state";
 import { cartState } from "states/cart.state";
-import { useRecoilState, useRecoilValueLoadable } from "recoil";
+import {
+  RecoilState,
+  RecoilValue,
+  RecoilValueReadOnly,
+  useRecoilState,
+  useRecoilValue,
+  useRecoilValueLoadable,
+  useRecoilValueLoadable_TRANSITION_SUPPORT_UNSTABLE,
+} from "recoil";
 import { prepareCart } from "utils/product";
+import { memberState } from "states/member.state";
+import { Subscription } from "./profile";
+import { ContentFallback } from "components/content-fallback";
 
-const VoucherPage = () => {
+interface VoucherPageProps {
+  state?: RecoilValueReadOnly<any>;
+}
+const VoucherPage: FC<VoucherPageProps> = ({ state }) => {
   const navigate = useNavigate();
-  const promotionListData = useRecoilValueLoadable(listPromotionState);
+  const promotionListData = useRecoilValueLoadable(state! || listPromotionState);
   const [cart, setCart] = useRecoilState(cartState);
+  const memberLoadable = useRecoilValueLoadable(memberState);
+
+  if (memberLoadable.state == "loading" || memberLoadable.state == "hasError") 
+    return <ContentFallback />;
+
+  if (memberLoadable.state == "hasValue" && memberLoadable.contents === null)
+    return <Subscription />;
 
   return (
     <Page className="flex flex-col" style={{ overflow: "hidden" }}>
@@ -18,9 +39,9 @@ const VoucherPage = () => {
       {/* <SpecialOffers /> */}
       <Tabs scrollable defaultActiveKey={"0"} className="category-tabs">
         <Tabs.Tab key={0} label="Hiện có">
-          <Suspense>
+          <Suspense fallback={<ContentFallback />}>
             {promotionListData.state === "hasValue" &&
-              promotionListData.contents !== null ? (
+            promotionListData.contents !== null ? (
               <div
                 style={{
                   overflowY: "auto",
@@ -64,9 +85,9 @@ const VoucherPage = () => {
           </Suspense>
         </Tabs.Tab>
         <Tabs.Tab key={1} label="Của tôi">
-          <Suspense>
+          <Suspense fallback={<ContentFallback />}>
             {promotionListData.state === "hasValue" &&
-              promotionListData.contents !== null ? (
+            promotionListData.contents !== null ? (
               <div
                 style={{
                   overflowY: "auto",
@@ -87,7 +108,7 @@ const VoucherPage = () => {
                             res = {
                               ...prevCart,
                               promotionCode: promotion.promotionCode,
-                              voucherCode: promotion.listVoucher[0].voucherCode
+                              voucherCode: promotion.listVoucher[0].voucherCode,
                             };
                             return prepareCart(res);
                           })
@@ -99,7 +120,7 @@ const VoucherPage = () => {
                             res = {
                               ...prevCart,
                               promotionCode: null,
-                              voucherCode: null
+                              voucherCode: null,
                             };
                             return prepareCart(res);
                           })

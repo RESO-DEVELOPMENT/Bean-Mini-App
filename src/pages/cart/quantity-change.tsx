@@ -27,10 +27,10 @@ export const QuantityChangeSection: FC<{
   productChosen,
   setProductChosen,
 }) => {
-  console.log("product In cart", productInCart);
+  // console.log("product In cart", productInCart);
   const productInCartToUse = productInCart;
 
-  console.log("product In cart TO Use", productInCartToUse);
+  // console.log("product In cart TO Use", productInCartToUse);
   const [quantity, setQuantity] = useState(
     productInCart ? productInCart.quantity : 1
   );

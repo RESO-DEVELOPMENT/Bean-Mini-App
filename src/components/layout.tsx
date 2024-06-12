@@ -19,6 +19,9 @@ import InformationPage from "pages/information";
 import FeedbackForm from "pages/feedback";
 import BlogDetail from "pages/wallet/blog-detail";
 import { GiftsPage } from "pages/gifts";
+import { listPromotionState } from "states/promotion.state";
+import { listVoucherForSaleState } from "states/voucher.state";
+import VoucherGroupPage from "pages/gifts/voucher-group-list";
 
 if (getSystemInfo().platform === "android") {
   const androidSafeTop = Math.round(
@@ -46,7 +49,8 @@ export const Layout: FC = () => {
           <Route path="/profile" element={<ProfilePage />}></Route>
           <Route path="/history" element={<HistoryPage />}></Route>
           <Route path="/order-detail" element={<OrderDetailsPage />}></Route>
-          <Route path="/voucher" element={<VoucherPage />}></Route>
+          <Route path="/voucher" element={<VoucherPage  state={listPromotionState}/>}></Route>
+          <Route path="/gifts-for-sale" element={<VoucherGroupPage state={listVoucherForSaleState} />}></Route>
           <Route path="/qr" element={<QRCodePage />} />
           <Route path="/info" element={<InformationPage />} />,
           <Route path="/feedback" element={<FeedbackForm />} />,

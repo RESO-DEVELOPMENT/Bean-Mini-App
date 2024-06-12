@@ -20,6 +20,7 @@ import {
 import { CustomInquiry } from "pages/search/inquiry";
 import { ContentFallback } from "components/content-fallback";
 import { getStorage, setStorage } from "zmp-sdk";
+import { useNavigate } from "react-router-dom";
 
 export const GiftsPage: FC = () => (
   <Page>
@@ -36,7 +37,6 @@ const GiftsPageContent: FC = () => {
     memberByRawPhoneInputState
   );
   const key = useRecoilValue(recentSearchMembersKeyState);
-
   const loadRecentlySearch = useCallback(() => {
     getStorage({
       keys: [key],

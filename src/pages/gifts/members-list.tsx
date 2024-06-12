@@ -1,12 +1,17 @@
 import React from "react";
 import { FC } from "react";
 import { MemberLevel, Membership } from "types/user";
-import { List, Avatar, Icon, Text, Box, Tabs } from "zmp-ui";
+import { List, Avatar, Icon, Text, Box, Tabs, useNavigate } from "zmp-ui";
 
 interface MemberListProps {
   members: Membership[];
 }
 export const MembersList: FC<MemberListProps> = ({ members }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/gifts-for-sale");
+  }
   const renderMembers: Membership[] = [];
   members.map((m) => {
     let obj: Membership = {
@@ -22,7 +27,7 @@ export const MembersList: FC<MemberListProps> = ({ members }) => {
   return (
     <List className="p-4">
       {renderMembers.map((m) => (
-        <Box key={m.membershipId} className="flex flex-row items-center mb-6">
+        <Box onClick={handleClick} key={m.membershipId} className="flex flex-row items-center mb-6">
           <Box className="w-auto h-full flex-none mr-2">
             <Avatar backgroundColor={"SKYBLUE-GREEN"}>
               <Icon icon="zi-user" />

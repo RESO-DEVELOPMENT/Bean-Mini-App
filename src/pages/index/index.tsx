@@ -10,6 +10,7 @@ import { Divider } from "components/divider";
 import { ContentFallback } from "components/content-fallback";
 
 const HomePage: React.FunctionComponent = () => {
+
   return (
     <Page className="relative flex-1 flex flex-col bg-white">
       <Welcome />

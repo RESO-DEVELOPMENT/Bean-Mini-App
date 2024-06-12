@@ -91,7 +91,7 @@ export const memberByRawPhoneInputState = selector({
   get: async ({ get }) => {
     const keyPhoneSearch = get(phoneSearchState);
     if (keyPhoneSearch.length >= 10) {
-      const membersSearch = await membershipApi.getMemeberships(keyPhoneSearch);
+      const membersSearch = await membershipApi.getMemberships(keyPhoneSearch);
 
       return membersSearch.data;
     }
