@@ -1,5 +1,6 @@
 
 
+import { MemberActionResponse } from "types/user";
 import { axiosInstances } from "utils/axios";
 
 const requestPomotion = axiosInstances.promotion;
@@ -12,6 +13,23 @@ const getMemberships = (phone: string) => {
   );
 };
 
+const sendGift = (toMemberId: string, voucherGroupId: string, memberId: string) => {
+  const action = {
+    "apiKey": apiKey,
+    "membershipId": memberId,
+    "amount": 0,
+    "memberActionType": "SEND_VOUCHER",
+    "description": "SEND_VOUCHER",
+    "voucherGroupId": voucherGroupId,
+    "toMembershipId": toMemberId
+  };
+  return requestPomotion.post<MemberActionResponse>(
+    `/member-action`,
+    action
+  );
+};
+
 export const membershipApi = {
   getMemberships,
+  sendGift
 };

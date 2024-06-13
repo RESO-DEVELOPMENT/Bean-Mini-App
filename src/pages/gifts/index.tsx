@@ -24,7 +24,7 @@ import { useNavigate } from "react-router-dom";
 
 export const GiftsPage: FC = () => (
   <Page>
-    <Header title="Quà tặng" />
+    <Header title="Tặng quà" />
     <GiftsPageContent />
   </Page>
 );

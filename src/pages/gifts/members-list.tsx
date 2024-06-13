@@ -1,5 +1,6 @@
 import React from "react";
 import { FC } from "react";
+import { useRecoilState } from "recoil";
 import { MemberLevel, Membership } from "types/user";
 import { List, Avatar, Icon, Text, Box, Tabs, useNavigate } from "zmp-ui";
 
@@ -8,10 +9,11 @@ interface MemberListProps {
 }
 export const MembersList: FC<MemberListProps> = ({ members }) => {
   const navigate = useNavigate();
-
-  const handleClick = () => {
-    navigate("/gifts-for-sale");
-  }
+  const handleClick = (memberId: string) => {
+    navigate("/gifts-for-sale", {
+      state: { id: memberId },
+    });
+  };
   const renderMembers: Membership[] = [];
   members.map((m) => {
     let obj: Membership = {
@@ -27,7 +29,7 @@ export const MembersList: FC<MemberListProps> = ({ members }) => {
   return (
     <List className="p-4">
       {renderMembers.map((m) => (
-        <Box onClick={handleClick} key={m.membershipId} className="flex flex-row items-center mb-6">
+        <Box onClick={() => handleClick(m.membershipId)} key={m.membershipId} className="flex flex-row items-center mb-6">
           <Box className="w-auto h-full flex-none mr-2">
             <Avatar backgroundColor={"SKYBLUE-GREEN"}>
               <Icon icon="zi-user" />
@@ -42,9 +44,9 @@ export const MembersList: FC<MemberListProps> = ({ members }) => {
               <span className="text-primary">{m.phoneNumber.replace('+84', '0')}</span>
             </Text>
           </Box>
-          <Box>
+          {/* <Box>
             <Icon className="text-primary" icon="zi-call-solid" />
-          </Box>
+          </Box> */}
         </Box>
       ))}
     </List>

@@ -21,11 +21,11 @@ const swiperStyle: React.CSSProperties = {
   alignItems: "center",
   backgroundColor: "#ffffff",
 }
-const iconSize = "50px";
+const iconSize = "40px";
 export const SwiperItem: FC = () => {
   const navigate = useNavigate();
   const swiperSlides1 = [
-    <SwiperSlide key={0} style={swiperStyle} onClick={()=> navigate("/qr")}>
+    <SwiperSlide key={0} style={swiperStyle} onClick={() => navigate("/qr")}>
       <div style={containerStyle}>
         <MdPayments className="icon-color" size={iconSize} />
       </div>
@@ -50,11 +50,11 @@ export const SwiperItem: FC = () => {
       <div className="text-center text-sm">Khuyến mãi</div>
     </SwiperSlide>,
     <SwiperSlide key={4} style={swiperStyle} onClick={() => navigate("/gifts")}>
-    <div style={containerStyle}>
-      <IoIosGift  className="icon-color" size={iconSize} />
-    </div>
-    <div className="text-center text-sm">Quà tặng</div>
-  </SwiperSlide>,
+      <div style={containerStyle}>
+        <IoIosGift className="icon-color" size={iconSize} />
+      </div>
+      <div className="text-center text-sm">Tặng quà</div>
+    </SwiperSlide>,
 
     // <SwiperSlide key={4}>
     //   <div style={containerStyle}>

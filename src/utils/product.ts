@@ -134,6 +134,8 @@ export function showTransactionType(type: string) {
       return "Tích điểm";
     case TransactionTypeEnum.TOP_UP:
       return "Nạp tiền";
+    case TransactionTypeEnum.SEND_VOUCHER:
+      return "Tặng quà cho bạn bè";
     default:
       return "Không có thông tin";
   }

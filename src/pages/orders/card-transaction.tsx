@@ -13,14 +13,17 @@ interface TransactionProps {
 const TransactionCard: FC<TransactionProps> = ({ trans }) => {
   return (
     <Box className="space-y-2 px-2 mt-2">
+
       <ListRenderer
         noDivider
         items={[
           {
             left: (
-              <Text.Title size="small">
-                {showTransactionType(trans.type)}
-              </Text.Title>
+              <Box className="flex-1">
+                <Text size="small">
+                  {trans.description ?? 'Thanh toán đơn hàng'}
+                </Text>
+              </Box>
             ),
             right: (
               <Box flex>
@@ -35,7 +38,7 @@ const TransactionCard: FC<TransactionProps> = ({ trans }) => {
             left: <Text size="small">Thời gian</Text>,
             right: (
               <Box flex>
-                <Box className="flex-1 "></Box>
+                <Box className="flex-1"></Box>
                 <Text size="xxSmall">
                   {displayTime(new Date(trans.insDate)) +
                     " " +

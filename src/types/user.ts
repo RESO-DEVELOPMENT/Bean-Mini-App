@@ -70,3 +70,13 @@ export interface RecentlySearchMember {
 }
 
 
+
+export interface MemberActionResponse {
+  actionValue: number
+  description: string
+  id: string
+  memberActionTypeId: string
+  memberWalletId: string
+  status: string
+  transactionId: string
+}

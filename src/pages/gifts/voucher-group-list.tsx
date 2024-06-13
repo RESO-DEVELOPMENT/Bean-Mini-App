@@ -1,9 +1,11 @@
 import React, { FC } from "react";
-import { useNavigate } from "react-router-dom";
-import { Box, Button, Header, Page, Tabs, Text } from "zmp-ui";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Box, Button, Header, Page, Tabs, Text, useSnackbar } from "zmp-ui";
 // import { cartState } from "states/cart.state";
 import {
   RecoilValueReadOnly,
+  useRecoilState,
+  useRecoilValue,
   //   useRecoilState,
   useRecoilValueLoadable,
 } from "recoil";
@@ -16,30 +18,53 @@ import { displayDate } from "utils/date";
 import { VoucherGroup } from "types/voucher-group";
 
 import logo from "../../static/logo.png";
+import { membershipApi } from "api/member";
 
 interface VoucherGroupPageProps {
   state?: RecoilValueReadOnly<any>;
 }
 const VoucherGroupPage: FC<VoucherGroupPageProps> = ({ state }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const toMemberId = location.state?.id;
   const voucherGroupListData = useRecoilValueLoadable(state!);
-  //   const [cart, setCart] = useRecoilState(cartState);
-  const memberLoadable = useRecoilValueLoadable(memberState);
 
+  const memberLoadable = useRecoilValueLoadable(memberState);
+  const snackbar = useSnackbar();
   if (memberLoadable.state == "loading" || memberLoadable.state == "hasError")
     return <ContentFallback />;
 
   if (memberLoadable.state == "hasValue" && memberLoadable.contents === null)
     return <Subscription />;
+
+  const handleSendGift = async (voucherGroupId: string) => {
+    await membershipApi.sendGift(toMemberId, voucherGroupId, memberLoadable.contents?.membershipId!).then((res) => {
+      if (res.status == 200 && res.data.status == "SUCCESS") {
+        console.log(res.data);
+        snackbar.openSnackbar({
+          duration: 2000,
+          type: "success",
+          text: res.data.description,
+        });
+      } else {
+        console.log(" log eror", res);
+        snackbar.openSnackbar({
+          duration: 3000,
+          type: "error",
+          text: res.data.status,
+        });
+      }
+    })
+  };
   console.log("hiện");
   return (
     <Page className="flex flex-col" style={{ overflow: "hidden" }}>
-      <Header title="Mã quà tặng" />
+      <Header title="Danh sách quà tặng" />
       {/* <SpecialOffers /> */}
       <Tabs scrollable defaultActiveKey={"0"} className="category-tabs">
         <Tabs.Tab key={0} label="Hiện có">
           {voucherGroupListData.state === "hasValue" &&
-          voucherGroupListData.contents !== null ? (
+            voucherGroupListData.contents !== null ? (
             <div
               style={{
                 overflowY: "auto",
@@ -50,31 +75,11 @@ const VoucherGroupPage: FC<VoucherGroupPageProps> = ({ state }) => {
                 <VoucherGroupCard
                   key={voucher.voucherGroupId}
                   voucherGroup={voucher}
-                  // onClick={() => {
-                  //   setCart((prevCart) => {
-                  //     let res = { ...prevCart };
-                  //     res = {
-                  //       ...prevCart,
-                  //       promotionCode: promotion.promotionCode,
-                  //     };
-                  //     return prepareCart(res);
-                  //   }),
-                  //     navigate("/cart");
-                  // }}
-                  onClick={() => {}}
-                  // isUsed={cart.promotionCode === voucher.promotionCode}
+                  onClick={() => {
+                    handleSendGift(voucher.voucherGroupId)
+                  }}
                   isUsed={true}
-                  // onCancle={() =>
-                  //   setCart((prevCart) => {
-                  //     let res = { ...prevCart };
-                  //     res = {
-                  //       ...prevCart,
-                  //       promotionCode: null,
-                  //     };
-                  //     return prepareCart(res);
-                  //   })
-                  // }
-                  onCancel={() => {}}
+                  onCancel={() => { }}
                 />
               ))}
             </div>
@@ -165,15 +170,13 @@ const VoucherGroupCard: FC<VoucherCardProps> = ({
         />
         <div>
           <p className="font-bold">{voucherGroup.voucherName}</p>
-          <p>{voucherGroup.redeemPoint}</p>
-          {/* <p>HSD {displayDate(new Date(voucherGroup.endDate))}</p> */}
-          <p>Số lượng: {voucherGroup.quantity}</p>
+          <p className="text-primary">Tặng với {voucherGroup.redeemPoint} Điểm</p>
           <button
-          onClick={isUsed ? onCancel : onClick}
-        //   className={`absolute font-bold mr-1 p-1 pl-6 pr-6 bottom-1 right-1 rounded-md text-white text-sm hover:text-sky-200 hover:bg-cyan-800 ${isUsed ? "bg-gray" : "bg-primary"}`}>
+            onClick={onClick}
+            //   className={`absolute font-bold mr-1 p-1 pl-6 pr-6 bottom-1 right-1 rounded-md text-white text-sm hover:text-sky-200 hover:bg-cyan-800 ${isUsed ? "bg-gray" : "bg-primary"}`}>
             className={`absolute font-bold mr-1 p-1 pl-6 pr-6 bottom-1 right-1 rounded-md text-white text-sm ${false ? "bg-gray" : "bg-primary"}`}>
             {/* {isUsed ? "Hủy" : "Sử dụng"} */}
-             {false ? "Hủy" : "Sử dụng"} 
+            {false ? "Hủy" : "Tặng"}
           </button>
         </div>
       </div>
