@@ -27,7 +27,7 @@ const VoucherPage: FC<VoucherPageProps> = ({ state }) => {
   const [cart, setCart] = useRecoilState(cartState);
   const memberLoadable = useRecoilValueLoadable(memberState);
 
-  if (memberLoadable.state == "loading" || memberLoadable.state == "hasError") 
+  if (memberLoadable.state == "loading" || memberLoadable.state == "hasError")
     return <ContentFallback />;
 
   if (memberLoadable.state == "hasValue" && memberLoadable.contents === null)
@@ -41,7 +41,7 @@ const VoucherPage: FC<VoucherPageProps> = ({ state }) => {
         <Tabs.Tab key={0} label="Hiện có">
           <Suspense fallback={<ContentFallback />}>
             {promotionListData.state === "hasValue" &&
-            promotionListData.contents !== null ? (
+              promotionListData.contents !== null ? (
               <div
                 style={{
                   overflowY: "auto",
@@ -87,7 +87,7 @@ const VoucherPage: FC<VoucherPageProps> = ({ state }) => {
         <Tabs.Tab key={1} label="Của tôi">
           <Suspense fallback={<ContentFallback />}>
             {promotionListData.state === "hasValue" &&
-            promotionListData.contents !== null ? (
+              promotionListData.contents !== null ? (
               <div
                 style={{
                   overflowY: "auto",
@@ -97,7 +97,7 @@ const VoucherPage: FC<VoucherPageProps> = ({ state }) => {
                 {promotionListData.contents.filter((e) => e.promotionType === 2)
                   .length > 0 ? (
                   promotionListData.contents
-                    .filter((e) => e.promotionType === 3)
+                    .filter((e) => e.promotionType === 3 && (e.listVoucher != null && e.listVoucher?.length > 0))
                     .map((promotion) => (
                       <VoucherCard
                         key={promotion.promotionId}

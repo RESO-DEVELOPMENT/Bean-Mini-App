@@ -136,6 +136,8 @@ export function showTransactionType(type: string) {
       return "Nạp tiền";
     case TransactionTypeEnum.SEND_VOUCHER:
       return "Tặng quà cho bạn bè";
+    case TransactionTypeEnum.REDEEM_VOUCHER:
+      return "Đổi mã giảm giá";
     default:
       return "Không có thông tin";
   }

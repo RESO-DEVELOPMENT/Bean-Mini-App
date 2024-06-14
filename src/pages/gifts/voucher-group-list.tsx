@@ -27,6 +27,9 @@ const VoucherGroupPage: FC<VoucherGroupPageProps> = ({ state }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const toMemberId = location.state?.id;
+  const isGift = location.state?.isGift;
+
+  console.log("gidft", isGift);
   const voucherGroupListData = useRecoilValueLoadable(state!);
 
   const memberLoadable = useRecoilValueLoadable(memberState);
@@ -38,17 +41,18 @@ const VoucherGroupPage: FC<VoucherGroupPageProps> = ({ state }) => {
     return <Subscription />;
 
   const handleSendGift = async (voucherGroupId: string) => {
-    await membershipApi.sendGift(toMemberId, voucherGroupId, memberLoadable.contents?.membershipId!).then((res) => {
+    await membershipApi.sendGift(toMemberId, voucherGroupId, memberLoadable.contents?.membershipId!, isGift).then((res) => {
       if (res.status == 200 && res.data.status == "SUCCESS") {
         console.log(res.data);
         snackbar.openSnackbar({
-          duration: 2000,
+          duration: 3000,
           type: "success",
           text: res.data.description,
         });
       } else {
         console.log(" log eror", res);
         snackbar.openSnackbar({
+
           duration: 3000,
           type: "error",
           text: res.data.status,
@@ -78,7 +82,7 @@ const VoucherGroupPage: FC<VoucherGroupPageProps> = ({ state }) => {
                   onClick={() => {
                     handleSendGift(voucher.voucherGroupId)
                   }}
-                  isUsed={true}
+                  isGift={isGift}
                   onCancel={() => { }}
                 />
               ))}
@@ -150,14 +154,14 @@ interface VoucherCardProps {
   voucherGroup: VoucherGroup;
   onClick: () => void;
   onCancel: () => void;
-  isUsed: boolean;
+  isGift: boolean;
 }
 
 const VoucherGroupCard: FC<VoucherCardProps> = ({
   voucherGroup,
   onClick,
   onCancel,
-  isUsed,
+  isGift,
 }) => {
   return (
     <div className="relative bg-white p-2 rounded-lg shadow mb-1.5 mt-2.5 mx-2.5">
@@ -166,17 +170,16 @@ const VoucherGroupCard: FC<VoucherCardProps> = ({
           //   src={voucherGroup.imgUrl}
           src={logo}
           alt="Voucher Image"
-          className="w-[120px] h-30 rounded-md mr-2.5"
+          className="w-[100px] h-30 rounded-md mr-2.5"
         />
         <div>
           <p className="font-bold">{voucherGroup.voucherName}</p>
-          <p className="text-primary">Tặng với {voucherGroup.redeemPoint} Điểm</p>
+          <p className="text-primary">{isGift ? "Tặng quà với" : "Đổi quà với"} {voucherGroup.redeemPoint} Điểm</p>
           <button
             onClick={onClick}
             //   className={`absolute font-bold mr-1 p-1 pl-6 pr-6 bottom-1 right-1 rounded-md text-white text-sm hover:text-sky-200 hover:bg-cyan-800 ${isUsed ? "bg-gray" : "bg-primary"}`}>
-            className={`absolute font-bold mr-1 p-1 pl-6 pr-6 bottom-1 right-1 rounded-md text-white text-sm ${false ? "bg-gray" : "bg-primary"}`}>
-            {/* {isUsed ? "Hủy" : "Sử dụng"} */}
-            {false ? "Hủy" : "Tặng"}
+            className={"absolute font-bold mr-1 p-1 pl-6 pr-6 bottom-1 right-1 rounded-md text-white text-sm bg-primary"}>
+            {isGift ? "Tặng quà" : "Đổi điểm"}
           </button>
         </div>
       </div>

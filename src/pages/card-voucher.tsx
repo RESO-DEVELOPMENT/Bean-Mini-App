@@ -34,7 +34,7 @@ const VoucherCard: FC<VoucherCardProps> = ({
   const cardStyle: React.CSSProperties = {
     position: "relative",
     padding: "6px",
-    height: "140px",
+    height: "110px",
     borderRadius: "8px",
     display: "flex",
     alignItems: "normal",
@@ -42,7 +42,7 @@ const VoucherCard: FC<VoucherCardProps> = ({
 
   const imageStyle: React.CSSProperties = {
     maxWidth: "100%",
-    height: "120px",
+    height: "100px",
     borderRadius: "8px",
     marginRight: "10px",
   };
@@ -67,9 +67,9 @@ const VoucherCard: FC<VoucherCardProps> = ({
         <img src={promotion.imgUrl} alt="Voucher Image" style={imageStyle} />
         <Box>
           <Text className="font-bold">{promotion.promotionName}</Text>
-          <p>{promotion.description}</p>
-          <p>HSD {displayDate(new Date(promotion.endDate))}</p>
-          <p>Số lượng: {promotion.promotionType == 2 ? "Không giới hạn" : promotion.listVoucher.length}</p>
+          <Text size="xSmall">{promotion.description}</Text>
+          <Text size="xSmall">HSD: {displayDate(new Date(promotion.endDate))}</Text>
+          <Text size="xSmall">SL: {promotion.promotionType == 2 ? "Không giới hạn" : promotion.listVoucher.length}</Text>
           <Button
             style={buttonStyle}
             className={

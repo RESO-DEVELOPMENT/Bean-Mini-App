@@ -1,5 +1,6 @@
 
 
+import { TransactionTypeEnum } from "types/transaction";
 import { MemberActionResponse } from "types/user";
 import { axiosInstances } from "utils/axios";
 
@@ -13,15 +14,15 @@ const getMemberships = (phone: string) => {
   );
 };
 
-const sendGift = (toMemberId: string, voucherGroupId: string, memberId: string) => {
+const sendGift = (toMemberId: string, voucherGroupId: string, memberId: string, isGift: boolean) => {
   const action = {
     "apiKey": apiKey,
     "membershipId": memberId,
     "amount": 0,
-    "memberActionType": "SEND_VOUCHER",
-    "description": "SEND_VOUCHER",
+    "memberActionType": isGift ? TransactionTypeEnum.SEND_VOUCHER : TransactionTypeEnum.REDEEM_VOUCHER,
+    "description": "Tặng quà",
     "voucherGroupId": voucherGroupId,
-    "toMembershipId": toMemberId
+    "toMembershipId": isGift ? toMemberId : null
   };
   return requestPomotion.post<MemberActionResponse>(
     `/member-action`,

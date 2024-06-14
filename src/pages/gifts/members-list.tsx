@@ -11,7 +11,8 @@ export const MembersList: FC<MemberListProps> = ({ members }) => {
   const navigate = useNavigate();
   const handleClick = (memberId: string) => {
     navigate("/gifts-for-sale", {
-      state: { id: memberId },
+      state: { id: memberId, isGift: true },
+
     });
   };
   const renderMembers: Membership[] = [];
