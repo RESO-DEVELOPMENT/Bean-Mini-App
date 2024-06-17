@@ -9,9 +9,9 @@ interface MemberListProps {
 }
 export const MembersList: FC<MemberListProps> = ({ members }) => {
   const navigate = useNavigate();
-  const handleClick = (memberId: string) => {
+  const handleClick = (memberId: string, fullname: string) => {
     navigate("/gifts-for-sale", {
-      state: { id: memberId, isGift: true },
+      state: { id: memberId, isGift: true, fullName: fullname },
 
     });
   };
@@ -30,7 +30,7 @@ export const MembersList: FC<MemberListProps> = ({ members }) => {
   return (
     <List className="p-4">
       {renderMembers.map((m) => (
-        <Box onClick={() => handleClick(m.membershipId)} key={m.membershipId} className="flex flex-row items-center mb-6">
+        <Box onClick={() => handleClick(m.membershipId , m.fullname)} key={m.membershipId} className="flex flex-row items-center mb-6">
           <Box className="w-auto h-full flex-none mr-2">
             <Avatar backgroundColor={"SKYBLUE-GREEN"}>
               <Icon icon="zi-user" />

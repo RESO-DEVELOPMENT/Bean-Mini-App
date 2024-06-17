@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Box, Button, Header, Page, Tabs, Text, useSnackbar } from "zmp-ui";
 // import { cartState } from "states/cart.state";
@@ -19,17 +19,20 @@ import { VoucherGroup } from "types/voucher-group";
 
 import logo from "../../static/logo.png";
 import { membershipApi } from "api/member";
+import ConfirmModal from "components/confirm-modal";
 
 interface VoucherGroupPageProps {
   state?: RecoilValueReadOnly<any>;
 }
 const VoucherGroupPage: FC<VoucherGroupPageProps> = ({ state }) => {
+  const [dialogVisible, setDialogVisible] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const toMemberId = location.state?.id;
   const isGift = location.state?.isGift;
+  const memberName = location.state?.fullName;
 
-  console.log("gidft", isGift);
+  console.log("gift", isGift);
   const voucherGroupListData = useRecoilValueLoadable(state!);
 
   const memberLoadable = useRecoilValueLoadable(memberState);
@@ -40,25 +43,44 @@ const VoucherGroupPage: FC<VoucherGroupPageProps> = ({ state }) => {
   if (memberLoadable.state == "hasValue" && memberLoadable.contents === null)
     return <Subscription />;
 
+  // const ModelShowUp = (voucher) => {
+  //   setDialogVisible(true);
+  //   return (
+  //       <ConfirmModal
+  //         description={`${memberName} sẽ nhận được quà tặng`}
+  //         title={"Bạn chắc chắn muốn tặng ?"}
+  //         visible={dialogVisible}
+  //         setVisible={setDialogVisible}
+  //         handleYes={handleSendGift(voucher.voucherGroupId)}
+  //       />
+  //   );
+  // };
   const handleSendGift = async (voucherGroupId: string) => {
-    await membershipApi.sendGift(toMemberId, voucherGroupId, memberLoadable.contents?.membershipId!, isGift).then((res) => {
-      if (res.status == 200 && res.data.status == "SUCCESS") {
-        console.log(res.data);
-        snackbar.openSnackbar({
-          duration: 3000,
-          type: "success",
-          text: res.data.description,
-        });
-      } else {
-        console.log(" log eror", res);
-        snackbar.openSnackbar({
-
-          duration: 3000,
-          type: "error",
-          text: res.data.status,
-        });
-      }
-    })
+    await membershipApi
+      .sendGift(
+        toMemberId,
+        voucherGroupId,
+        memberLoadable.contents?.membershipId!,
+        isGift
+      )
+      .then((res) => {
+        if (res.status == 200 && res.data.status == "SUCCESS") {
+          console.log(res.data);
+          snackbar.openSnackbar({
+            duration: 3000,
+            type: "success",
+            text: res.data.description,
+          });
+        } else {
+          console.log(" log eror", res);
+          snackbar.openSnackbar({
+            duration: 3000,
+            type: "error",
+            text: res.data.status,
+          });
+        }
+      });
+      setDialogVisible(false);
   };
   console.log("hiện");
   return (
@@ -68,7 +90,7 @@ const VoucherGroupPage: FC<VoucherGroupPageProps> = ({ state }) => {
       <Tabs scrollable defaultActiveKey={"0"} className="category-tabs">
         <Tabs.Tab key={0} label="Hiện có">
           {voucherGroupListData.state === "hasValue" &&
-            voucherGroupListData.contents !== null ? (
+          voucherGroupListData.contents !== null ? (
             <div
               style={{
                 overflowY: "auto",
@@ -76,15 +98,24 @@ const VoucherGroupPage: FC<VoucherGroupPageProps> = ({ state }) => {
               }}
             >
               {voucherGroupListData.contents.map((voucher) => (
-                <VoucherGroupCard
-                  key={voucher.voucherGroupId}
-                  voucherGroup={voucher}
-                  onClick={() => {
-                    handleSendGift(voucher.voucherGroupId)
-                  }}
-                  isGift={isGift}
-                  onCancel={() => { }}
-                />
+                <>
+                  <ConfirmModal
+                    description={`${memberName} sẽ nhận được quà tặng`}
+                    title={"Bạn chắc chắn muốn tặng ?"}
+                    visible={dialogVisible}
+                    setVisible={setDialogVisible}
+                    handleYes={() => handleSendGift(voucher.voucherGroupId)}
+                  />
+                  <VoucherGroupCard
+                    key={voucher.voucherGroupId}
+                    voucherGroup={voucher}
+                    onClick={() => {
+                      setDialogVisible(true);
+                    }}
+                    isGift={isGift}
+                    onCancel={() => {}}
+                  />
+                </>
               ))}
             </div>
           ) : (
@@ -174,11 +205,17 @@ const VoucherGroupCard: FC<VoucherCardProps> = ({
         />
         <div>
           <p className="font-bold">{voucherGroup.voucherName}</p>
-          <p className="text-primary">{isGift ? "Tặng quà với" : "Đổi quà với"} {voucherGroup.redeemPoint} Điểm</p>
+          <p className="text-primary">
+            {isGift ? "Tặng quà với" : "Đổi quà với"} {voucherGroup.redeemPoint}{" "}
+            Điểm
+          </p>
           <button
             onClick={onClick}
             //   className={`absolute font-bold mr-1 p-1 pl-6 pr-6 bottom-1 right-1 rounded-md text-white text-sm hover:text-sky-200 hover:bg-cyan-800 ${isUsed ? "bg-gray" : "bg-primary"}`}>
-            className={"absolute font-bold mr-1 p-1 pl-6 pr-6 bottom-1 right-1 rounded-md text-white text-sm bg-primary"}>
+            className={
+              "absolute font-bold mr-1 p-1 pl-6 pr-6 bottom-1 right-1 rounded-md text-white text-sm bg-primary"
+            }
+          >
             {isGift ? "Tặng quà" : "Đổi điểm"}
           </button>
         </div>

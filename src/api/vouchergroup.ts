@@ -1,5 +1,6 @@
 
 import { axiosInstances } from 'utils/axios';
+import { membershipApi } from './member';
 
 const requestPomotion = axiosInstances.promotion;
 
