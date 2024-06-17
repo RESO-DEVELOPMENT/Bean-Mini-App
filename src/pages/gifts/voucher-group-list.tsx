@@ -26,10 +26,11 @@ interface VoucherGroupPageProps {
 }
 const VoucherGroupPage: FC<VoucherGroupPageProps> = ({ state }) => {
   const [dialogVisible, setDialogVisible] = useState(false);
+  const [selectedVoucherId, setSelectedVoucherId] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const toMemberId = location.state?.id;
-  const isGift = location.state?.isGift;
+  var isGift = location.state?.isGift;
   const memberName = location.state?.fullName;
 
   console.log("gift", isGift);
@@ -43,23 +44,14 @@ const VoucherGroupPage: FC<VoucherGroupPageProps> = ({ state }) => {
   if (memberLoadable.state == "hasValue" && memberLoadable.contents === null)
     return <Subscription />;
 
-  // const ModelShowUp = (voucher) => {
-  //   setDialogVisible(true);
-  //   return (
-  //       <ConfirmModal
-  //         description={`${memberName} sẽ nhận được quà tặng`}
-  //         title={"Bạn chắc chắn muốn tặng ?"}
-  //         visible={dialogVisible}
-  //         setVisible={setDialogVisible}
-  //         handleYes={handleSendGift(voucher.voucherGroupId)}
-  //       />
-  //   );
-  // };
-  const handleSendGift = async (voucherGroupId: string) => {
+  isGift = (memberLoadable.contents?.membershipId !== toMemberId) ? isGift : false;
+  const handleSendGift = async () => {
+    if (!selectedVoucherId) return;
+
     await membershipApi
       .sendGift(
         toMemberId,
-        voucherGroupId,
+        selectedVoucherId,
         memberLoadable.contents?.membershipId!,
         isGift
       )
@@ -82,11 +74,11 @@ const VoucherGroupPage: FC<VoucherGroupPageProps> = ({ state }) => {
       });
       setDialogVisible(false);
   };
+
   console.log("hiện");
   return (
     <Page className="flex flex-col" style={{ overflow: "hidden" }}>
       <Header title="Danh sách quà tặng" />
-      {/* <SpecialOffers /> */}
       <Tabs scrollable defaultActiveKey={"0"} className="category-tabs">
         <Tabs.Tab key={0} label="Hiện có">
           {voucherGroupListData.state === "hasValue" &&
@@ -98,85 +90,30 @@ const VoucherGroupPage: FC<VoucherGroupPageProps> = ({ state }) => {
               }}
             >
               {voucherGroupListData.contents.map((voucher) => (
-                <>
-                  <ConfirmModal
-                    description={`${memberName} sẽ nhận được quà tặng`}
-                    title={"Bạn chắc chắn muốn tặng ?"}
-                    visible={dialogVisible}
-                    setVisible={setDialogVisible}
-                    handleYes={() => handleSendGift(voucher.voucherGroupId)}
-                  />
-                  <VoucherGroupCard
-                    key={voucher.voucherGroupId}
-                    voucherGroup={voucher}
-                    onClick={() => {
-                      setDialogVisible(true);
-                    }}
-                    isGift={isGift}
-                    onCancel={() => {}}
-                  />
-                </>
+                <VoucherGroupCard
+                  key={voucher.voucherGroupId}
+                  voucherGroup={voucher}
+                  onClick={() => {
+                    setSelectedVoucherId(voucher.voucherGroupId);
+                    setDialogVisible(true);
+                  }}
+                  isGift={isGift}
+                  onCancel={() => {}}
+                />
               ))}
             </div>
           ) : (
             <ContentFallback />
           )}
         </Tabs.Tab>
-        {/* <Tabs.Tab key={1} label="Của tôi">
-          <Suspense fallback={<ContentFallback />}>
-            {promotionListData.state === "hasValue" &&
-            promotionListData.contents !== null ? (
-              <div
-                style={{
-                  overflowY: "auto",
-                  flex: 1,
-                }}
-              >
-                {promotionListData.contents.filter((e) => e.promotionType === 2)
-                  .length > 0 ? (
-                  promotionListData.contents
-                    .filter((e) => e.promotionType === 3)
-                    .map((promotion) => (
-                      <VoucherCard
-                        key={promotion.promotionId}
-                        promotion={promotion}
-                        onClick={() =>
-                          setCart((prevCart) => {
-                            let res = { ...prevCart };
-                            res = {
-                              ...prevCart,
-                              promotionCode: promotion.promotionCode,
-                              voucherCode: promotion.listVoucher[0].voucherCode,
-                            };
-                            return prepareCart(res);
-                          })
-                        }
-                        isUsed={cart.promotionCode === promotion.promotionCode}
-                        onCancle={() =>
-                          setCart((prevCart) => {
-                            let res = { ...prevCart };
-                            res = {
-                              ...prevCart,
-                              promotionCode: null,
-                              voucherCode: null,
-                            };
-                            return prepareCart(res);
-                          })
-                        }
-                      />
-                    ))
-                ) : (
-                  <div className="mt-28 ml-20 text-gray ">
-                    Bạn chưa có mã voucher nào cả
-                  </div>
-                )}
-              </div>
-            ) : (
-              <Box />
-            )}
-          </Suspense>
-        </Tabs.Tab> */}
       </Tabs>
+      <ConfirmModal
+        description={`${isGift? memberName : "Bạn"} sẽ nhận được quà tặng`}
+        title={`Bạn chắc chắn muốn ${isGift ? "tặng" : "đổi"} ?`}
+        visible={dialogVisible}
+        setVisible={setDialogVisible}
+        handleYes={handleSendGift}
+      />
     </Page>
   );
 };
@@ -211,7 +148,6 @@ const VoucherGroupCard: FC<VoucherCardProps> = ({
           </p>
           <button
             onClick={onClick}
-            //   className={`absolute font-bold mr-1 p-1 pl-6 pr-6 bottom-1 right-1 rounded-md text-white text-sm hover:text-sky-200 hover:bg-cyan-800 ${isUsed ? "bg-gray" : "bg-primary"}`}>
             className={
               "absolute font-bold mr-1 p-1 pl-6 pr-6 bottom-1 right-1 rounded-md text-white text-sm bg-primary"
             }
