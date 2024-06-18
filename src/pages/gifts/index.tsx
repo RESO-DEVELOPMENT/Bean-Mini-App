@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { useRecoilState, useRecoilValueLoadable, useRecoilValue } from "recoil";
 import { Membership, RecentlySearchMember } from "types/user";
-import { Box, Header, Page, Tabs, Text } from "zmp-ui";
+import { Box, Header, List, Page, Tabs, Text } from "zmp-ui";
 import { MembersList } from "./members-list";
 import { Divider } from "components/divider";
 import {
@@ -20,7 +20,6 @@ import {
 import { CustomInquiry } from "pages/search/inquiry";
 import { ContentFallback } from "components/content-fallback";
 import { getStorage, setStorage } from "zmp-sdk";
-import { useNavigate } from "react-router-dom";
 
 export const GiftsPage: FC = () => (
   <Page>
@@ -56,7 +55,7 @@ const GiftsPageContent: FC = () => {
   useEffect(() => {
     if (
       membersSearchByPhoneLoadable.state === "hasValue" &&
-      membersSearchByPhoneLoadable.contents &&
+      membersSearchByPhoneLoadable.contents !== null &&
       phone.length > 0
     ) {
       const memberSearchTemp = membersSearchByPhoneLoadable.contents.items[0];
@@ -105,21 +104,32 @@ const GiftsPageContent: FC = () => {
         placeholder="Tìm kiếm bạn của bạn"
         state={phoneSearchState}
       />
+      {phone.length !== 10 && phone.length > 0 && (
+        <Text size={"small"} className="pl-3 italic ">
+        Hãy nhập số điện thoại có 10 số
+      </Text>
+      )}
       <Divider />
-      <Text className="pl-4">
+      <Text className="pl-3">
         Tìm bạn qua số điện thoại {`(${searchMembersLength})`}
       </Text>
       <Divider />
       <Tabs scrollable className="category-tabs">
         <Tabs.Tab key={0} label="Tất cả">
-          {membersSearchByPhoneLoadable.state === "loading" ? (
-            <Box>
-              <ContentFallback />
-            </Box>
-          ) : (
-            <MembersList members={searchMembers} />
-          )}
+          {(() => {
+            if (membersSearchByPhoneLoadable.state === "loading")
+              return <ContentFallback />;
+
+            if (searchMembersLength === 0 && phone.length == 10)
+              return (
+                <List className="p-4">
+                  <Text>Không có kết quả</Text>
+                </List>
+              );
+            return <MembersList members={searchMembers} />;
+          })()}
         </Tabs.Tab>
+
         <Tabs.Tab key={1} label="Tìm gần đây">
           <MembersList members={recentlySearchRef.current} />
         </Tabs.Tab>

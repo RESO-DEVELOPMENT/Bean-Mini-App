@@ -116,8 +116,8 @@ export const phoneSearchState = selector<string>({
     return rawPhoneNumber.replace(/^0/, "+84");
   },
   set: ({ set }, newValue) => {
-    if (typeof newValue === "string" && newValue.length == 10) {
+    // if (typeof newValue === "string" && newValue.length == 10) {
       set(rawPhoneNumberState, newValue);
-    } else set(rawPhoneNumberState, "");
+    // } else set(rawPhoneNumberState, "");
   },
 });
