@@ -2,7 +2,7 @@ import { SingleOptionPicker } from "components/product/single-option-picker";
 import React, { FC, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Cart, ProductList } from "types/cart";
-import { Product } from "types/store-menu";
+import { Product, ProductTypeEnum } from "types/store-menu";
 import { Box, Button, Icon, Sheet, Text } from "zmp-ui";
 
 export const QuantityChangeSection: FC<{
@@ -127,6 +127,7 @@ export const QuantityChangeSection: FC<{
                       quantity
                     );
                   }}
+                  disabled={productChosen?.type == ProductTypeEnum.PARENT && currentChild![0].type == ProductTypeEnum.PARENT}
                 >
                   {isUpdate ? "Cập nhật" : "Thêm vào giỏ hàng"}
                 </Button>
