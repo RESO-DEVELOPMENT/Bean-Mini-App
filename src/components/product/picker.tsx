@@ -20,8 +20,6 @@ export const ProductPicker: FC<ProductPickerProps> = ({
   // const member = useRecoilValueLoadable(memberState);
   const [cart, setCart] = useRecoilState(cartState);
 
-
-  
   const childProductsInMenu = useRecoilValue(childrenProductState);
 
   let currentChildOfProduct = childProductsInMenu
@@ -39,62 +37,15 @@ export const ProductPicker: FC<ProductPickerProps> = ({
   const [productChosen, setProductChosen] = useState<Product>(
     currentChildren.length > 0 ? currentChildren![0] : (product)
   );
+  
+
   const [visible, setVisible] = useState(false);
   //lưu lại productList nếu đã có
   const productInCart = cart!.productList.find(
     (p) => p.productInMenuId === productChosen.menuProductId
   );
 
-  // const changeCartItemNumber = (
-  //   product: Product | ProductList,
-  //   quantity: number
-  // ) => {
-  //   setCart((prevCart) => {
-  //     let anotherCart = { ...prevCart };
-  //     if (productInCart != null) {
-  //       let newProductList = anotherCart.productList.map((item) => {
-  //         if (
-  //           item.productInMenuId === (product as ProductList).productInMenuId
-  //         ) {
-  //           return {
-  //             ...item,
-  //             totalAmount: item.sellingPrice * quantity,
-  //             finalAmount: item.sellingPrice * quantity - item.discount,
-  //             quantity: quantity,
-  //           };
-  //         }
-  //         return item;
-  //       });
-  //       // console.log(newProductList);
-  //       let res = {
-  //         ...anotherCart,
-  //         productList: newProductList,
-  //       };
-  //       return prepareCart(res);
-  //     }
-  //     const cartItem: ProductList = {
-  //       productInMenuId: (product as Product)!.menuProductId,
-  //       parentProductId: product!.parentProductId,
-  //       name: product!.name,
-  //       type: product!.type,
-  //       quantity: quantity!,
-  //       sellingPrice: product!.sellingPrice,
-  //       code: product!.code,
-  //       categoryCode: product!.code,
-  //       totalAmount: product!.sellingPrice * quantity!,
-  //       discount: (product as Product).discountPrice,
-  //       finalAmount:
-  //         product!.sellingPrice * quantity! -
-  //         (product as Product)!.discountPrice,
-  //       picUrl: product!.picUrl,
-  //     };
-  //     let res = {
-  //       ...anotherCart,
-  //       productList: cart.productList.concat(cartItem),
-  //     };
-  //     return prepareCart(res);
-  //   });
-  // };
+   
 
   const changeCartItemNumber = useCallback((product: Product | ProductList, quantity: number) => {
     console.log(product);
@@ -159,6 +110,7 @@ export const ProductPicker: FC<ProductPickerProps> = ({
         currentChild={currentChildren}
         productChosen={productChosen}
         setProductChosen={setProductChosen}
+        
       ></QuantityChangeSection>
     </>
   );

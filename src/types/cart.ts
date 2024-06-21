@@ -54,6 +54,12 @@ export interface Attribute {
   value: string;
 }
 
+export interface ProductVariant {
+  id: string;
+  name: string;
+  value: string;
+}
+
 export interface PromotionList {
   promotionId: string;
   code: string;
