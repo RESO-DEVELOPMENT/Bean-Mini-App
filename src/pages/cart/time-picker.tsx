@@ -90,7 +90,7 @@ export const TimePicker: FC = () => {
         }
         if (time) {
           setTime(+time.value);
-          console.log("time", time.value);
+          // console.log("time", time.value);
           setCart((prevCart) => {
             let res = { ...prevCart };
             res = {

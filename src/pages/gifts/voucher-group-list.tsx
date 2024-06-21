@@ -33,7 +33,6 @@ const VoucherGroupPage: FC<VoucherGroupPageProps> = ({ state }) => {
   var isGift = location.state?.isGift;
   const memberName = location.state?.fullName;
 
-  console.log("gift", isGift);
   const voucherGroupListData = useRecoilValueLoadable(state!);
 
   const memberLoadable = useRecoilValueLoadable(memberState);
@@ -75,7 +74,6 @@ const VoucherGroupPage: FC<VoucherGroupPageProps> = ({ state }) => {
       setDialogVisible(false);
   };
 
-  console.log("hiện");
   return (
     <Page className="flex flex-col" style={{ overflow: "hidden" }}>
       <Header title="Danh sách quà tặng" />

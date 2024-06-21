@@ -97,7 +97,7 @@ const GiftsPageContent: FC = () => {
     () => searchMembers.length,
     [searchMembers.length]
   );
-  console.log("rerender");
+
   return (
     <Box className="">
       <CustomInquiry

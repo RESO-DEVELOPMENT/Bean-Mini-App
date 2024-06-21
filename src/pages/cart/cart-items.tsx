@@ -8,11 +8,24 @@ import { prepareCart } from "utils/product";
 import { Box, Icon, Text } from "zmp-ui";
 import { QuantityChangeSection } from "./quantity-change";
 import { Product } from "types/store-menu";
+import { Params } from "react-router-dom";
 export const CartItems: FC = () => {
   const [editingItem, setEditingItem] = useState<ProductList | undefined>();
   const [cart, setCart] = useRecoilState(cartState);
   const [visible, setVisible] = useState(false);
   const [productInCartChosen, setProductInCartChosen] = useState<ProductList>();
+
+  // const [variantChosen, setVariantChosen] = useState<string>(() => {
+  //   if (!productInCart) {
+  //     if (product.variants.length == 0 || !product.variants) return "";
+  //     return `${product.variants[0].name}_${
+  //       product.variants[0].value.split("_")[0]
+  //     }`;
+  //   }
+  //   return `${productInCart.attributes![0].name}_${
+  //     productInCart.attributes![0].value
+  //   }`;
+  // });
   const handleEditSheetShow = (productInCart: ProductList) => {
     setVisible(true);
     setProductInCartChosen(productInCart);
@@ -24,18 +37,27 @@ export const CartItems: FC = () => {
     setCart((prevCart) => {
       if (
         cart.productList.some(
-          (p) => p.productInMenuId === (product as ProductList).productInMenuId
+          (p) => p === (product as ProductList)
         )
       ) {
         let newProductList = prevCart.productList.map((item) => {
           if (
-            item.productInMenuId === (product as ProductList)!.productInMenuId
+            item === (product as ProductList)!
           ) {
             return {
               ...item,
               totalAmount: item.sellingPrice * quantity,
               finalAmount: item.sellingPrice * quantity - item.discount,
               quantity: quantity,
+              // attributes:
+              //     variantChosen.length > 0
+              //       ? [
+              //           {
+              //             name: variantChosen.split("_")[0],
+              //             value: variantChosen.split("_")[1],
+              //           } as Attribute,
+              //         ]
+              //       : [],
             };
           }
           return item;
@@ -61,6 +83,15 @@ export const CartItems: FC = () => {
           product!.sellingPrice * quantity! -
           (product as Product)!.discountPrice,
         picUrl: product!.picUrl,
+        // attributes:
+        //           variantChosen.length > 0
+        //             ? [
+        //                 {
+        //                   name: variantChosen.split("_")[0],
+        //                   value: variantChosen.split("_")[1],
+        //                 } as Attribute,
+        //               ]
+        //             : [],
       };
       let res = {
         ...prevCart,
@@ -75,12 +106,12 @@ export const CartItems: FC = () => {
       let res = { ...prevCart };
       res = {
         ...prevCart,
-        productList: prevCart.productList.filter((x) => x.code !== item.code),
+        productList: prevCart.productList.filter((x) => x !== item),
       };
       return prepareCart(res);
     });
   };
-
+console.log(cart);
   return (
     <Box className="py-3 px-4">
       {cart.productList.length > 0 ? (
@@ -123,6 +154,9 @@ export const CartItems: FC = () => {
                   productInCart={productInCartChosen}
                   handleChange={changeCartItemNumber}
                   isUpdate={true}
+
+                  variantChosen=""
+                  setVariantChosen={[]}
                 />
               )}
               <Box onClick={() => clearCartItem(item)} className="flex-initial">

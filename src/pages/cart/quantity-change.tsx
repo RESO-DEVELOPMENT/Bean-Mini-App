@@ -1,13 +1,14 @@
 import { SingleOptionPicker } from "components/product/single-option-picker";
 import { SingleVariantPicker } from "components/product/single-variant-picker";
+import { object } from "prop-types";
 import React, { FC, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { Cart, ProductList } from "types/cart";
+import { Cart, ProductList, ProductVariant } from "types/cart";
 import { Product, ProductTypeEnum } from "types/store-menu";
 import { Box, Button, Icon, Sheet, Text } from "zmp-ui";
 
 export const QuantityChangeSection: FC<{
-  handleChange: (product: Product | ProductList, quantity: number) => any;
+  handleChange: (product: Product | ProductList, quantity: number, addWhatEver: boolean) => any;
   visible: boolean;
   setVisible: (visible: boolean) => void;
   product: Product;
@@ -17,6 +18,9 @@ export const QuantityChangeSection: FC<{
   menuProductId?: string;
   productChosen?: Product;
   setProductChosen?: any;
+
+  variantChosen: string;
+  setVariantChosen: any;
 }> = ({
   currentChild,
   isUpdate,
@@ -27,27 +31,15 @@ export const QuantityChangeSection: FC<{
   productInCart,
   productChosen,
   setProductChosen,
+
+  variantChosen,
+  setVariantChosen,
 }) => {
   const productInCartToUse = productInCart;
-
   const [quantity, setQuantity] = useState(
     productInCart ? productInCart.quantity : 1
   );
 
-  const [variantChosen, setVariantChosen] = useState<string>(() => {
-    if (!productInCart) {
-      if (product.variants.length == 0 || !product.variants) return "";
-      return `${product.variants[0].name}_${
-        product.variants[0].value.split("_")[0]
-      }`;
-    }
-    return `${productInCart.attributes![0].name}_${
-      productInCart.attributes![0].value
-    }`;
-  });
-
-  // variantChosen={varirantChosen}
-  // setVariantChosen={setVariantChosen}
   useEffect(() => {
     setQuantity(productInCartToUse ? productInCartToUse.quantity : 1);
   }, [productChosen, productInCart]);
@@ -83,7 +75,7 @@ export const QuantityChangeSection: FC<{
                   />
                 )}
               </Box>
-              {product.variants.length > 0 && (
+              {product && product.variants?.length > 0  && (
                 <Box>
                   <SingleVariantPicker
                     variantName="Sốt"
@@ -96,6 +88,7 @@ export const QuantityChangeSection: FC<{
                   />
                 </Box>
               )}
+
               <Box className="flex items-center space-x-1">
                 <Button
                   onClick={() =>
@@ -133,7 +126,6 @@ export const QuantityChangeSection: FC<{
                 />
               </Box>
 
-              
               <Box className="space-y-5">
                 <Button
                   variant="primary"
@@ -141,10 +133,10 @@ export const QuantityChangeSection: FC<{
                   fullWidth
                   onClick={() => {
                     setVisible(false);
-                    console.log(productInCartToUse);
                     handleChange(
                       productInCartToUse ? productInCartToUse : productChosen!,
-                      quantity
+                      quantity,
+                      false
                     );
                   }}
                   disabled={
@@ -154,6 +146,25 @@ export const QuantityChangeSection: FC<{
                 >
                   {isUpdate ? "Cập nhật" : "Thêm vào giỏ hàng"}
                 </Button>
+                {Object.keys(product).length > 0 && productInCart && (<Button
+                  variant="primary"
+                  type="highlight"
+                  fullWidth
+                  onClick={() => {
+                    setVisible(false);
+                    handleChange(
+                       productChosen!,
+                      quantity,
+                      true
+                    );
+                  }}
+                  disabled={
+                    productChosen?.type == ProductTypeEnum.PARENT &&
+                    currentChild![0].type == ProductTypeEnum.PARENT
+                  }
+                >
+                   Thêm mới
+                </Button>)}
               </Box>
             </Box>
           )}
