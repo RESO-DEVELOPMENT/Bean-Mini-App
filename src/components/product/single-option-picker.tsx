@@ -1,6 +1,5 @@
 import { DisplayPrice } from "components/display/price";
 import React, { FC, useEffect, useState } from "react";
-import { ProductVariant } from "types/cart";
 import { Product } from "types/store-menu";
 import { Box, Radio, Text } from "zmp-ui";
 
@@ -10,7 +9,7 @@ export const SingleOptionPicker: FC<{
   defaultValue: string;
   varianName: string;
   onChange: (value: string) => void;
-  productVariants?: ProductVariant[];
+  
 }> = ({ variant, value, defaultValue, varianName, onChange }) => {
   const [width, setWidth] = useState(window.innerWidth - 80);
 

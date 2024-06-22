@@ -7,18 +7,16 @@ import { Product, ProductTypeEnum } from "types/store-menu";
 import { Box, Button, Icon, Sheet, Text } from "zmp-ui";
 
 export const QuantityChangeSection: FC<{
-  updateCart: (
-    productInCart: ProductList,
+  handleChange: (
+    product: Product | ProductList,
     quantity: number,
-    variantChosen: string
+    addWhatEver: boolean
   ) => any;
-  AddNewItem: (product: Product, quantity: number) => any;
-
   visible: boolean;
   setVisible: (visible: boolean) => void;
   product: Product;
   productInCart: ProductList;
-  productChildren?: Product[];
+  currentChild?: Product[];
   productChosen?: Product;
   setProductChosen?: any;
   variantChosen: string;
@@ -26,13 +24,12 @@ export const QuantityChangeSection: FC<{
   productInCartList?: ProductList[];
   setProductInCart?: any;
 }> = ({
-  AddNewItem,
-  updateCart,
+  handleChange,
   visible,
   setVisible,
   product,
   productInCart,
-  productChildren,
+  currentChild,
   productChosen,
   setProductChosen,
   variantChosen,
@@ -40,14 +37,13 @@ export const QuantityChangeSection: FC<{
   productInCartList,
   setProductInCart,
 }) => {
-  const [productInCartToUse, setProductInCartToUse] = useState<ProductList>();
-  const [updateState, setUpdateState] = useState(
-    productInCartToUse !== undefined
+  const [productInCartToUse, setProductInCartToUse] = useState<
+    ProductList | undefined
+  >();
+  const [updateState, setUpdateState] = useState(false);
+  const [quantity, setQuantity] = useState(
+    productInCart ? productInCart.quantity : 1
   );
-  const [quantity, setQuantity] = useState<number>(1);
-  useEffect(() => {
-    setQuantity(productInCart ? productInCart.quantity : 1);
-  }, []);
 
   const handleChangeProductList = (chosenToChange: ProductList) => {
     if (productInCartList && productInCartList.length > 0) {
@@ -70,17 +66,16 @@ export const QuantityChangeSection: FC<{
     setQuantity((prevQuantity) => Math.max(1, prevQuantity - 1));
 
   const handleAddOrUpdate = (update: boolean) => {
-    if (update) {
-      updateCart(productInCart!, quantity, variantChosen);
-    } else if (productChosen) AddNewItem(productChosen!, quantity);
+    if (updateState)
+      handleChange(productInCartToUse as ProductList, quantity, update);
+    else if (productChosen) handleChange(productChosen!, quantity, update);
 
-    if (product.variants?.length === 0 || !product.variants) {
+    if(product.variants?.length === 0 || !product.variants) {
       setVisible(false);
       setUpdateState(true);
-    } else {
-      setUpdateState(false);
-      setQuantity(1);
+      return;
     }
+    setQuantity(1);
   };
   const clearUpdate = () => {
     setUpdateState(false);
@@ -94,52 +89,49 @@ export const QuantityChangeSection: FC<{
             <Text.Title>{product.name}</Text.Title>
             <div className="flex justify-between">
               <Text>{product.description}</Text>
-              {product.variants?.length > 0 &&
-                (updateState ? (
-                  <Box className="text-primary" onClick={clearUpdate}>
-                    <Icon icon="zi-edit-delete-solid" />
-                  </Box>
-                ) : (
-                  <Icon icon="zi-edit-delete" />
-                ))}
+              {updateState ? (
+                <Box className="text-primary" onClick={clearUpdate}>
+                  <Icon icon="zi-edit-delete-solid" />
+                </Box>
+              ) : (
+                <Icon icon="zi-edit-delete" />
+              )}
             </div>
           </Box>
 
-          {productInCartList &&
-            productInCartList.length > 0 &&
-            product.variants?.length > 0 && (
-              <Box className="border border-primary my-2">
-                {productInCartList.map((p, index) => (
-                  <Box
-                    key={`${p}_${index}`}
-                    onClick={() => handleChangeProductList(p)}
-                    className={`p-2 pl--2 flex justify-between ${
-                      productInCartToUse === p
-                        ? "bg-primary text-white"
-                        : "bg-white text-black"
-                    }`}
-                  >
-                    <Text>{`${p.note?.split("_")[1]}_${
-                      p.note?.split("_")[2]
-                    }`}</Text>
-                    <div className="flex">
-                      <Text className="mr-2 ">{`x${p.quantity}`}</Text>
-                    </div>
-                  </Box>
-                ))}
-              </Box>
-            )}
+          {productInCartList && productInCartList.length > 0 && product.variants?.length > 0 && (
+            <Box className="border border-primary my-2">
+              {productInCartList.map((p, index) => (
+                <Box
+                  key={`${p}_${index}`}
+                  onClick={() => handleChangeProductList(p)}
+                  className={`p-2 pl--2 flex justify-between ${
+                    productInCartToUse === p
+                      ? "bg-primary text-white"
+                      : "bg-white text-black"
+                  }`}
+                >
+                  <Text>{`${p.note?.split("_")[1]}_${
+                    p.note?.split("_")[2]
+                  }`}</Text>
+                  <div className="flex">
+                    <Text className="mr-2 ">{`x${p.quantity}`}</Text>
+                  </div>
+                </Box>
+              ))}
+            </Box>
+          )}
 
-          {productChildren && productChildren.length > 0 && (
+          {currentChild && currentChild.length > 0 && (
             <SingleOptionPicker
               key={product.id}
-              variant={productChildren}
+              variant={currentChild}
               defaultValue=""
               varianName="Kích cỡ"
               value={productChosen?.menuProductId || ""}
               onChange={(selectedOption) =>
                 setProductChosen(
-                  productChildren.find(
+                  currentChild.find(
                     (option) => option.menuProductId === selectedOption
                   )!
                 )
@@ -195,11 +187,9 @@ export const QuantityChangeSection: FC<{
               //second condition to handle error of the number of products in the server
               //Example: 1 PARENT PRODUCT WITHOUT CHILD PRODUCT
               disabled={
-                (productInCartToUse === undefined &&
-                  updateState &&
-                  product.variants?.length > 0) ||
+                (productInCartToUse === undefined && updateState && product.variants?.length > 0) ||
                 (productChosen?.type == ProductTypeEnum.PARENT &&
-                  productChildren![0].type == ProductTypeEnum.PARENT)
+                  currentChild![0].type == ProductTypeEnum.PARENT)
               }
             >
               {updateState ? "Cập nhật" : "Thêm vào giỏ hàng"}
