@@ -8,11 +8,13 @@ import { Recommend } from "./recommend";
 import { ProductList } from "./product-list";
 import { Divider } from "components/divider";
 import { ContentFallback } from "components/content-fallback";
+import { ProductContextProvider } from "components/context/product-action-context";
 
 const HomePage: React.FunctionComponent = () => {
 
   return (
-    <Page className="relative flex-1 flex flex-col bg-white">
+    <ProductContextProvider>
+      <Page className="relative flex-1 flex flex-col bg-white">
       <Welcome />
       <Box className="flex-1 overflow-auto">
         <Inquiry />
@@ -24,7 +26,9 @@ const HomePage: React.FunctionComponent = () => {
         <ProductList />
         <Divider />
       </Box>
-    </Page>
+      </Page>
+    </ProductContextProvider>
+
   );
 };
 export default HomePage;

@@ -12,7 +12,11 @@ export const QuantityChangeSection: FC<{
     quantity: number,
     variantChosen: string
   ) => any;
-  AddNewItem: (product: Product, quantity: number) => any;
+  AddNewItem: (
+    product: Product,
+    quantity: number,
+    variantChosen: string
+  ) => any;
 
   visible: boolean;
   setVisible: (visible: boolean) => void;
@@ -72,7 +76,7 @@ export const QuantityChangeSection: FC<{
   const handleAddOrUpdate = (update: boolean) => {
     if (update) {
       updateCart(productInCart!, quantity, variantChosen);
-    } else if (productChosen) AddNewItem(productChosen!, quantity);
+    } else if (productChosen) AddNewItem(productChosen!, quantity, variantChosen);
 
     if (product.variants?.length === 0 || !product.variants) {
       setVisible(false);

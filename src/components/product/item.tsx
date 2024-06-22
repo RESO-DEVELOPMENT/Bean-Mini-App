@@ -13,6 +13,8 @@ export const ProductItem: FC<{
   const handleQuantityChange = (newQuantity: number) => {
     setQuantity(newQuantity);
   };
+  
+
   return (
     <ProductPicker product={product} isUpdate={false}>
       {({ open }) => (
