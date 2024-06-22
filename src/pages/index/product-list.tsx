@@ -5,7 +5,7 @@ import { productsState } from "states/product.state";
 import { Box } from "zmp-ui";
 import { ProductItem } from "components/product/item";
 import { ProductItemSkeleton } from "components/skeletons";
-import { ProductContextProvider } from "../../components/context/product-action-context";
+import { ProductContextProvider } from "../../components/context/app-context";
 
 export const ProductListContent: FC = () => {
   const products = useRecoilValue(productsState);

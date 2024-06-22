@@ -4,9 +4,8 @@ import { childrenProductState } from "states/product.state";
 import { cartState } from "../../states/cart.state";
 import { ProductList } from "types/cart";
 import { Product, ProductTypeEnum } from "types/store-menu";
-import { prepareCart } from "utils/product";
 import { QuantityChangeSection } from "pages/cart/quantity-change";
-import { useProductContext } from "components/context/product-action-context";
+import { useProductContext } from "components/context/app-context";
 
 
 export interface ProductPickerProps {

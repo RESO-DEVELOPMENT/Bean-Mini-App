@@ -14,7 +14,7 @@ export const ProductItem: FC<{
     setQuantity(newQuantity);
   };
   
-
+console.log("check")
   return (
     <ProductPicker product={product} isUpdate={false}>
       {({ open }) => (

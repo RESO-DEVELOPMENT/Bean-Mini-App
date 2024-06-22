@@ -5,13 +5,9 @@ import VoucherCard from "./card-voucher";
 import { listPromotionState } from "states/promotion.state";
 import { cartState } from "states/cart.state";
 import {
-  RecoilState,
-  RecoilValue,
   RecoilValueReadOnly,
   useRecoilState,
-  useRecoilValue,
   useRecoilValueLoadable,
-  useRecoilValueLoadable_TRANSITION_SUPPORT_UNSTABLE,
 } from "recoil";
 import { prepareCart } from "utils/product";
 import { memberState } from "states/member.state";

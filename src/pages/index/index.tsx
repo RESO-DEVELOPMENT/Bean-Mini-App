@@ -8,12 +8,12 @@ import { Recommend } from "./recommend";
 import { ProductList } from "./product-list";
 import { Divider } from "components/divider";
 import { ContentFallback } from "components/content-fallback";
-import { ProductContextProvider } from "components/context/product-action-context";
+import { ProductContextProvider } from "components/context/app-context";
 
 const HomePage: React.FunctionComponent = () => {
 
   return (
-    <ProductContextProvider>
+    
       <Page className="relative flex-1 flex flex-col bg-white">
       <Welcome />
       <Box className="flex-1 overflow-auto">
@@ -27,7 +27,7 @@ const HomePage: React.FunctionComponent = () => {
         <Divider />
       </Box>
       </Page>
-    </ProductContextProvider>
+
 
   );
 };
