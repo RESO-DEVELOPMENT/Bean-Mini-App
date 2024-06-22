@@ -3,7 +3,7 @@ import { ListRenderer } from "components/list-renderer";
 import React, { FC, useState } from "react";
 import { useRecoilState } from "recoil";
 import { cartState } from "../../states/cart.state";
-import {ProductList } from "types/cart";
+import { ProductList } from "types/cart";
 import { prepareCart } from "utils/product";
 import { Box, Icon, Text } from "zmp-ui";
 import { QuantityChangeSection } from "./quantity-change";
@@ -31,9 +31,21 @@ export const CartItems: FC = () => {
       return prepareCart(res);
     });
   };
-  console.log(cart);
+
   return (
     <Box className="py-3 px-4">
+      {productInCartChosen && (
+        <QuantityChangeSection
+          AddNewItem={addNewItem}
+          updateCart={updateCart}
+          visible={visible}
+          setVisible={setVisible}
+          product={{} as Product}
+          productInCart={productInCartChosen}
+          variantChosen=""
+          setVariantChosen={[]}
+        />
+      )}
       {cart.productList.length > 0 ? (
         <ListRenderer
           items={cart.productList}
@@ -64,18 +76,7 @@ export const CartItems: FC = () => {
               >
                 <Icon icon="zi-edit" className="mt-1 text-primary" />
               </Box>
-              {productInCartChosen && (
-                <QuantityChangeSection
-                  AddNewItem={addNewItem}
-                  updateCart={updateCart}
-                  visible={visible}
-                  setVisible={setVisible}
-                  product={{} as Product}
-                  productInCart={productInCartChosen}
-                  variantChosen=""
-                  setVariantChosen={[]}
-                />
-              )}
+
               <Box onClick={() => clearCartItem(item)} className="flex-initial">
                 <Icon icon="zi-delete" className="mt-1 text-red-500" />
               </Box>

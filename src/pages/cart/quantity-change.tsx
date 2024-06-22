@@ -46,13 +46,13 @@ export const QuantityChangeSection: FC<{
 }) => {
   const [productInCartToUse, setProductInCartToUse] = useState<ProductList>();
   const [updateState, setUpdateState] = useState(
-    productInCartToUse !== undefined
+    productInCartToUse !== undefined || Object.keys(product).length === 0
   );
   const [quantity, setQuantity] = useState<number>(1);
   useEffect(() => {
     setQuantity(productInCart ? productInCart.quantity : 1);
   }, []);
-
+  console.log("hiện")
   const handleChangeProductList = (chosenToChange: ProductList) => {
     if (productInCartList && productInCartList.length > 0) {
       const targetProductList = productInCartList.find(
