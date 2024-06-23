@@ -8,6 +8,7 @@ import { useRecoilValueLoadable, useSetRecoilState } from "recoil";
 import { requestPhoneTriesState } from "states/user.state";
 import { memberState } from "states/member.state";
 import { ContentFallback } from "components/content-fallback";
+import { MembershipWallets } from "./wallet/membership-wallet";
 
 
 export const Subscription: FC = () => {
@@ -129,6 +130,7 @@ const ProfilePage: FC = () => {
           <Header showBackIcon={false} title="Tài khoản" />
           {member.state === "hasValue" && member.contents !== null ? (
             <>
+              <MembershipWallets />
               <Personal />
               <Other />
             </>
@@ -142,6 +144,5 @@ const ProfilePage: FC = () => {
     </>
   );
 };
-
 
 export default ProfilePage;
