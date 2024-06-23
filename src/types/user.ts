@@ -16,6 +16,7 @@ export interface MemberLevel {
   nextLevelName: string
   memberWallet: MemberWallet[]
   membershipCard: MembershipCard[]
+  point: number
 }
 
 

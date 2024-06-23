@@ -1,20 +1,23 @@
 import React from "react";
 
 import QRCode from "react-qr-code";
-import {
-  useRecoilState,
-  useRecoilValueLoadable,
-} from "recoil";
+import { useRecoilState, useRecoilValueLoadable } from "recoil";
 import { requestRetriveQRstate } from "states/user.state";
 import { memberState } from "states/member.state";
 import { Subscription } from "./profile";
 import { useSearchParams } from "react-router-dom";
+import RankInfo from "components/rank";
+import { ContentFallback } from "components/content-fallback";
 
 const QRCodePage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const code = searchParams.get("code");
-  console.log("code", code);
   const member = useRecoilValueLoadable(memberState);
+
+  if(member.state == "loading" || member.state == "hasError"){
+    return <ContentFallback />
+  }
+
   return (
     <div className="flex flex-col w-full h-full bg-primary">
       <div className="px-4 py-20">
@@ -25,19 +28,22 @@ const QRCodePage: React.FC = () => {
             Mã Thành Viên
           </span>
         </div>
+        
         <div className="bg-white p-4 rounded-lg  text-black">
           {member.state === "hasValue" && member.contents !== null ? (
             <>
+            <RankInfo memberLevel={member.contents.memberLevel}/>
               <div className="text-center">Đưa mã này vào thiết bị quét mã</div>
               <div className="flex justify-center my-8">
                 <QRCode
                   value={
-                    code ?? member.contents.memberLevel.membershipCard[0].membershipCardCode
+                    code ??
+                    member.contents.memberLevel.membershipCard[0]
+                      .membershipCardCode
                   }
                   size={220}
                 />
               </div>
-
             </>
           ) : (
             <Subscription />

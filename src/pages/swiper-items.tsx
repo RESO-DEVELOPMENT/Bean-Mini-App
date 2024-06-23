@@ -6,7 +6,6 @@ import { Box } from "zmp-ui";
 import { IoIosGift, IoIosSend } from "react-icons/io";
 import { IoTicket } from "react-icons/io5";
 import { FaCartPlus } from "react-icons/fa";
-import { MdPayments } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 const containerStyle: React.CSSProperties = {
