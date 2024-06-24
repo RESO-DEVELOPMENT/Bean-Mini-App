@@ -48,7 +48,7 @@ export const MembershipWallets: FC<MembershipWalletsProps> = () => {
     const memberWallets = memberLoadable.contents.memberLevel.memberWallet;
     return (
       <Box px={4} className="border-divider">
-        <Text.Title className="p-4 pb-0">Ví</Text.Title>
+        {/* <Text.Title className="p-4 pb-0">Ví</Text.Title> */}
         <Box className="p-4 grid grid-cols-2 gap-4">
           {memberWallets.map((wallet) => (
             <MembershipWallet key={wallet.id} memberWallet={wallet} />

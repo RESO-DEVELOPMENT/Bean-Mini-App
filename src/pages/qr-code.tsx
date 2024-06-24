@@ -1,13 +1,12 @@
 import React from "react";
 
 import QRCode from "react-qr-code";
-import { useRecoilState, useRecoilValueLoadable } from "recoil";
-import { requestRetriveQRstate } from "states/user.state";
+import {  useRecoilValueLoadable } from "recoil";
 import { memberState } from "states/member.state";
 import { Subscription } from "./profile";
 import { useSearchParams } from "react-router-dom";
-import RankInfo from "components/rank";
 import { ContentFallback } from "components/content-fallback";
+import { MembershipWallets } from "./wallet/membership-wallet";
 
 const QRCodePage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -32,7 +31,7 @@ const QRCodePage: React.FC = () => {
         <div className="bg-white p-4 rounded-lg  text-black">
           {member.state === "hasValue" && member.contents !== null ? (
             <>
-            <RankInfo memberLevel={member.contents.memberLevel}/>
+               <MembershipWallets />
               <div className="text-center">Đưa mã này vào thiết bị quét mã</div>
               <div className="flex justify-center my-8">
                 <QRCode
