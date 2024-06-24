@@ -80,7 +80,7 @@ export const MembershipWallets: FC<MembershipWalletsProps> = () => {
       //   </Swiper>
       // </Box>
       <Box m={4}>
-        <Swiper spaceBetween={0} slidesPerView={2.1}>
+        <Swiper spaceBetween={0} slidesPerView={2}>
           {memberWallets.map((wallet, index) => (
             <SwiperSlide key={`slide${index + 1}`} className="p-1">
               <MembershipWallet memberWallet={wallet} />

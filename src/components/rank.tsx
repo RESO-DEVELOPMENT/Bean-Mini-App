@@ -33,7 +33,7 @@ const RankInfo: FC<RankInfoProps> = ({memberLevel}) => {
  
     return (
       <Box
-      mb={4}
+      m={4}
         p={4}
         height={150}
         className="bg-primary rounded-lg grid grid-cols-2 border border-white"

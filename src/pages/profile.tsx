@@ -130,7 +130,6 @@ const ProfilePage: FC = () => {
           {member.state === "hasValue" && member.contents !== null ? (
             <>
               <RankInfo memberLevel={member.contents.memberLevel} />
-
               <Personal />
               <Other />
             </>
