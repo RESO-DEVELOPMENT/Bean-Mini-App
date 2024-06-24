@@ -7,7 +7,26 @@ import { useRecoilValueLoadable } from "recoil";
 import { memberState } from "states/member.state";
 import { MemberLevel, MemberWallet } from "types/user";
 
-import { Box, Button, Icon, Progress, Text } from "zmp-ui";
+import { Box, Text } from "zmp-ui";
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+
+// const NextButton = () => {
+//   const swiper = useSwiper();
+//   return (
+//     <button onClick={() => swiper.slideNext()}>
+//       <svg
+//         xmlns="http://www.w3.org/2000/svg"
+//         width="25"
+//         height="25"
+//         fill="#04bfad"
+//         className="bi bi-arrow-right-circle-fill"
+//         viewBox="0 0 16 16"
+//       >
+//         <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z" />
+//       </svg>
+//     </button>
+//   );
+// };
 
 const SkeletonLoader: FC = () => {
   return (
@@ -47,13 +66,30 @@ export const MembershipWallets: FC<MembershipWalletsProps> = () => {
     console.log(memberLoadable.contents.memberLevel.memberWallet);
     const memberWallets = memberLoadable.contents.memberLevel.memberWallet;
     return (
-      <Box px={4} className="border-divider">
-        {/* <Text.Title className="p-4 pb-0">Ví</Text.Title> */}
-        <Box className="p-4 grid grid-cols-2 gap-4">
-          {memberWallets.map((wallet) => (
-            <MembershipWallet key={wallet.id} memberWallet={wallet} />
+      // <Box px={4} className="border-divider">
+      //   {/* <Text.Title className="p-4 pb-0">Ví</Text.Title> */}
+      //   <Swiper spaceBetween={0} slidesPerView={2}>
+      //     {/* <Box className="p-4 grid grid-cols-2 gap-4"> */}
+      //     <Box className="p-4">
+      //       {memberWallets.map((wallet, index) => (
+      //         <SwiperSlide key={`slide${index + 1}`} className="p-1">
+      //           <MembershipWallet key={wallet.id} memberWallet={wallet} />
+      //         </SwiperSlide>
+      //       ))}
+      //     </Box>
+      //   </Swiper>
+      // </Box>
+      <Box m={4}>
+        <Swiper spaceBetween={0} slidesPerView={2.1}>
+          {memberWallets.map((wallet, index) => (
+            <SwiperSlide key={`slide${index + 1}`} className="p-1">
+              <MembershipWallet memberWallet={wallet} />
+            </SwiperSlide>
           ))}
-        </Box>
+          {/* <div className="absolute top-1/2 right-0 transform -translate-y-1/2 z-10 border">
+            <NextButton />
+          </div> */}
+        </Swiper>
       </Box>
     );
   }
@@ -71,30 +107,34 @@ const MembershipWallet: FC<MembershipWalletProps> = ({ memberWallet }) => {
   };
 
   return (
-    <Box p={2}
-      className="bg-primary rounded-lg text-center relative shadow-lg text-white"
-    >
-      <Text size="large" className="font-semibold mb-2 ">
-        {memberWallet.walletType.currency}
-      </Text>
-      {/* <Button
-        variant="secondary"
-        size="small"
-        className="absolute top-2 right-0 text-white "
-        onClick={toggleExpand}
-    
-      > */}
-        <Text className="absolute top-2.5 right-2.5">{isExpanded ? <IoEye onClick={toggleExpand} /> :<IoEyeOff onClick={toggleExpand}/>  }</Text>
-        {/* <Icon className="bg-none" icon={isExpanded ? "zi-chevron-up" : "zi-chevron-down"} /> */}
-      {/* </Button> */}
-      
-        <Text size="normal" className="font-bold ">
-          {isExpanded ? <DisplayValue
-            value={memberWallet?.balance ?? 0}
-            unit={memberWallet?.walletType.currency}
-          />: "******"}
+    <>
+      <Box
+        p={2}
+        className="bg-primary rounded-lg text-center relative shadow-lg text-white"
+      >
+        <Text size="large" className="font-semibold mb-2 ">
+          {memberWallet.walletType.currency}
         </Text>
-      
-    </Box>
+
+        <Text className="absolute top-2.5 right-2.5">
+          {isExpanded ? (
+            <IoEye onClick={toggleExpand} />
+          ) : (
+            <IoEyeOff onClick={toggleExpand} />
+          )}
+        </Text>
+
+        <Text size="normal" className="font-bold ">
+          {isExpanded ? (
+            <DisplayValue
+              value={memberWallet?.balance ?? 0}
+              unit={memberWallet?.walletType.currency}
+            />
+          ) : (
+            "******"
+          )}
+        </Text>
+      </Box>
+    </>
   );
 };

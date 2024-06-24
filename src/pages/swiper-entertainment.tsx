@@ -17,7 +17,7 @@ const container2Style: React.CSSProperties = {
   width: "150px",
 };
 
-const NextButton = () => {
+ const NextButton = () => {
   const swiper = useSwiper();
   return (
     <button onClick={() => swiper.slideNext()}>
