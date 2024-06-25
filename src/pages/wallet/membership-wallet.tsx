@@ -109,6 +109,7 @@ const MembershipWallet: FC<MembershipWalletProps> = ({ memberWallet }) => {
   return (
     <>
       <Box
+      onClick={toggleExpand}
         p={2}
         className="rounded-lg text-center relative border border-primary"
       >
@@ -118,9 +119,9 @@ const MembershipWallet: FC<MembershipWalletProps> = ({ memberWallet }) => {
 
         <Text className="absolute top-2.5 right-2.5">
           {isExpanded ? (
-            <IoEye onClick={toggleExpand} />
+            <IoEye  />
           ) : (
-            <IoEyeOff onClick={toggleExpand} />
+            <IoEyeOff />
           )}
         </Text>
 
