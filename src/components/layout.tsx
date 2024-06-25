@@ -22,6 +22,7 @@ import { GiftsPage } from "pages/gifts";
 import { listPromotionState } from "states/promotion.state";
 import { listVoucherForSaleState } from "states/voucher.state";
 import VoucherGroupPage from "pages/gifts/voucher-group-list";
+import TransactionPage from "pages/orders/list-transaction";
 
 if (getSystemInfo().platform === "android") {
   const androidSafeTop = Math.round(
@@ -48,7 +49,7 @@ export const Layout: FC = () => {
           <Route path="/cart" element={<CartPage />}/>
           <Route path="/profile" element={<ProfilePage />}/>
           <Route path="/history" element={<HistoryPage />}/>
-          <Route path="/history-transaction" element={<HistoryPage />}/>
+          <Route path="/history-transaction" element={<TransactionPage />}/>
           <Route path="/order-detail" element={<OrderDetailsPage />}/>
           <Route path="/voucher" element={<VoucherPage  state={listPromotionState}/>}/>
           <Route path="/gifts-for-sale" element={<VoucherGroupPage state={listVoucherForSaleState} />}/>

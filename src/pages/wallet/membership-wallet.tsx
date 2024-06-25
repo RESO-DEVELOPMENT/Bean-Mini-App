@@ -110,7 +110,7 @@ const MembershipWallet: FC<MembershipWalletProps> = ({ memberWallet }) => {
     <>
       <Box
         p={2}
-        className="bg-primary rounded-lg text-center relative shadow-lg text-white"
+        className="bg-primary rounded-lg text-center relative border text-white"
       >
         <Text size="large" className="font-semibold mb-2 ">
           {memberWallet.walletType.currency}

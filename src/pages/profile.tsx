@@ -70,6 +70,18 @@ const Personal: FC = () => {
               </Box>
             ),
           },
+          {
+            navigate: "/history-transaction",
+            left: <Icon icon="zi-clock-2" />,
+            right: (
+              <Box flex>
+                <Text.Header className="flex-1 items-center font-normal">
+                  Lịch sử giao dịch
+                </Text.Header>
+                <Icon icon="zi-chevron-right" />
+              </Box>
+            ),
+          },
         ]}
         renderLeft={(item) => item.left}
         renderRight={(item) => item.right}

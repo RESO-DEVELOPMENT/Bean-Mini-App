@@ -11,7 +11,6 @@ import { listOrderState } from "states/order.state";
 import { requestOrderTransactionTriesState } from "states/order.state";
 import { memberState } from "states/member.state";
 import { Box, Header, Icon, Page, Tabs, Text } from "zmp-ui";
-import TransactionCard from "./card-transaction";
 import { Card } from "react-bootstrap";
 import { displayDate, displayTime } from "utils/date";
 import { DisplayPrice } from "components/display/price";
@@ -28,9 +27,7 @@ import { cartState } from "states/cart.state";
 import ProductRePicker from "components/product/repicker";
 import { ContentFallback } from "components/content-fallback";
 const HistoryPicker: FC = () => {
-  const selectedCategory = useRecoilValue(selectedCategoryIdState);
   const orderListData = useRecoilValueLoadable(listOrderState);
-  const transactionListData = useRecoilValueLoadable(listTransactionState);
   const navigate = useNavigate();
   const handleResetClick = (event) => {
     event.stopPropagation();
@@ -122,12 +119,12 @@ const HistoryPicker: FC = () => {
   return (
     <>
       {member.state === "hasValue" && member.contents !== null ? (
-        <Tabs
-          scrollable
-          defaultActiveKey={selectedCategory}
-          className="category-tabs"
-        >
-          <Tabs.Tab key={0} label="Đơn hàng">
+        // <Tabs
+        //   scrollable
+        //   defaultActiveKey={selectedCategory}
+        //   className="category-tabs"
+        // >
+        //   <Tabs.Tab key={0} label="Đơn hàng">
             <Suspense>
               {orderListData.state === "hasValue" &&
                 orderListData.contents !== null ? (
@@ -207,27 +204,27 @@ const HistoryPicker: FC = () => {
                 </Box>
               )}
             </Suspense>
-          </Tabs.Tab>
-          <Tabs.Tab key={1} label="Giao dịch">
-            <Suspense>
-              {transactionListData.state === "hasValue" &&
-                transactionListData.contents !== null ? (
-                <div
-                  style={{
-                    overflowY: "auto",
-                    flex: 1,
-                  }}
-                >
-                  {transactionListData.contents.map((order) => (
-                    <TransactionCard key={order.id} trans={order} />
-                  ))}
-                </div>
-              ) : (
-                <Box />
-              )}
-            </Suspense>
-          </Tabs.Tab>
-        </Tabs>
+        //  </Tabs.Tab>
+        //    <Tabs.Tab key={1} label="Giao dịch">
+        //     <Suspense>
+        //       {transactionListData.state === "hasValue" &&
+        //         transactionListData.contents !== null ? (
+        //         <div
+        //           style={{
+        //             overflowY: "auto",
+        //             flex: 1,
+        //           }}
+        //         >
+        //           {transactionListData.contents.map((order) => (
+        //             <TransactionCard key={order.id} trans={order} />
+        //           ))}
+        //         </div>
+        //       ) : (
+        //         <Box />
+        //       )}
+        //     </Suspense>
+        //   </Tabs.Tab> 
+        //  </Tabs>
       ) : (
         <Subscription />
       )}
@@ -238,7 +235,7 @@ const HistoryPicker: FC = () => {
 const HistoryPage: FC = () => {
   return (
     <Page className="flex flex-col">
-      <Header showBackIcon={false} title="Hoạt động" />
+      <Header showBackIcon={false} title="Đơn hàng" />
       <HistoryPicker key={1} />
     </Page>
   );
