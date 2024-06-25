@@ -20,14 +20,9 @@ const QRCodePage: React.FC = () => {
   }
 
   return (
-    <Page className="bg-primary p-4 self-auto">
-  <Box className="h-full">
-    <div className="flex justify-center items-center">
-      <span className="text-xl text-white font-bold m-4">
-        Mã Thành Viên
-      </span>
-    </div>
-    <div className="bg-white p-4 rounded-lg text-black">
+    <Page className="bg-primary p-4 text-black flex justify-center items-center min-h-screen">
+  <Box className="h-full flex justify-center items-center">
+    <div className="bg-white p-4 rounded-lg">
       {member.state === "hasValue" && member.contents !== null ? (
         <>
           <MembershipWallets />
@@ -44,7 +39,7 @@ const QRCodePage: React.FC = () => {
           </div>
           <div className="flex justify-center mt-4">
             <button
-              className="px-14 py-3 border-2 border-primary text-primary rounded-lg flex items-center"
+              className="px-14 py-3 border-2 border-primary rounded-lg flex items-center"
               onClick={() => navigate("/history-transaction")}
             >
               <Icon icon="zi-clock-2" className="mr-2" />
@@ -58,6 +53,7 @@ const QRCodePage: React.FC = () => {
     </div>
   </Box>
 </Page>
+
   );
 };
 

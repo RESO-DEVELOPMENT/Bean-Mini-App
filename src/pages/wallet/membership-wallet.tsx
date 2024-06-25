@@ -110,7 +110,7 @@ const MembershipWallet: FC<MembershipWalletProps> = ({ memberWallet }) => {
     <>
       <Box
         p={2}
-        className="bg-primary rounded-lg text-center relative border text-white"
+        className="rounded-lg text-center relative border border-primary"
       >
         <Text size="large" className="font-semibold mb-2 ">
           {memberWallet.walletType.currency}
@@ -124,7 +124,7 @@ const MembershipWallet: FC<MembershipWalletProps> = ({ memberWallet }) => {
           )}
         </Text>
 
-        <Text size="normal" className="font-bold ">
+        <Text size="normal" className="font-bold  ">
           {isExpanded ? (
             <DisplayValue
               value={memberWallet?.balance ?? 0}
