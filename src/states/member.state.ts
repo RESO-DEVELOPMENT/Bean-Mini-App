@@ -117,7 +117,7 @@ export const phoneSearchState = selector<string>({
   },
   set: ({ set }, newValue) => {
     // if (typeof newValue === "string" && newValue.length == 10) {
-      set(rawPhoneNumberState, newValue);
+    set(rawPhoneNumberState, newValue);
     // } else set(rawPhoneNumberState, "");
   },
 });
