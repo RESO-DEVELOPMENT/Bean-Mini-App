@@ -20,9 +20,9 @@ const QRCodePage: React.FC = () => {
   }
 
   return (
-    <Page className="bg-primary p-4 text-black flex justify-center items-center min-h-screen">
-  <Box className="h-full flex justify-center items-center">
-    <div className="bg-white p-4 rounded-lg">
+    <Page className="bg-primary p-4 text-black flex justify-center items-center min-h-screen pl-0 pr-0">
+  <Box className="h-full w-full flex justify-center items-center ">
+    <div className="bg-white p-5 rounded-lg w-11/12 ">
       {member.state === "hasValue" && member.contents !== null ? (
         <>
           <MembershipWallets />
@@ -34,7 +34,7 @@ const QRCodePage: React.FC = () => {
                 member.contents.memberLevel.membershipCard[0]
                   .membershipCardCode
               }
-              size={220}
+              // size={220}
             />
           </div>
           <div className="flex justify-center mt-4">
