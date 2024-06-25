@@ -40,24 +40,23 @@ export const Layout: FC = () => {
       <ScrollRestoration />
       <Box className="flex-1 flex flex-col overflow-hidden">
         <Routes>
-          <Route path="/order" element={<HomePage />}></Route>
-          <Route path="/" element={<WalletScreen />}></Route>
-          <Route path="/search" element={<SearchPage />}></Route>
-          <Route path="/category" element={<CategoryPage />}></Route>
-          <Route path="/notification" element={<NotificationPage />}></Route>
-          <Route path="/cart" element={<CartPage />}></Route>
-          <Route path="/profile" element={<ProfilePage />}></Route>
-          <Route path="/history" element={<HistoryPage />}></Route>
-          <Route path="/order-detail" element={<OrderDetailsPage />}></Route>
-          <Route path="/voucher" element={<VoucherPage  state={listPromotionState}/>}></Route>
-          <Route path="/gifts-for-sale" element={<VoucherGroupPage state={listVoucherForSaleState} />}></Route>
+          <Route path="/order" element={<HomePage />}/>
+          <Route path="/" element={<WalletScreen />}/>
+          <Route path="/search" element={<SearchPage />}/>
+          <Route path="/category" element={<CategoryPage />}/>
+          <Route path="/notification" element={<NotificationPage />}/>
+          <Route path="/cart" element={<CartPage />}/>
+          <Route path="/profile" element={<ProfilePage />}/>
+          <Route path="/history" element={<HistoryPage />}/>
+          <Route path="/history-transaction" element={<HistoryPage />}/>
+          <Route path="/order-detail" element={<OrderDetailsPage />}/>
+          <Route path="/voucher" element={<VoucherPage  state={listPromotionState}/>}/>
+          <Route path="/gifts-for-sale" element={<VoucherGroupPage state={listVoucherForSaleState} />}/>
           <Route path="/qr" element={<QRCodePage />} />
           <Route path="/info" element={<InformationPage />} />,
           <Route path="/feedback" element={<FeedbackForm />} />,
-          <Route path="/blog" element={<BlogDetail />}>
-            
-          </Route>
-          <Route path="/gifts" element={<GiftsPage />}></Route>{" "}
+          <Route path="/blog" element={<BlogDetail />}/>
+          <Route path="/gifts" element={<GiftsPage />}/>
         </Routes>
       </Box>
       <Navigation />
